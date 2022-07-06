@@ -11,7 +11,7 @@ import SalveData from '../../../back-and2/SalveData';
 import {RetornaImg} from '../../functions/index';
 
 
-export default function Topo(value){
+export default function Topo(){
     
     useEffect(() => {
         
@@ -29,7 +29,7 @@ export default function Topo(value){
             />
             <TouchableOpacity style = {styles.btt_img}
                 onPress = {() => {
-                    if(value.main) navigation.replace("Subst_Img");
+                    navigation.replace("Subst_Img");
                 }}
             >
                 <Image style = {styles.img_logo}
@@ -38,9 +38,9 @@ export default function Topo(value){
             </TouchableOpacity>
             <View style = {styles.view1_infos}>
                 <Text style = {styles.text_infos}> {banco.userMaster.nome} </Text>
-                <Text style = {styles.text_infos}> Jogos: {banco.userMaster.scrT.jogos} | FG: {banco.userMaster.scrT.a_FG % 1 == 0 ? banco.userMaster.scrT.a_FG : banco.userMaster.scrT.a_FG.toFixed(1)}% </Text>
-                <Text style = {styles.text_infos}> 2pts: {banco.userMaster.scrT.a_2pts} | 3pts: {banco.userMaster.scrT.a_3pts} </Text>
-                <Text style = {styles.text_infos}> Total Pts: {banco.userMaster.scrT.total_pts} </Text>    
+                <Text style = {styles.text_infos}> Times: {banco.times.length} </Text>
+                <Text style = {styles.text_infos}> Atletas: {banco.atletas.length} </Text>    
+                <Text style = {styles.text_infos}> Vit: {banco.userMaster.vits} | FG: {banco.userMaster.FG} </Text>
             </View>
         </View>
         <View style = {styles.barra}/>

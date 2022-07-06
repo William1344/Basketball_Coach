@@ -35,14 +35,13 @@ export default function Main_Players(){
     const [textLocal, setLocal]     = useState("Bagé-RS"); // posso buscar o local no cel com API
     
     function backAction(){
-        Alert.alert("Sair", "Você deseja sair da sua conta?", [
-            {
+        Alert.alert("Sair", "Você deseja sair da sua conta?", [{
               text: "Cancel",
               onPress: () => null,
               style: "cancel"
             },
-            { text: "Sim", onPress: () =>  navigation.replace("Login")}
-        ]);
+            { text: "Sim", onPress: () =>  navigation.replace("Login")
+        }]);
         return true;
     }
 
@@ -59,16 +58,16 @@ export default function Main_Players(){
     // renderiza aviso ou Flat List das ligas
     function render_Liga(){
         if(modo){
-            if(banco.ligas.length == 0){
+            if(banco.times.length == 0){
                 return (
                     <Text style = {stylesMP.textAviso}>
-                        "Crie sua liga" 
+                        "Crie seu primeiro time e cadastre seus atletas!" 
                     </Text>
                 );
             } else {
                 return(
                     <FlatList style = {stylesMP.flatLiga}
-                        data = {banco.ligas}
+                        data = {banco.times}
                         renderItem = {Comp_Liga}
                         keyExtractor={(item) => {item.id}}
                     />
@@ -153,8 +152,8 @@ export default function Main_Players(){
                     onPress = {async () => {
                         //console.log(item);
                         navigation.replace("MainL",{
-                            liga        : item,
-                            index_liga  : index,
+                            time        : item,
+                            index_time  : index,
                             dest        : await montarArrayDest(),
                         });
                     }}
@@ -170,9 +169,9 @@ export default function Main_Players(){
                     /> 
                     <View style = {stylesC.viewInf}>
                         <Text style = {stylesC.textTitle}> {item.nome}</Text>
-                        <Text style = {stylesC.textInfos}> Membros: {item.list_users.length} | {data}   </Text>
-                        <Text style = {stylesC.textInfos}> Total Pontos: {item.total_pts} | Jogos: {(item.listJgs3x3.length) + (item.listJgs5x5.length)}</Text>
-                        <Text style = {stylesC.textInfos}> Jogos 3x3: {item.listJgs3x3.length} | 5x5: {item.listJgs5x5.length}</Text>
+                        <Text style = {stylesC.textInfos}> Membros: {item.list_users.length} | {data} </Text>
+                        <Text style = {stylesC.textInfos}> Total Pontos: {item.total_pts} </Text>
+                        <Text style = {stylesC.textInfos}> Jogos Of: {item.listJgs5x5O.length} </Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -186,7 +185,7 @@ export default function Main_Players(){
                 barStyle="ligth-content"/>
             <Topo main = {true}/>
             <View style = {stylesMP.viewLiga}>
-                <Text style = {stylesMP.txt_TitleM}> Ligas </Text>  
+                <Text style = {stylesMP.txt_TitleM}> Times </Text>  
                 <View style = {stylesMP.viewL}> 
                     {render_Liga()} 
                 </View>

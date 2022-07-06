@@ -16,7 +16,7 @@ const Colors = {
     Yellow          :       "#FFFF00",
 };
 
-export const Cor = {
+export let Cor = {
     pri         :   Colors.Black,
     sec         :   Colors.White,
     ter         :   Colors.CinzaDark,

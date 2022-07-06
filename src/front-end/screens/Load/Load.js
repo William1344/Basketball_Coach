@@ -36,6 +36,7 @@ export default function Load(){
             console.log("Erro ao carregar fontes")
         }
     }
+
     async function checkToken(){
         let object = await GetData();
         if (object.status){
@@ -43,6 +44,9 @@ export default function Load(){
             banco_local.ligas         = object.banco.ligas;
             banco_local.usersLocal    = object.banco.usersLocal;
             banco_local.tema          = object.banco.tema;
+            banco_local.times         = object.banco.times;
+            banco_local.atletas       = object.banco.atletas;
+            
             navigation.navigate('MainP');
         } else navigation.navigate('Cadastro');
 
@@ -52,14 +56,13 @@ export default function Load(){
         fontes();
         setTimeout(()=>{
             checkToken();
-            //_removeTokens();    
-            //navigation.replace("Login");
+            //_removeTokens();
         },1500);
         
     },[]);
         
     async function _removeTokens() {
-        const jsBanco = await AsyncStorage.removeItem("Banco");
+        const jsBanco = await AsyncStorage.removeItem("Basketball_Coach");
         console.log(jsBanco);    
     }
 

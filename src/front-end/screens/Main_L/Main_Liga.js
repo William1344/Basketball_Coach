@@ -17,7 +17,7 @@ import configBD from "../../../../config/config.json";
 import { RetornaImg, RetornaImgL } from '../../functions/index';
 
 export default function Main_Liga({route}){
-    const date          = new Date(route.params.liga.createdAt);
+    const date          = new Date(route.params.time.createdAt);
     const navigation    = useNavigation();
     const [cod_NewUser, setCod_NewUser]     =  useState("");
     const [textApel, setTA]                 =  useState("");
@@ -26,15 +26,15 @@ export default function Main_Liga({route}){
     const [tipoJG, setTipoJG]               =  useState(true);
     const [rend, setRend]                   =  useState(true);
     const [dest_render, setDest_render]     =  useState(route.params.dest[0]);
-    const [load, setLoad]                   = useState(false); // true -> carregando
+    const [load, setLoad]                   =  useState(false); // true -> carregando
 
     useEffect(()=>{
-        //console.log("Scores 5x5", route.params.liga.list_users[0].scr5x5);
-        //console.log(route.params.liga.pedidos);
-        //console.log("Image -> ", route.params.liga.img_logo);
+        //console.log("Scores 5x5", route.params.time.list_users[0].scr5x5);
+        //console.log(route.params.time.pedidos);
+        //console.log("Image -> ", route.params.time.img_logo);
         //console.log("User da liga -> ", banco.ligas[0].list_users[0]);
-        //console.log("Liga -> ", route.params.liga.list_users[1]);
-        //console.log("Liga -> ", route.params.liga.list_usersG[1]);
+        //console.log("Liga -> ", route.params.time.list_users[1]);
+        //console.log("Liga -> ", route.params.time.list_usersG[1]);
 
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
@@ -50,21 +50,21 @@ export default function Main_Liga({route}){
         Keyboard.dismiss();
         if(apelido.length > 2 && apelido.length < 20){
             let valid = false;
-            for(let apels of route.params.liga.list_users)
+            for(let apels of route.params.time.list_users)
                 if(apels.apelido == apelido) valid = true;
             if(!valid){
                 // adicionar novo jogador
                 let newUser = new User_LigaV({
-                    id          : route.params.liga.list_users.length,
+                    id          : route.params.time.list_users.length,
                     apelido     : apelido,
                 });
                 let newUserG = new User_GameV({
-                    id          : route.params.liga.list_users.length,
+                    id          : route.params.time.list_users.length,
                     apelido     : apelido,
                     numero      : 0,
                 });
-                route.params.liga.list_users.push(newUser);
-                route.params.liga.list_usersG.push(newUserG);
+                route.params.time.list_users.push(newUser);
+                route.params.time.list_usersG.push(newUserG);
                 SalveDados(banco);
             }
         }else {
@@ -75,10 +75,10 @@ export default function Main_Liga({route}){
     }
      
     async function criaTimes(){
-        route.params.liga.list_times3.splice(0, route.params.liga.list_times3.length);
-        route.params.liga.list_times5.splice(0, route.params.liga.list_times5.length);
+        route.params.time.list_times3.splice(0, route.params.time.list_times3.length);
+        route.params.time.list_times5.splice(0, route.params.time.list_times5.length);
         //monta os times 3x3
-        for(let jg of route.params.liga.listJgs3x3){
+        for(let jg of route.params.time.listJgs3x3){
             
             let tmA = [], tmB = [], jj = {};
             for(let jgd of jg.timeA){
@@ -97,12 +97,12 @@ export default function Main_Liga({route}){
                 });
                 tmB.push(uGV);
             }
-            route.params.liga.list_times3.unshift(tmA);
-            route.params.liga.list_times3.unshift(tmB);
-            //console.log("Times criados",route.params.liga.list_times3);
+            route.params.time.list_times3.unshift(tmA);
+            route.params.time.list_times3.unshift(tmB);
+            //console.log("Times criados",route.params.time.list_times3);
         }
         //monta os times 5x5
-        for(let jg of route.params.liga.listJgs5x5){
+        for(let jg of route.params.time.listJgs5x5){
             let tmA = [], tmB = [], jj = {};
             for(let jgd of jg.timeA){
                 let uGV = new User_GameV({
@@ -120,8 +120,8 @@ export default function Main_Liga({route}){
                 });
                 tmB.push(uGV);
             }
-            route.params.liga.list_times5.push(tmA);
-            route.params.liga.list_times5.push(tmB);
+            route.params.time.list_times5.push(tmA);
+            route.params.time.list_times5.push(tmB);
         }
         return true;
     }
@@ -223,7 +223,7 @@ export default function Main_Liga({route}){
                 onPress = {()=>{
                     navigation.replace("ViewP",{
                         player  :   item,
-                        liga    :   route.params.liga,
+                        liga    :   route.params.time,
                         dest    :   route.params.dest,
                         veio_de :   "MainL",
                     });
@@ -285,24 +285,30 @@ export default function Main_Liga({route}){
             <View style = {styleM.viewS}>         
                 <TouchableOpacity style = {styleM.img_logo}
                     onPress = { () => {
-                        navigation.replace("Subst_ImgLg",{
-                            liga        : route.params.liga,
+                        /* Requisito: Para logos da liga, o treinador terá opção de escolher 
+                            uma foto do diretório ou logos padrão disponibilizados 
+                            pelo aplicativo.
+
+                        */
+                        /*navigation.replace("Subst_ImgLg",{
+                            liga        : route.params.time,
                             dest        : route.params.dest,
                             index_liga  : route.params.index_liga
-                        });
+                        });*/
+
                     }}
                 >
                     <Image style = {{height:'100%', width:'100%',borderRadius: 90}}
-                        source = {RetornaImgL(route.params.liga.img_logo)}
+                        source = {RetornaImgL(route.params.time.img_logo)}
                         resizeMode = "cover"
                     />
                 </TouchableOpacity>
                 <View style={styleM.view1_infos}>  
                     <Text style = {styleM.text}>Criada: {"" + date.getDate() + "/" + (date.getMonth()+ 1) + "/" + date.getFullYear().toString()[2]+date.getFullYear().toString()[3]}</Text>
-                    <Text style = {styleM.text}>Liga: {route.params.liga.nome}</Text>
-                    <Text style = {styleM.text}>Jogadores: {route.params.liga.list_users.length}</Text>
-                    <Text style = {styleM.text}>Jogos: {(route.params.liga.listJgs5x5.length) + (route.params.liga.listJgs3x3.length)}</Text>
-                    <Text style = {styleM.text}>Pontos: {route.params.liga.total_pts}</Text>
+                    <Text style = {styleM.text}>Liga: {route.params.time.nome}</Text>
+                    <Text style = {styleM.text}>Jogadores: {route.params.time.list_users.length}</Text>
+                    <Text style = {styleM.text}>Jogos: {(route.params.time.listJgs5x5O.length) + (route.params.time.listJgs3x3.length)}</Text>
+                    <Text style = {styleM.text}>Pontos: {route.params.time.total_pts}</Text>
                 </View>
             </View>
             <View style = {styleM.view_infer} >
@@ -310,7 +316,7 @@ export default function Main_Liga({route}){
                     <TouchableOpacity 
                         style = {styleM.btt_opacit}
                         onPress = {() => navigation.replace("Ranking",{
-                            liga        : route.params.liga,
+                            liga        : route.params.time,
                             dest        : route.params.dest,
                             index_liga  : route.params.index_liga,
                         })} //navigation.navigate("")
@@ -328,7 +334,7 @@ export default function Main_Liga({route}){
                             console.log("Entrou aqui! btt");
                             await criaTimes();
                             navigation.replace("NovoJg",{
-                                liga        : route.params.liga,
+                                liga        : route.params.time,
                                 dest        : route.params.dest,
                                 index_liga  : route.params.index_liga,
                             });
@@ -346,7 +352,7 @@ export default function Main_Liga({route}){
                         style = {styleM.btt_opacit}
                         onPress = {() => {
                             navigation.replace("List_Jgs",{
-                                liga        : route.params.liga,
+                                liga        : route.params.time,
                                 dest        : route.params.dest,
                                 index_liga  : route.params.index_liga,
                             });
@@ -381,7 +387,7 @@ export default function Main_Liga({route}){
                         style = {styleM.btt_opacit}
                         onPress = { () => {    
                             navigation.replace("ConfigLiga",{
-                                liga        : route.params.liga,
+                                liga        : route.params.time,
                                 dest        : route.params.dest,
                                 index_liga  : route.params.index_liga,
                             });
@@ -407,7 +413,7 @@ export default function Main_Liga({route}){
                         <TouchableOpacity style = {styleM.btt_pedidos}
                             onPress = {()=>{
                                 navigation.replace("Membros",{
-                                    liga        : route.params.liga,
+                                    liga        : route.params.time,
                                     dest        : route.params.dest,
                                     index_liga  : route.params.index_liga,
                                 });
@@ -419,7 +425,7 @@ export default function Main_Liga({route}){
                         </TouchableOpacity>
                       
                         <FlatList style = {styleM.flat_List}
-                            data = {route.params.liga.list_users}
+                            data = {route.params.time.list_users}
                             renderItem = {Comp_jgdr}
                             keyExtractor = {(item) => {item.idUsers}}
                         />

@@ -29,7 +29,7 @@ const stylesT = StyleSheet.create({
         },
             text_infos:{
                 textAlign: 'justify',
-                fontSize: 16,
+                fontSize: 20,
                 fontFamily: fonts.infos,
                 color: Cor.font,
             },
