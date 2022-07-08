@@ -11,30 +11,46 @@ import banco            from '../../../back-and2/banco_local';
 import confgBD          from '../../../../config/config.json';
 import assets           from '../../../../assets/index_assets';
 import SalveDate        from '../../../back-and2/SalveData';
-import { RetornaImg }   from '../../functions/index';
+import { RetornaImg,  MontarArrayDest}   from '../../functions/index';
 
 export default function Membros({route}){
     const navigation = useNavigation();
     const [rend, setRender]     = useState(false);
     const [modal, setModal]     = useState(false);
-    const [itemOP, setItemOP]   = useState(route.params.liga.list_users[0]);
-    const [ped, setPedido]      = useState(route.params.liga.pedidoIsOn);
+    const [itemOP, setItemOP]   = useState(route.params.time.list_users[0]);
+    
     useEffect(() => {
+        console.log("Depois fica assim!");
+        for(let x = 0 ; x < route.params.time.list_users.length ; x++)
+            console.log(x ," - index vetor", route.params.time.list_users[x].id);
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
     },[]);
 
-    function backAction(){
-        navigation.replace("MainL",{
-            liga        :   route.params.liga,
-            dest        :   route.params.dest,
-            index_liga  :   route.params.index_liga,
+    async function backAction(){
+        navigation.replace("MainL", {
+            dest        :   await MontarArrayDest(route.params.time.list_users),
+            index_time  :   route.params.index_time,
+            time        :   route.params.time,
         });
         return true;
     }
 
-    async function removerMembro(){
-        // remover membro da liga e apagar relação LHU
+    async function removerMembro(item){
+        route.params.time.list_users.splice(item.id, 1);
+        route.params.time.list_usersG.splice(item.id, 1); 
+        //*
+            console.log("Depois fica assim!");
+            for(let x = 0 ; x < route.params.time.list_users.length ; x++)
+                console.log(x ," - index vetor", route.params.time.list_users[x].id);
+        //*/
+        let refLS  = route.params.time.list_users;
+        let refLSG = route.params.time.list_usersG;
+        for(let x = 0  ; x < refLS.length ; x++)  refLS[x].id  = x;
+        for(let x = 0  ; x < refLSG.length ; x++) refLSG[x].id = x;
+
+        await SalveDate(banco);
+        setModal(false);
     }
 
     function render_Modal(){
@@ -49,37 +65,29 @@ export default function Membros({route}){
             >
                 <View style = {stylesMem.viewFullModal}>
                     <View style = {stylesMem.viewModal_confMembros}>
-                        <Text style = {stylesMem.title_modal}> - Opções da Liga - </Text>
+                        <Text style = {stylesMem.title_modal}> - Opções do time - </Text>
                         <Text style = {stylesMem.text_btt}> - {itemOP.apelido} - </Text>
                         <View style = {stylesMem.view_inputs}>
                             <TouchableOpacity style = {stylesMem.btt_Modal}
                                 onPress = {() => {
                                     navigation.replace("ViewP",{
-                                        liga        :   route.params.liga,
+                                        time        :   route.params.time,
                                         dest        :   route.params.dest,
-                                        index_liga  :   route.params.index_liga,
+                                        index_time  :   route.params.index_time,
                                         player      :   itemOP,
                                         veio_de     :   "Membros",
-                                        isAdmin     :   route.params.isAdmin,
                                     });
                                 }}
                             >
                                 <Text style = {stylesMem.text_btt}> Perfil </Text>
                             </TouchableOpacity>
-                            { !itemOP.isUser_Liga &&  
-                                <TouchableOpacity style = {stylesMem.btt_Modal} 
-                                onPress = {() => {
-                                    if(route.params.isAdmin) mudar_Adm();
-                                    else  Alert.alert("Admistrador", "Você não tem permissões para realizar está ação!");
-                                }}
-                                >
-                                    <Text style = {stylesMem.text_btt}> {itemOP.isAdmin ? "Remover Adm" : "Tornar Adm"} </Text>
-                                </TouchableOpacity>
-                            }
+                             
+                               
+                            
                             
                             <TouchableOpacity style = {stylesMem.btt_Modal}
                                 onPress = {() => {
-                                    removerMembro();
+                                    removerMembro(itemOP);
                                 }}
                             >
                                 <Text style = {stylesMem.text_btt}> Apagar </Text>
@@ -97,7 +105,7 @@ export default function Membros({route}){
             <TouchableOpacity style = {stylesMem.viewFL}
                 onPress = {() => {
                     navigation.replace("ViewP", {
-                        liga    : route.params.liga,
+                        time    : route.params.time,
                         dest    : route.params.dest,
                         veio_de : "Membros",
                         player  : item,
@@ -128,12 +136,12 @@ export default function Membros({route}){
                 barStyle="ligth-content"
             />
             <Topo/>
-            { ped && route.params.isAdmin && render_Pedidos()}
+            
             <View style = {stylesMem.viewMembros}>
                 <Text style = {stylesMem.titleM}> Membros </Text>
                 <SafeAreaView style = {stylesMem.viewInferioir}>
                     <FlatList style = {stylesMem.flatList}
-                        data = {route.params.liga.list_users}
+                        data = {route.params.time.list_users}
                         renderItem={Comp_Players}
                         keyExtractor={(item) => item.Users_idUsers}
                     />

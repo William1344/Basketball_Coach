@@ -46,32 +46,13 @@ export default function Main_Liga({route}){
         return true;
     }
 
-    async function add_jogadorB(apelido){
-        Keyboard.dismiss();
-        if(apelido.length > 2 && apelido.length < 20){
-            let valid = false;
-            for(let apels of route.params.time.list_users)
-                if(apels.apelido == apelido) valid = true;
-            if(!valid){
-                // adicionar novo jogador
-                let newUser = new User_LigaV({
-                    id          : route.params.time.list_users.length,
-                    apelido     : apelido,
-                });
-                let newUserG = new User_GameV({
-                    id          : route.params.time.list_users.length,
-                    apelido     : apelido,
-                    numero      : 0,
-                });
-                route.params.time.list_users.push(newUser);
-                route.params.time.list_usersG.push(newUserG);
-                SalveDados(banco);
-            }
-        }else {
-            //Alert.alert("Seu apelido deve conter entre 3 e 15 caracteres");
-            console.log("Seu apelido deve conter entre 3 e 15 caracteres");
-        }
-        setLoad(false);
+    async function add_jogadorB(){
+        navigation.replace("Form_User", {
+            index_time      : route.params.index,
+            veio_de         : "ML",
+            time            : route.params.time,
+            dest            : route.params.dest,
+        })
     }
      
     async function criaTimes(){
@@ -151,69 +132,6 @@ export default function Main_Liga({route}){
         return array;
     }
 
-    function nextDest(){
-        const pos = route.params.dest.indexOf(dest_render);
-        if(pos == route.params.dest.length - 1) setDest_render(route.params.dest[0]);
-        else setDest_render(route.params.dest[pos + 1]);
-    }  
-    
-    // modal
-    function render_Modal(){
-        // adicionar jogador anonimo!
-        return(           
-            <Modal 
-                animationType="slide"
-                transparent={true}
-                visible={modalAdd}
-                onRequestClose={() => {
-                    setModalAdd(!modalAdd);
-                }}
-            >
-                <View style = {stylesModal.viewFullModal}>
-                    <View style = {stylesModal.viewModal_newLiga}>
-                        <Text style = {stylesModal.title_modal}> Adicionar Jogador </Text>
-                        <View style = {stylesModal.view_inputs}>
-                        <KeyboardAvoidingView 
-                            style = {stylesModal.keyBoard}
-                            behavior = {Platform.select({
-                                ios : 'padding',
-                                android : null,
-                            })}
-                        >    
-                            <TextInput style = {stylesModal.txt_input}
-                                value           = {textApel}
-                                onChangeText    = {(tt)=>{setTA(tt)}}
-                                placeholder     = "Apelido na liga"
-                            />
-                            <TouchableOpacity style = {stylesModal.btt_Meio}
-                                onPress = {() => {  
-                                    setLoad(true);
-                                    add_jogadorB(textApel)
-                                    setModalAdd(false);
-                                }}  
-                            >
-                                <Text style = {stylesModal.text_btt}> Cadastrar </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style = {stylesModal.btt_Meio}
-                                onPress = {() => {
-                                    setTA("");
-                                    setModalAdd(false);
-                                    setCod_NewUser("");
-                                }}
-                            >
-                                <Text style = {stylesModal.text_btt}> Cancelar </Text>
-                            </TouchableOpacity>
-                            </KeyboardAvoidingView>
-                            <View style = {stylesModal.viewInfor}>
-                                <Text style = {stylesModal.text_btt}> Você pode remove-los na área de membros.</Text>
-                            </View>    
-                        </View>
-                    </View>
-                </View>
-            </Modal>  
-        );
-    }
-
     // componentes
     function Comp_jgdr({item}){
         
@@ -244,6 +162,11 @@ export default function Main_Liga({route}){
     }
 
     function comp_destaques(item){
+        function nextDest(){
+            const pos = route.params.dest.indexOf(dest_render);
+            if(pos == route.params.dest.length - 1) setDest_render(route.params.dest[0]);
+            else setDest_render(route.params.dest[pos + 1]);
+        } 
         return(
             <TouchableOpacity style = {styleM.comp_destaques}
              // passagens -> e <- devem mover os tipos de destaques na liga
@@ -270,9 +193,19 @@ export default function Main_Liga({route}){
         );
     }
 
+    function comp_sem_destaques(){
+        return(
+            <View style = {styleM.comp_destaques}>
+              <View style = {styleM.view1CompDest}>
+                <Text style = {styleM.textsInfos}>Não há jogadores cadastrados no time!</Text>
+              </View>
+            </View>
+        );
+    }
+
     return (
         <View style = {styleM.telaFull}>
-            {render_Modal()}
+            
             <StatusBar hidden = {false}
                 barStyle="ligth-content"/>
             {load && 
@@ -371,8 +304,7 @@ export default function Main_Liga({route}){
                     <TouchableOpacity 
                         style = {styleM.btt_opacit}
                         onPress = {() => {
-                            setModalAdd(!modalAdd)
-                            setTA("");        
+                            add_jogadorB();      
                         }} //navigation.navigate("")
                     >
                         <Icon 
@@ -407,19 +339,23 @@ export default function Main_Liga({route}){
                         <Text style = {{...styles.texts, fontSize: 22}}> 
                             Destaques 
                         </Text>
-                            {comp_destaques(dest_render)}
+                        {route.params.time.list_users.length > 0 ?
+                            comp_destaques(dest_render)
+                                :
+                            comp_sem_destaques()
+                        }
                     </View>
                     <View style = {styleM.view_jgdrs}>
                         <TouchableOpacity style = {styleM.btt_pedidos}
                             onPress = {()=>{
                                 navigation.replace("Membros",{
-                                    liga        : route.params.time,
+                                    time        : route.params.time,
                                     dest        : route.params.dest,
-                                    index_liga  : route.params.index_liga,
+                                    index_time  : route.params.index_time,
                                 });
                             }}
                         >
-                            <Text style = {{...styles.texts, fontSize: 24}}> 
+                            <Text style = {{...styles.texts, fontSize: 24,...styles.btts, width: '80%'}}> 
                                 Membros  
                             </Text>
                         </TouchableOpacity>

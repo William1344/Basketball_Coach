@@ -1,0 +1,26 @@
+import SetaDest from './SetaDests';
+export default async function MontarArrayDest(users){
+  let item = await SetaDest(users);
+  let array = [];
+    array.push(item.jgd_Cluth);
+    array.push(item.jgd_Fominha);
+    array.push(item.jgd_Vencedor);
+    array.push(item.jgd_Pontuador);
+    array.push(item.jgd_2Pts);
+    array.push(item.jgd_3Pts);
+    array.push(item.jgd_Reboteiro);
+    array.push(item.jgd_Assist);
+    array.push(item.jgd_Ladrao);
+    array.push(item.jgd_Bloker);
+    array.push(item.jgd_AirBall);
+    array.push(item.jgd_FG);
+    array.push(item.jgd_PPG);
+    array.push(item.jgd_2PPG);
+    array.push(item.jgd_3PPG);
+    array.push(item.jgd_APG);
+    array.push(item.jgd_RPG);    
+    array.push(item.jgd_BPG);
+    array.push(item.jgd_AirBPG);
+    array.push(item.jgd_RouPG);
+  return array;
+}; 

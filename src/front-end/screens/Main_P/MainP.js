@@ -16,7 +16,7 @@ import assets from "../../../../assets/index_assets";
 import stylesCP from '../LigaCreate/stylesCompLPesq';
 import {stylesMP, stylesC} from './styles/indexStyles';
 import { Cor, icons,  idiomaPort, idiomaEUA, SetaTema } from '../../styles/index_S';
-import {RetornaImg, RetornaImgL, SetaDests } from '../../functions/index';
+import {RetornaImg, RetornaImgL, SetaDests, MontarArrayDest } from '../../functions/index';
 
 
 export default function Main_Players(){
@@ -121,30 +121,7 @@ export default function Main_Players(){
         const data = "Criada: "+ dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear().toString()[2] + dt.getFullYear().toString()[3];
 
         // monta o array destaques
-        async function montarArrayDest(){
-            let array = [];
-            array.push(item.destaques.jgd_Cluth);
-            array.push(item.destaques.jgd_Fominha);
-            array.push(item.destaques.jgd_Vencedor);
-            array.push(item.destaques.jgd_Pontuador);
-            array.push(item.destaques.jgd_2Pts);
-            array.push(item.destaques.jgd_3Pts);
-            array.push(item.destaques.jgd_Reboteiro);
-            array.push(item.destaques.jgd_Assist);
-            array.push(item.destaques.jgd_Ladrao);
-            array.push(item.destaques.jgd_Bloker);
-            array.push(item.destaques.jgd_AirBall);
-            array.push(item.destaques.jgd_FG);
-            array.push(item.destaques.jgd_PPG);
-            array.push(item.destaques.jgd_2PPG);
-            array.push(item.destaques.jgd_3PPG);
-            array.push(item.destaques.jgd_APG);
-            array.push(item.destaques.jgd_RPG);    
-            array.push(item.destaques.jgd_BPG);
-            array.push(item.destaques.jgd_AirBPG);
-            array.push(item.destaques.jgd_RouPG);
-            return array;
-        }
+        
            
         return(
             <View style={stylesC.view_compFull}>
@@ -154,7 +131,7 @@ export default function Main_Players(){
                         navigation.replace("MainL",{
                             time        : item,
                             index_time  : index,
-                            dest        : await montarArrayDest(),
+                            dest        : await MontarArrayDest(item.list_users),
                         });
                     }}
                     onLongPress = {() => {

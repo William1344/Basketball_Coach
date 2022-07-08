@@ -1,5 +1,5 @@
 import { DestV } from '../../back-and2/banco_dados/index';
-async function SetaDests(users){
+export default async function SetaDests(users){
   let dest = new DestV();
   let verr = true;
   for(let user of users){
@@ -132,4 +132,4 @@ async function SetaDests(users){
   }
   console.log("Enviou dests")
   return dest;
-}; export default SetaDests;
+}; //Fim da função

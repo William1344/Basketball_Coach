@@ -77,7 +77,8 @@ const Styles_ML = StyleSheet.create({
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: '20%',
-                    width: '75%'
+                    width: '75%',
+                    //...styles.btts
                 },
             view_Comps:{
                 justifyContent: 'flex-start',

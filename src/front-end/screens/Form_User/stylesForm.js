@@ -8,9 +8,10 @@ const stylesForm = StyleSheet.create({
     alignItems      :   'center',
   },
     btt_img:{
-      marginVertical: 20,
-      height: 170,
-      width: 170,
+      marginTop: 10,
+      marginBottom: 10,
+      height: 160,
+      width: 160,
     },
     img:{
       height: '100%',
@@ -18,17 +19,22 @@ const stylesForm = StyleSheet.create({
       ...styles.border1,
       borderRadius: 90,
     },
+    scrollV:{
+      width: '100%',
+    },
     viewForm:{
-      justifyContent: 'center',
       alignItems: 'center',
-      height: '65%',
+      height: '82%',
       width: '99%',
     },
     viewPicker:{
       height: '100%',
       width: '40%',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
       picker:{
+        height: '80%',
         width: '100%',
         color: Cor.pri,
         backgroundColor: Cor.sec,
@@ -57,8 +63,17 @@ const stylesForm = StyleSheet.create({
       texts:{
         width: '45%',
         ...styles.texts,
-        fontSize: 22,
+        fontSize: 24,
         textAlign: 'justify',
+      },
+      viewImput:{
+        height: '100%',
+        width: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 10,
+        borderRadius: 10,
+        backgroundColor: Cor.sec,
       },
       txt_input:{
           ...styles.inputText,
@@ -72,7 +87,7 @@ const stylesForm = StyleSheet.create({
         alignItems: 'center',
         height: '100%',
         width: '45%',
-        marginTop: 10,
+        marginVertical: 10,
       },
       btts_text:{ 
         ...styles.text_btts,
