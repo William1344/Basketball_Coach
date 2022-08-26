@@ -1,5 +1,11 @@
 import { StyleSheet } from "react-native";
 import { Cor, styles, fonts } from "../../styles/index_S";
+/* Estrutura da tela:
+  telaFull  : 100%
+    img     : 160x160 fixo?
+
+*/
+
 
 const stylesForm = StyleSheet.create({
   telaFull: {
@@ -12,13 +18,13 @@ const stylesForm = StyleSheet.create({
       marginBottom: 10,
       height: 160,
       width: 160,
-    },
-    img:{
-      height: '100%',
-      width: '100%',
-      ...styles.border1,
-      borderRadius: 90,
-    },
+     },
+      img:{
+        height: '100%',
+        width: '100%',
+        ...styles.border1,
+        borderRadius: 90,
+      },
     scrollV:{
       width: '100%',
     },

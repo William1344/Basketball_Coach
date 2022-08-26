@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import { Cor, styles, fonts } from "../../styles/index_S";
 
 const stylesNJ = StyleSheet.create({
@@ -46,121 +45,136 @@ const stylesNJ = StyleSheet.create({
             right       : 15,            
         },
     viewMT:{
-        
-        height: '40%',
+        height: '39%',
         width: '100%',
     }, 
-    viewModo: {
-        flexDirection: "row",
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: '20%',
-        width: '100%',
-        borderWidth: 0,
-        borderBottomWidth:0,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        borderColor: Cor.bord,
-    },
-        bttEnd:{
+        viewModo: {
+            flexDirection: "row",
             justifyContent: 'center',
             alignItems: 'center',
-            height: '70%',
-            width: '35%',
-            alignSelf: 'center',
-            ...styles.btts,
-            borderRadius: 30,
-        },
-        bttModo: {
-            justifyContent: 'center',
-            marginHorizontal: 15,
-            height: '70%',
-            width: '17.5%',
-            ...styles.btts_redondo,
-            backgroundColor: Cor.btt
-        },
-        bttText:{
-            ...styles.text_btts,
-            textAlign: "center",
-            fontSize: 20,
-        },
-        textModo: {
-            height: '100%',
-            width: '40%',
-            marginHorizontal: 13,
-            justifyContent: 'center',
-            textAlignVertical: 'center',    
-            ...styles.texts,
-            fontSize: 24,
-        },
-     
-    viewTimes:{
-        flexDirection: "row",
-        height: '80%',
-        width: '100%',
-        
-    },
-        viewTA:{
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            height: '100%',
-            width: '49%',
-            borderBottomRightRadius: 30,
-            borderTopRightRadius: 30,
-            ...styles.border1,
-            marginRight: 3
-        },
-        viewTB:{
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            height: '100%',
-            width: '49%',
-            ...styles.border1,
-            marginLeft: 3,
-            borderBottomLeftRadius: 30,
-            borderTopLeftRadius: 30,
-        },
-        textSub: {
-            justifyContent: 'center',
-            height: '12%',
+            height: '20%',
             width: '100%',
-            ...styles.texts,
-            fontSize: 18,
-            marginTop: 5 
-        },
-        textVT: {
-            height: '12%',
-            width: '100%',
-            marginTop: 5,
-            marginHorizontal: 13,
-            justifyContent: 'center',
-            textAlignVertical: 'center',
-            ...styles.texts,
-            fontSize: 18,
-        },
-        flatLT:{
-            width: '100%',
-            height: '88%',
-            borderTopWidth: 1,
+            borderWidth: 0,
+            borderBottomWidth:0,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
             borderColor: Cor.bord,
         },
-            viewBttFL:{
-                flex: 1,
+            viewPicker:{
                 justifyContent: 'center',
                 alignItems: 'center',
-                            
+                height: '60%',
+                width: '100%',
             },
-            textName:{
-                flex: 1,
+                picker:{
+                    height: '80%',
+                    width: '80%',
+                    color: Cor.sec,
+                    backgroundColor: Cor.pri,
+                },
+            
+            bttModo: {
+                justifyContent: 'center',
+                marginHorizontal: 15,
+                height: '70%',
+                width: '17.5%',
+                ...styles.btts_redondo,
+                backgroundColor: Cor.btt
+            },
+            bttText:{
+                ...styles.text_btts,
+                textAlign: "center",
+                fontSize: 20,
+            },
+            textModo: {
+                height: '100%',
+                width: '40%',
+                marginHorizontal: 13,
+                justifyContent: 'center',
+                textAlignVertical: 'center',    
+                ...styles.texts,
+                fontSize: 24,
+            },
+        
+        viewTimes:{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: "row",
+            height: '80%',
+            width: '100%',
+            
+        },
+            viewTA:{
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                height: '100%',
+                width: '49%',
+                borderBottomRightRadius: 30,
+                borderTopRightRadius: 30,
+                ...styles.border1,
+                marginRight: 3
+            },
+            viewTAOf:{
+                alignSelf: 'center',
+                alignItems: 'center',
+                height: '100%',
+                width: '98%',
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+                ...styles.border1,
+                marginRight: 3
+            },
+            viewTB:{
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                height: '100%',
+                width: '49%',
+                ...styles.border1,
+                marginLeft: 3,
+                borderBottomLeftRadius: 30,
+                borderTopLeftRadius: 30,
+            },
+            textSub: {
+                justifyContent: 'center',
+                height: '12%',
                 width: '100%',
                 ...styles.texts,
-                fontSize: 20 
+                fontSize: 18,
+                marginTop: 5 
             },
+            textVT: {
+                height: '12%',
+                width: '100%',
+                marginTop: 5,
+                marginHorizontal: 13,
+                justifyContent: 'center',
+                textAlignVertical: 'center',
+                ...styles.texts,
+                fontSize: 18,
+            },
+            flatLT:{
+                width: '100%',
+                height: '88%',
+                borderTopWidth: 1,
+                borderColor: Cor.bord,
+            },
+                viewBttFL:{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                                
+                },
+                textName:{
+                    flex: 1,
+                    width: '100%',
+                    ...styles.texts,
+                    fontSize: 20 
+                },
     viewJgdrs: {
         justifyContent: 'flex-start',
         alignItems: 'center',
-        height: '48%',
-        width: '100%',
+        height: '42%',
+        width: '99%',
         ...styles.border1,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
@@ -183,6 +197,16 @@ const stylesNJ = StyleSheet.create({
             fontSize: 20,
             ...styles.border1,
         },
+
+    bttEnd:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '6%',
+        width: '30%',
+        alignSelf: 'center',
+        ...styles.btts,
+        borderRadius: 30,
+    },
     
     // componente jogador
     viewCompTime:{

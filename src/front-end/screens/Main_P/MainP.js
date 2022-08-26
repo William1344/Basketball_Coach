@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {
-    KeyboardAvoidingView, TextInput, Text, Image, View, StatusBar, Modal, 
+    Text, Image, View, StatusBar, Modal, 
     TouchableOpacity, Alert, FlatList, BackHandler
 } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import SalveDados from '../../../back-and2/SalveData';
+
 import banco from '../../../back-and2/banco_local';
-import confgBD from '../../../../config/config.json';
 import { Topo} from '../../components/index_comps';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconE from 'react-native-vector-icons/Entypo';
-import assets from "../../../../assets/index_assets";
-import stylesCP from '../LigaCreate/stylesCompLPesq';
 import {stylesMP, stylesC} from './styles/indexStyles';
 import { Cor, icons,  idiomaPort, idiomaEUA, SetaTema } from '../../styles/index_S';
 import {RetornaImg, RetornaImgL, SetaDests, MontarArrayDest } from '../../functions/index';
@@ -22,17 +18,7 @@ import {RetornaImg, RetornaImgL, SetaDests, MontarArrayDest } from '../../functi
 export default function Main_Players(){
     
     const navigation = useNavigation();
-    const [rend, setRender]         = useState(false);
-    const [modalV1,  setMV1]        = useState(false);
-    const [modalV2,  setMV2]        = useState(false);
-    const [itemLiga, setItemLiga]   = useState([]);
-    const [new_liga, setNewLiga]    = useState(false);
-    const [index_liga, setindexL]   = useState(0);
-    const [title, setTitle]         = useState("Ligas");
     const [modo, setModo]           = useState(true); // true mostra ligas, só troca para pedidos se peds > 0
-    const [textName, setTN]         = useState("Sesc");
-    const [textApel, setTA]         = useState("");
-    const [textLocal, setLocal]     = useState("Bagé-RS"); // posso buscar o local no cel com API
     
     function backAction(){
         Alert.alert("Sair", "Você deseja sair da sua conta?", [{
@@ -86,43 +72,13 @@ export default function Main_Players(){
         
     }
 
-    function render_Modal_CL(){
-        /* Modal para configurar liga */
-        return(
-            <Modal
-                animationType   ="slide"
-                transparent     ={true}
-                visible         ={modalV2}
-                onRequestClose  = {() => {
-                    setMV2(false); 
-                }}
-            >
-                <View style = {stylesMP.viewFullModal}>
-                <View style = {stylesMP.viewModal_confLiga}>
-                    <Text style = {stylesMP.title_modal}> - Opções da Liga - </Text>
-                    <View style = {stylesMP.view_imputs}>
-                                                
-                        <TouchableOpacity style = {stylesMP.btt_Modal}
-                            onPress = {() => {
-                                sair_da_liga();
-                            }}
-                        >
-                            <Text style = {stylesMP.text_btt}> Sair da Liga </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                </View>
-            </Modal>
-        );
-    }
+    
 
     function Comp_Liga({item, index}){
         const dt = new Date(item.createdAt);
         const data = "Criada: "+ dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear().toString()[2] + dt.getFullYear().toString()[3];
 
         // monta o array destaques
-        
-           
         return(
             <View style={stylesC.view_compFull}>
                 <TouchableOpacity style={stylesC.btt_comp_liga}

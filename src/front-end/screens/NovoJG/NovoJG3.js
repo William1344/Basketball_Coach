@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, TouchableOpacity, FlatList, Alert, TextInput, Image, StatusBar, 
-    KeyboardAvoidingView, BackHandler
+import { Text, View, TouchableOpacity, FlatList, Alert, TextInput, Image, StatusBar, BackHandler
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import stylesNJ from './styleNJ3';
 import { useNavigation } from '@react-navigation/native';
 import { Cor, icons } from '../../styles/index_S';
 import banco from '../../../back-and2/banco_local';
-import assets from "../../../../assets/index_assets";
-import { RetornaImg } from '../../functions/index';
+import { Picker }         from '@react-native-picker/picker';
+import { RetornaImgL } from '../../functions/index';
 
     var timeA       = new Array();
     var timeB       = new Array();
@@ -20,47 +19,53 @@ export default function Novo_Jg({route}){
     
     function backAction(){
         navigation.replace("MainL",{
-            liga    : route.params.liga,
-            dest    : route.params.dest
+            time        : route.params.time,
+            dest        : route.params.dest,
+            index_time  : route.params.index_time,
         });
         return true;
     }
 
     const navigation                = useNavigation();
     const [state    , setState]     = useState(false);
+    const [modo     , setPicker]    = useState("");
     const [modo3x3  , setModo3x3]   = useState(false);
     const [modo5x5  , setModo5x5]   = useState(false);
     const [timesOK  , setTimesOK]   = useState(false);
     const [textIA   , setTextIA]    = useState("Time A");
     const [textIB   , setTextIB]    = useState("Time B");
     const [t_times  , setTimes]     = useState("Jogadores");
-    const [cor3     , setCor3]      = useState(Cor.btt_sel);
-    const [cor5     , setCor5]      = useState(Cor.btt);
     const [subs     , setSubs]      = useState(false);
-    const [jgdr_time, setJT]        = useState(false);
+    const [jgdr_time, setJT]        = useState(true);
     
     useEffect(() => { 
-        jogadores   = route.params.liga.list_usersG.slice();
-        timesL3     = route.params.liga.list_times3.slice();
-        timesL5     = route.params.liga.list_times5.slice();
-        setModo(true);
+        jogadores   = route.params.time.list_usersG.slice();
+        timesL3     = route.params.time.list_times3.slice();
+        timesL5     = route.params.time.list_times5.slice();
+        setJT(true);
         //_zeraTimes();//
         setTimeout(()=>{
             setState(!state);
-        }, 150);
+        }, 100);
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
     }, []);
-
+    useEffect(() => {
+        if(jgdr_time ) setTimes("Jogadores")
+        else{
+            if(timesOK) setTimes("Substitutos");
+            else setTimes("Times");
+        }
+    },[jgdr_time]);
 // funções de controle::
     // zera os times
     function _zeraTimes(){
         timeA       = new Array();
         timeB       = new Array();
         list_subs   = new Array();
-        timesL3     = route.params.liga.list_times3.slice();
-        timesL5     = route.params.liga.list_times5.slice();
-        jogadores   = route.params.liga.list_usersG.slice();
+        timesL3     = route.params.time.list_times3.slice();
+        timesL5     = route.params.time.list_times5.slice();
+        jogadores   = route.params.time.list_usersG.slice();
         
         setTimesOK(false);
         setSubs(false);
@@ -75,51 +80,20 @@ export default function Novo_Jg({route}){
             list_subs.splice(0, list_subs.length);
         }
     }
-    // seta o modo de jogo
-    function setModo(modo){
-        _zeraTimes();
-        if(modo){
-            if(modo3x3) {
-                setCor3(Cor.btt);
-                setModo3x3(false);
-                console.log("3x3 -> false");
-            } else {
-                setCor3(Cor.btt_sel);
-                setCor5(Cor.btt);
-                setModo3x3(true);
-                setModo5x5(false);
-                console.log("3x3 -> true ");
-            }
-        }
-        else{
-            if(modo5x5){
-                setCor5(Cor.btt);
-                setModo5x5(false);
-            } else{
-                //preenche_5x5();
-                setTimesOK(false);
-                setCor5(Cor.btt_sel);
-                setCor3(Cor.btt);
-                setModo5x5(true);
-                setModo3x3(false);
-                console.log("true 5x5");
-            }
-        }   
-        setaComp();
-    } 
+    
     
     function verifyEstado(){
         if(timesOK){
             if(modo3x3)
                 if(timeA.length != 3 || timeB.length != 3){
                     setTimesOK(false);
-                    preencheJgdrs();
+                    //preencheJgdrs();
                     setaComp();
                 }
             else
                 if(timeA.length != 5 || timeB.length != 5){
                     setTimesOK(false);
-                    preencheJgdrs();
+                    //preencheJgdrs();
                     setaComp();
                 }   
         }
@@ -134,10 +108,13 @@ export default function Novo_Jg({route}){
             }
         }
     }
+
+    
     // adiciona e remove jogadores ao time, sempre cuidando modo de jogo
     // caso mude os times são zerados.
     function addTime(item){
-        if(modo3x3){
+        // verifica entrada picker
+        if(modo == "3x3"){
             if(timeA.length < 3){
                 //console.log("Jogador 0 W", jogadores[0])
                 timeA.push(item);
@@ -155,9 +132,8 @@ export default function Novo_Jg({route}){
             }
             if((timeA.length == 3) && (timeB.length == 3) && !timesOK) {
                 setListSubs();
-                setJT(false)
+                
                 setTimesOK(true); 
-                setTimes("Substitutos");
                 console.log("TimesOK -> true")
             } 
             else if((timeA.length < 3 || timeB.length < 3) && timesOK) setTimesOK(false);
@@ -167,8 +143,7 @@ export default function Novo_Jg({route}){
                 jogadores.splice(pos, 1);
                 setState(!state);
             }
-
-        } else if(modo5x5){
+        } else if(modo == "5x5"){
             if(timeA.length < 5){
                 timeA.push(item);
                 let pos = ret_Jgdr(item);
@@ -182,14 +157,28 @@ export default function Novo_Jg({route}){
             }
             if((timeA.length == 5) && (timeB.length == 5) && !timesOK){
                 setListSubs();
-                setJT(false)
+                setJT(true);
                 setTimesOK(true);
-                setTimes("Substitutos");
                 console.log("TimesOK -> true")
             } 
-            else if((timeA.length < 5 || timeB.length < 5) && timesOK) setTimesOK(false);        
+            else if((timeA.length < 5 || timeB.length < 5) && timesOK) setTimesOK(false);
+        } else if(modo == "5x5Of"){
+            if(timeA.length < 5){
+                timeA.push(item);
+                let pos = ret_Jgdr(item);
+                jogadores.splice(pos, 1);
+                setState(!state);
+            } else {
+                list_subs.push(item);
+                let pos = ret_Jgdr(item);
+                jogadores.splice(pos, 1);
+                setState(!state);
+            }
+        } else{
+            Alert.alert("Modo de jogo não selecionado");
         }
     }
+    
     // selecionando os times, só preenche se um dos times estiver vazio
     // se o time B estiver vazio, precisa verificar se 
     function _preencheTime(time){
@@ -220,17 +209,10 @@ export default function Novo_Jg({route}){
     }
     // preenche lista de subs após completar os times
     function setListSubs(){
-        if(route.params.liga.confLiga.selSubs){
+        if(route.params.time.confLiga.selSubs){
             for (let jgd of jogadores) list_subs.push(jgd);
             jogadores = new Array();
         }
-    }
-    // seta as variaveis para selecionar o componente certo (jgdrs || times || subs)
-    function setaComp(){
-        if(!jgdr_time)                  setTimes("Jogadores");
-        else if(jgdr_time && !timesOK)  setTimes("Times");
-        else if(jgdr_time && timesOK )  setTimes("Substitutos");
-        setJT(!jgdr_time)
     }
     // remove time A
     function remTimeA(item){
@@ -259,12 +241,13 @@ export default function Novo_Jg({route}){
     // starta para a proxima tela, se modo de jogo 3x3 || 5x5 = true 
     // && timeA e timeB com 3 ou 5 jogadores conforme o modo de jogo
     function start_Game(){
+        console.log("TimesOK?", timesOK)
         if(timesOK){
             console.log("timesOK -> true");
             // monta timeA com 3 ou 5 jogadores conforme o (timeN.length)
-            if(modo3x3){
+            if(modo == "3x3"){
                 let dt = new Date();
-                let rotulo_jogo = "Modo 3x3 | Jogo: " + (route.params.liga.listJgs3x3.length + 1) + " | Data: " +
+                let rotulo_jogo = "Modo 3x3 | Jogo: " + (route.params.time.listJgs3x3.length + 1) + " | Data: " +
                 ("" + dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear());  
                
                 navigation.replace("Load3x3",{
@@ -274,12 +257,12 @@ export default function Novo_Jg({route}){
                     tmB     : timeB.slice(),
                     tmS     : list_subs.slice(),
                     rotulo  : rotulo_jogo,
-                    liga    : route.params.liga,
+                    time    : route.params.time,
                     dest    : route.params.dest,               
                 });
-            } else if(modo5x5){
+            } else if(modo == "5x5"){
                 let dt = new Date();
-                let rotulo_jogo = "Modo 5x5 | Jogo: " + (route.params.liga.listJgs3x3.length + 1) + " | Data: " +
+                let rotulo_jogo = "Modo 5x5 | Jogo: " + (route.params.time.listJgs3x3.length + 1) + " | Data: " +
                 ("" + dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear());
             
                 navigation.replace("Load5x5",{
@@ -289,13 +272,10 @@ export default function Novo_Jg({route}){
                     tmB     : timeB.slice(),
                     tmS     : list_subs.slice(),
                     rotulo  : rotulo_jogo,
-                    liga    : route.params.liga,
+                    time    : route.params.time,
                     dest    : route.params.dest,
                 });
             }
-            
-
-        
         } else{
             Alert.alert("Complete os times conforme o modo de jogo para iniciar um jogo")
         }
@@ -303,27 +283,65 @@ export default function Novo_Jg({route}){
         
     }
 
-// funções renderizadoras
+    // ---------- Funções renderizadoras ------------
     // renderiza os FL para montar os times!
     function renderTJS(){
-        if(jgdr_time)                   return rend_jogadores();
-        else if(!jgdr_time && !timesOK) return rend_times();
-        else if(!jgdr_time && timesOK) return rend_subs();
-        
+        if(!timesOK){
+            if(jgdr_time){ // true = jogadores
+                return rend_jogadores();
+            } else{ // false = times
+                return rend_times();
+            }
+        } else{
+            if(jgdr_time){ // true = jogadores
+                return rend_jogadores();
+            } else{ // false = times
+                return rend_subs();
+            }
+        }
     }
-    // Mostra o estado da tela montando, pronto
-    function render_Modo(){
-        if(timesOK){
+    // renderiza os times da partida
+    function render_times(){
+        if(modo == "3x3" || modo == "5x5" || modo == "" || modo == "Definir"){
             return(
-                <TouchableOpacity style = {stylesNJ.bttEnd}
-                    onPress = {() => {start_Game()}}
-                >
-                    <Text style = {stylesNJ.bttText}> Jogar </Text>
-                </TouchableOpacity>
+                <>
+                    <View style = {stylesNJ.viewTA} > 
+                        <TextInput style = {stylesNJ.textVT}
+                                value={textIA}
+                                onChangeText={()=>{setTextIA()}}
+                        />
+                        <FlatList style = {stylesNJ.flatLT}
+                            data = {timeA}
+                            renderItem = {compTimeA}
+                            keyExtractor = {(item) => {item.id}}
+                        />
+                    </View>
+                    <View style = {stylesNJ.viewTB} > 
+                        <TextInput style = {stylesNJ.textVT}
+                            value={textIB}
+                            onChangeText={()=>{setTextIB()}}
+                        />
+                        <FlatList style = {stylesNJ.flatLT}
+                            data = {timeB}
+                            renderItem = {compTimeB}
+                            keyExtractor = {(item) => {item.id}}
+                        />
+                    </View>
+                </>
             );
-        } else {
+        } else if(modo == "5x5Of"){
             return(
-                <Text style = {stylesNJ.textModo}> - Modo - </Text>
+                <View style = {stylesNJ.viewTAOf} >
+                    <TextInput style = {stylesNJ.textVT}
+                            value={textIA}
+                            onChangeText={()=>{setTextIA()}}
+                    />
+                    <FlatList style = {stylesNJ.flatLT}
+                        data = {timeA}
+                        renderItem = {compTimeA}
+                        keyExtractor = {(item) => {item.id}}
+                    />
+                </View>
             );
         }
     }
@@ -341,7 +359,7 @@ export default function Novo_Jg({route}){
     // FL times
     function rend_times(){
         if(modo3x3){
-          if(route.params.liga.list_times3.length > 0)
+          if(route.params.time.list_times3.length > 0)
             return(             
                 <FlatList style = {stylesNJ.flatLJgdrs}
                     data = {timesL3}
@@ -358,7 +376,7 @@ export default function Novo_Jg({route}){
                 </Text>
             );
         } else if(modo5x5){
-          if(route.params.liga.list_times5.length > 0)
+          if(route.params.time.list_times5.length > 0)
             return(
                 <FlatList style = {stylesNJ.flatLJgdrs}
                     data = {timesL5}
@@ -423,7 +441,7 @@ export default function Novo_Jg({route}){
     function compTimeA({item}) {
         return(
             <TouchableOpacity style = {stylesNJ.viewBttFL}
-                onPress = {() => {remTimeA(item)}}
+                onPress = {() => {remTimeA(item);if(timesOK) setTimesOK(false);}}
             >
                 <Text style = {stylesNJ.textName}> {item.apelido} </Text>
             </TouchableOpacity>
@@ -433,7 +451,7 @@ export default function Novo_Jg({route}){
     function compTimeB({item}) {
         return(
             <TouchableOpacity style = {stylesNJ.viewBttFL}
-                onPress = {() => {remTimeB(item)}}
+                onPress = {() => {remTimeB(item);if(timesOK) setTimesOK(false);}}
             >
                 <Text style = {stylesNJ.textName}>{item.apelido}</Text>
             </TouchableOpacity>
@@ -452,18 +470,7 @@ export default function Novo_Jg({route}){
     
 //funções de teste    
     //teste -> função para preencher times com 5 jogadores e list subs.
-    function preenche_5x5(){
-        for(let x = 0 ; x < jogadores.length ; x++){
-            if(timeA.length < 5)
-                timeA.push(jogadores[x]);
-            else if (timeB.length < 5)
-                timeB.push(jogadores[x]);
-            else
-                list_subs.push(jogadores[x]);
-        }
-        jogadores.splice(0, jogadores.length);
-    }
-
+    
     return(
         <View style = {stylesNJ.telaFull}>
             <StatusBar
@@ -472,79 +479,53 @@ export default function Novo_Jg({route}){
             />
             <View style = {stylesNJ.viewTopo}>
                 <Image style = {stylesNJ.imgPf}
-                    source = {RetornaImg(banco.userMaster.image)}
+                    source = {RetornaImgL(route.params.time.image_log)}
                     resizeMode="cover"
                 />
-                <TouchableOpacity style = {stylesNJ.bbtConf}>
+                {/*<TouchableOpacity style = {stylesNJ.bbtConf}>
                     <Icon
                         name = {icons.confgs}
                         size = {35}
                         color = {Cor.icons_cor}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
                 <View style = {stylesNJ.viewInfos}>
                     <Text style = {stylesNJ.textInfos}>
-                        {banco.userMaster.nome} | FG: {banco.userMaster.scrT.a_FG.toFixed(2)} 
+                        Treinador: {banco.userMaster.nome} 
                     </Text>
                     <Text style = {stylesNJ.textInfos}>
-                        Jgs: {banco.userMaster.scrT.jogos} || Pts: {banco.userMaster.scrT.total_pts}
+                        Jgs: {""+(banco.userMaster.der + banco.userMaster.vits)} | FG: {banco.userMaster.FG.toFixed(2)}
                     </Text>
                 </View>
                 
             </View>
             <View style = {stylesNJ.viewMT}>
                 <View style = {stylesNJ.viewModo}>
-                    <TouchableOpacity style = {{
-                        ...stylesNJ.bttModo,
-                        backgroundColor: cor3
-                    }}
-                        onPress = {() => setModo(true)}
+                    <View style = {stylesNJ.viewPicker}>
+                    <Picker 
+                        style         = {stylesNJ.picker}
+                        mode          = "diálogo"
+                        selectedValue = {modo}
+                        onValueChange = {(itemValue, itemIndex) => setPicker(itemValue)}
                     >
-                        <Text style = {stylesNJ.bttText}> 3x3 </Text>
-                    </TouchableOpacity>
+                        <Picker.Item label="Definir" value="Definir" />
+                        <Picker.Item label="3x3" value="3x3" />
+                        <Picker.Item label="5x5" value="5x5" />
+                        <Picker.Item label="5x5Of" value="5x5Of" />
+                    </Picker>
+                    </View>
                     
-                    {render_Modo()}
-                    
-                    <TouchableOpacity style = {{
-                        ...stylesNJ.bttModo,
-                        backgroundColor: cor5
-                    }}
-                        onPress = {() => setModo(false)}
-                    >
-                        <Text style = {stylesNJ.bttText}> 5x5 </Text>
-                    </TouchableOpacity>
                 </View>
 
                 <View style = {stylesNJ.viewTimes}>
-                    <View style = {stylesNJ.viewTA} > 
-                        <TextInput style = {stylesNJ.textVT}
-                                value={textIA}
-                                onChangeText={()=>{setTextIA()}}
-                        />
-                        <FlatList style = {stylesNJ.flatLT}
-                            data = {timeA}
-                            renderItem = {compTimeA}
-                            keyExtractor = {(item) => {item.id}}
-                        />
-                    </View>
-                    <View style = {stylesNJ.viewTB} > 
-                        <TextInput style = {stylesNJ.textVT}
-                            value={textIB}
-                            onChangeText={()=>{setTextIB()}}
-                        />
-                        <FlatList style = {stylesNJ.flatLT}
-                            data = {timeB}
-                            renderItem = {compTimeB}
-                            keyExtractor = {(item) => {item.id}}
-                        />
-                    </View>
+                    {render_times()}
                 </View>
             </View>
                 
             <View style = {stylesNJ.viewJgdrs}>
                 <TouchableOpacity style = {{...stylesNJ.btt_jgdr, marginTop: 5}}
                     onPress = {() => {
-                        setaComp(); 
+                        setJT(!jgdr_time); 
                     }}
                 >
                     <Text style = {{...stylesNJ.bttText, fontSize: 22}}>{t_times}</Text>
@@ -553,6 +534,11 @@ export default function Novo_Jg({route}){
                     {renderTJS()}
                 </View>
             </View>
+            <TouchableOpacity style = {stylesNJ.bttEnd}
+                onPress = {() => {start_Game()}}
+            >
+                <Text style = {stylesNJ.bttText}> Jogar </Text>
+            </TouchableOpacity>
         </View>
     );
 

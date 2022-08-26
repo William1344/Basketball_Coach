@@ -8,7 +8,6 @@ import * as ImagePicker from 'expo-image-picker';
 import {useNavigation} from '@react-navigation/native';
 import banco from '../../../back-and2/banco_local';
 import SalveData from '../../../back-and2/SalveData';
-import configBD from '../../../../config/config.json';
 import {RetornaImg} from '../../functions/index';
 
 export default function ViewP({route}){
@@ -25,15 +24,17 @@ export default function ViewP({route}){
   function backAction(){
     if(route.params.veio_de == "MainL"){
       navigation.replace("MainL", {
-        liga    : route.params.liga,
-        dest    : route.params.dest,
+        index_time  : route.params.index_time,
+        time        : route.params.time,
+        dest        : route.params.dest,
       });
     } else if(route.params.veio_de == "Membros"){
       navigation.replace("Membros", {
-        liga    : route.params.liga,
-        dest    : route.params.dest,
+        index_time  : route.params.index_time,
+        time        : route.params.time,
+        dest        : route.params.dest,
       });
-    } else if(route.params.veio_de == "MainP") navigation.replace("MainP");
+    }
     return true;
   }
   
@@ -253,10 +254,9 @@ export default function ViewP({route}){
     <View style = {stylesVP.viewS}>
       <TouchableOpacity style = {stylesVP.viewIMG}
         onPress = {() => {
-          if(route.params.veio_de == "MainP")
-            navigation.replace("Subst_Img", {
-              veio_de : "MainP"
-            });
+          navigation.replace("Subst_Img", {
+            veio_de : "MainP"
+          });
         }}
       >
         <Image style = {stylesVP.img}

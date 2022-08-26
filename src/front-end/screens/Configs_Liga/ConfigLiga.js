@@ -18,7 +18,7 @@ import { RetornaImg }     from "../../functions/index";
 export default function ConfigLiga({route}){
   const navigation = useNavigation();
   // useStates
-  let confs = route.params.liga.confLiga;
+  let confs = route.params.time.confLiga;
   //console.log("OBJ -> Configurações\n", confs);
   const [ tema, setTema ]           = useState(banco.tema);     // true = dark, false = light
   const [ marc24, setMarc24 ]       = useState(confs.marc24);   // futuro
@@ -42,15 +42,11 @@ export default function ConfigLiga({route}){
     SalveData(banco);
   } , [tema]);
   
-  useEffect (() => {
-    console.log("Alterado?", alterado);
-  } , [alterado]);
-
   function backAction(){
     navigation.replace("MainL",{
-      liga        : route.params.liga,
+      time        : route.params.time,
       dest        : route.params.dest,  
-      index_liga  : route.params.index_liga,
+      index_time  : route.params.index_time,
     });
     return true;
   }
@@ -258,18 +254,18 @@ export default function ConfigLiga({route}){
     // salvar as novas configurações no banco de dados
     if(alterado){
       //console.log("ENTROU -> confis", confs);
-      route.params.liga.confLiga = confs;
+      route.params.time.confLiga = confs;
       SalveData(banco);
       navigation.replace("MainL",{
-        liga        : route.params.liga,
+        time        : route.params.time,
         dest        : route.params.dest,  
-        index_liga  : route.params.index_liga
+        index_time  : route.params.index_time
       });
     }
   }
 
   async function deletarLiga(){
-    banco.ligas.splice(route.params.index_liga, 1);
+    banco.times.splice(route.params.index_time, 1);
     SalveData(banco);
     Alert.alert("Liga deletada com sucesso!");
     navigation.replace("MainP");
@@ -295,14 +291,14 @@ export default function ConfigLiga({route}){
         />
         <View style = {stylesCFL.viewInfos}>
           <Text style = {stylesCFL.textInfos}>
-              {banco.userMaster.nome} | Jgs 3x3: {banco.userMaster.scr3x3.jogos} | Jgs 5x5: {banco.userMaster.scr5x5.jogos}
+              {banco.userMaster.nome} 
           </Text>
           <Text style = {stylesCFL.textInfos}>
-            FG: {banco.userMaster.scrT.a_FG.toFixed(1)} | 2Pts: {banco.userMaster.scrT.a_2pts} | 3Pts: {banco.userMaster.scrT.a_3pts}
+            FG: {banco.userMaster.FG.toFixed(1)} | Vits: {banco.userMaster.vits}
           </Text>
         </View>          
       </View>
-      <Text style={stylesCFL.text_title}>Configurações da Liga</Text>
+      <Text style={stylesCFL.text_title}>Configurações do App</Text>
       <ScrollView style = {stylesCFL.scrooll}>
         {render_configs()}
       </ScrollView>

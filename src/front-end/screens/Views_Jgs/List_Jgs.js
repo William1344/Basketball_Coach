@@ -21,7 +21,7 @@ export default function List_Jogos({route}){
     
     function backAction(){
         navigation.replace("MainL",{
-            liga    : route.params.liga,
+            time    : route.params.time,
             dest    : route.params.dest,
         });
         return true;
@@ -65,14 +65,14 @@ export default function List_Jogos({route}){
                 navigation.push("ViewJG3", {
                     game    : item,
                     de_onde : false,
-                    liga    : route.params.liga,
+                    liga    : route.params.time,
                     dest    : route.params.dest
                 });
             else //false => 5x5
                 navigation.push("ViewJG5", {
                     game    : item,
                     de_onde : false,
-                    liga    : route.params.liga,
+                    liga    : route.params.time,
                     dest    : route.params.dest
                 });
         }
@@ -104,8 +104,8 @@ export default function List_Jogos({route}){
     };
 
     function sel_Jogos(){
-        if(sel_J) return route.params.liga.listJgs3x3
-        else      return route.params.liga.listJgs5x5
+        if(sel_J) return route.params.time.listJgs3x3
+        else      return route.params.time.listJgs5x5
     }
 
     return(

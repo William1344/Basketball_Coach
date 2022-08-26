@@ -10,21 +10,11 @@ import { User_GameV, User_LigaV } from "../../../back-and2/banco_dados/index";
 import Icon             from 'react-native-vector-icons/AntDesign';
 import AsyncStorage     from "@react-native-async-storage/async-storage";
 import * as ImagePicker from 'expo-image-picker';
-import SalveDados from '../../../back-and2/SalveData';
-import assets from "../../../../assets/index_assets";
-import banco from "../../../back-and2/banco_local";
-import configBD from "../../../../config/config.json";
 import { RetornaImg, RetornaImgL } from '../../functions/index';
 
 export default function Main_Liga({route}){
     const date          = new Date(route.params.time.createdAt);
     const navigation    = useNavigation();
-    const [cod_NewUser, setCod_NewUser]     =  useState("");
-    const [textApel, setTA]                 =  useState("");
-    const [modalAdd, setModalAdd]           =  useState(false);
-    const [ped, setPedido]                  =  useState(Cor.white);
-    const [tipoJG, setTipoJG]               =  useState(true);
-    const [rend, setRend]                   =  useState(true);
     const [dest_render, setDest_render]     =  useState(route.params.dest[0]);
     const [load, setLoad]                   =  useState(false); // true -> carregando
 
@@ -48,8 +38,8 @@ export default function Main_Liga({route}){
 
     async function add_jogadorB(){
         navigation.replace("Form_User", {
-            index_time      : route.params.index,
-            veio_de         : "ML",
+            index_time      : route.params.index_time,
+            veio_de         : "menu_time",
             time            : route.params.time,
             dest            : route.params.dest,
         })
@@ -107,31 +97,6 @@ export default function Main_Liga({route}){
         return true;
     }
     
-    async function montarArrayDest(liga){
-        let array = [];
-        array.push(liga.destaques.jgd_Cluth);
-        array.push(liga.destaques.jgd_Fominha);
-        array.push(liga.destaques.jgd_Vencedor);
-        array.push(liga.destaques.jgd_Pontuador);
-        array.push(liga.destaques.jgd_2Pts);
-        array.push(liga.destaques.jgd_3Pts);
-        array.push(liga.destaques.jgd_Reboteiro);
-        array.push(liga.destaques.jgd_Assist);
-        array.push(liga.destaques.jgd_Ladrao);
-        array.push(liga.destaques.jgd_Bloker);
-        array.push(liga.destaques.jgd_AirBall);
-        array.push(liga.destaques.jgd_FG);
-        array.push(liga.destaques.jgd_PPG);
-        array.push(liga.destaques.jgd_2PPG);
-        array.push(liga.destaques.jgd_3PPG);
-        array.push(liga.destaques.jgd_APG);
-        array.push(liga.destaques.jgd_RPG);    
-        array.push(liga.destaques.jgd_BPG);
-        array.push(liga.destaques.jgd_AirBPG);
-        array.push(liga.destaques.jgd_RouPG);
-        return array;
-    }
-
     // componentes
     function Comp_jgdr({item}){
         
@@ -141,7 +106,7 @@ export default function Main_Liga({route}){
                 onPress = {()=>{
                     navigation.replace("ViewP",{
                         player  :   item,
-                        liga    :   route.params.time,
+                        time    :   route.params.time,
                         dest    :   route.params.dest,
                         veio_de :   "MainL",
                     });
@@ -224,9 +189,9 @@ export default function Main_Liga({route}){
 
                         */
                         /*navigation.replace("Subst_ImgLg",{
-                            liga        : route.params.time,
+                            time        : route.params.time,
                             dest        : route.params.dest,
-                            index_liga  : route.params.index_liga
+                            index_time  : route.params.index_time
                         });*/
 
                     }}
@@ -238,7 +203,7 @@ export default function Main_Liga({route}){
                 </TouchableOpacity>
                 <View style={styleM.view1_infos}>  
                     <Text style = {styleM.text}>Criada: {"" + date.getDate() + "/" + (date.getMonth()+ 1) + "/" + date.getFullYear().toString()[2]+date.getFullYear().toString()[3]}</Text>
-                    <Text style = {styleM.text}>Liga: {route.params.time.nome}</Text>
+                    <Text style = {styleM.text}>Time: {route.params.time.nome}</Text>
                     <Text style = {styleM.text}>Jogadores: {route.params.time.list_users.length}</Text>
                     <Text style = {styleM.text}>Jogos: {(route.params.time.listJgs5x5O.length) + (route.params.time.listJgs3x3.length)}</Text>
                     <Text style = {styleM.text}>Pontos: {route.params.time.total_pts}</Text>
@@ -249,9 +214,9 @@ export default function Main_Liga({route}){
                     <TouchableOpacity 
                         style = {styleM.btt_opacit}
                         onPress = {() => navigation.replace("Ranking",{
-                            liga        : route.params.time,
+                            time        : route.params.time,
                             dest        : route.params.dest,
-                            index_liga  : route.params.index_liga,
+                            index_time  : route.params.index_time,
                         })} //navigation.navigate("")
                     >
                         <Icon 
@@ -265,11 +230,11 @@ export default function Main_Liga({route}){
                         style = {styleM.btt_opacit}
                         onPress = {async () => {
                             console.log("Entrou aqui! btt");
-                            await criaTimes();
+                            //await criaTimes();
                             navigation.replace("NovoJg",{
-                                liga        : route.params.time,
+                                time        : route.params.time,
                                 dest        : route.params.dest,
-                                index_liga  : route.params.index_liga,
+                                index_time  : route.params.index_time,
                             });
                         }} 
                     >
@@ -285,9 +250,9 @@ export default function Main_Liga({route}){
                         style = {styleM.btt_opacit}
                         onPress = {() => {
                             navigation.replace("List_Jgs",{
-                                liga        : route.params.time,
+                                time        : route.params.time,
                                 dest        : route.params.dest,
-                                index_liga  : route.params.index_liga,
+                                index_time  : route.params.index_time,
                             });
                         }}
                         
@@ -319,9 +284,9 @@ export default function Main_Liga({route}){
                         style = {styleM.btt_opacit}
                         onPress = { () => {    
                             navigation.replace("ConfigLiga",{
-                                liga        : route.params.time,
+                                time        : route.params.time,
                                 dest        : route.params.dest,
-                                index_liga  : route.params.index_liga,
+                                index_time  : route.params.index_time,
                             });
                         }} 
                     >

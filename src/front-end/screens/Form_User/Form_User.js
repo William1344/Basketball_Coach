@@ -8,7 +8,6 @@ import SalveData          from '../../../back-and2/SalveData';
 import banco              from '../../../back-and2/banco_local';
 import { User_LigaV, User_GameV }          from '../../../back-and2/banco_dados/index';
 import assets             from '../../../../assets/index_assets';
-import configsBD          from '../../../../config/config.json';
 import { Picker }         from '@react-native-picker/picker';
 import { MontarArrayDest } from '../../functions/index';
 
@@ -18,80 +17,185 @@ export default function Form_User({route}){
   const [posicao, setPosicao]     = useState("");
   const [txt_idade, setIdade]     = useState("18");
   const [txt_peso, setPeso]       = useState("80");
-  const [txt_numC, setNumC]       = useState("31");
+  const [txt_numC, setNumC]       = useState("22");
   const [txt_env, setEnv ]        = useState("1.95");
-  const [textApel, setTA]         = useState("JojoLo");
-  const [textNom, setTN]          = useState("JojoLo");
+  const [textApel, setTA]         = useState("Maria");
+  const [textNom, setTN]          = useState("Maria");
 
   useEffect(() => {
+    // verifica se veio de viewPlayer
+    if(route.params.veio_de == "editit"){
+      // pega os dados do player e coloca nos campos
+      setPosicao(route.params.player.posicao);
+      setTA(route.params.player.apelido);
+      setTN(route.params.player.nome);
+      setIdade(route.params.player.idade);
+      setAltura(route.params.player.altura);
+      setPeso(route.params.player.peso);
+      setEnv(route.params.player.envergadura);
+      setNumC(route.params.player.numero);
+    }
+    //AddPlayers();
     BackHandler.addEventListener("hardwareBackPress", backAction);
     return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
   },[])
-
- 
-  function backAction(){
-    if(route.params.veio_de != "cadastro"){
-      navigation.replace("ViewP",{
-        player  : route.params.player,
-        veio_de : route.params.veio_de,
-      });
-    } else {
-      Alert.alert("Sair", "Você deseja sair da sua conta?", [
-        {
-          text: "Cancel",
-          onPress: () => null,
-          style: "cancel"
-        },
-        { text: "Sim", onPress: () =>  navigation.replace("Login")}
-      ]);
-      return true;
+  // função teste -- AddPlayers();
+  async function AddPlayers(){
+    async function cadastrarUser(player){
+      // verifica se veio de viewPlayer ou se é um novo cadastro
+      let us = {
+        id : route.params.time.list_users.length,   // id vai ser o index do vetor de usersLocal
+        image         : 0,                          // image do usuário
+        nome          : player.nome,                    // nome do usuário
+        apelido       : player.apelido,                   // apelido do jogador
+        idade         : player.idade,                  // idade do jogador
+        peso          : player.peso,                   // peso do jogador
+        altura        : player.altura,                 // altura do jogador
+        envergadura   : player.env,                    // envergadura do jogador
+        numero        : player.numC,                   // numero da camisa do jogador
+        posicao       : player.posicao,                    // posição do jogador
+      }
+      let jgdr = new User_LigaV(us);
+      route.params.time.list_users.push(jgdr);
+      let jgdrG = new User_GameV(us);
+      route.params.time.list_usersG.push(jgdrG);     
     }
-    return true;
-  }
-
-  async function cadastrarUser(){
-    let us = {
-      id : route.params.time.list_users.length,   // id vai ser o index do vetor de usersLocal
-      image         : 0,                          // image do usuário
-      nome          : textNom,                    // nome do usuário
-      apelido       : textApel,                   // apelido do jogador
-      idade         : txt_idade,                  // idade do jogador
-      peso          : txt_peso,                   // peso do jogador
-      altura        : txt_altura,                 // altura do jogador
-      envergadura   : txt_env,                    // envergadura do jogador
-      num_camisa    : txt_numC,                   // numero da camisa do jogador
-      posicao       : posicao,                    // posição do jogador
+    let player = {
+      nome          : "Rubens",
+      apelido       : "Rubens",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "22",
+      posicao       : "armador"
     }
-
-    let jgdr = new User_LigaV(us);
-    route.params.time.list_users.push(jgdr);
-    let jgdrG = new User_GameV(us);
-    route.params.time.list_usersG.push(jgdrG);
+    await cadastrarUser(player);
+    player = {
+      nome          : "Godofredo",
+      apelido       : "Godofredo",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "24",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "José",
+      apelido       : "José",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "26",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "Rubens",
+      apelido       : "Rubens",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "28",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "Marcio",
+      apelido       : "Marcio",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "30",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "JoséFaustino",
+      apelido       : "Faustino",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "32",
+      posicao       : "pivô"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "Robertin",
+      apelido       : "Robertin",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "34",
+      posicao       : "pivô"
+    }
+    await cadastrarUser(player);
     await SalveData(banco);
     navigation.replace("MainL",{
       time        : route.params.time,
       dest        : await MontarArrayDest(route.params.time.list_users),
       index_time  : route.params.index_time,
     });
-  }
 
-  async function depois(){
-    let us = {
-      id            : 0,
-      image         : 0,
-      nome          : route.params.player,
-      peso          : 0,
-      altura        : 0,
-      envergadura   : 0,
-      num_camisa    : 0,
-      posicao       : "Definir",
-    }
-
-    banco.userMaster = new UserV(us);
-    await SalveData(banco);
-    navigation.replace("MainP");
   }
  
+  function backAction(){
+    if(route.params.veio_de == "menu_time"){
+      navigation.replace("MainL",{
+        time        : route.params.time,
+        index_time  : route.params.index_time,
+        dest        : route.params.dest
+      });
+    }else{
+      // pode ter vindo do viewPlayer, 
+      // ou seja precisa carregar as configs do jogador e ser capaz de salvar
+      navigation.replace("Membros",{
+        time        : route.params.time,
+        dest        : route.params.dest,
+        index_time  : route.params.index_time,
+      });
+    }
+    return true;
+  }
+
+  async function cadastrarUser(){
+    // verifica se veio de viewPlayer ou se é um novo cadastro
+    if(route.params.veio_de == "menu_time"){
+      let us = {
+        id : route.params.time.list_users.length,   // id vai ser o index do vetor de usersLocal
+        image         : 0,                          // image do usuário
+        nome          : textNom,                    // nome do usuário
+        apelido       : textApel,                   // apelido do jogador
+        idade         : txt_idade,                  // idade do jogador
+        peso          : txt_peso,                   // peso do jogador
+        altura        : txt_altura,                 // altura do jogador
+        envergadura   : txt_env,                    // envergadura do jogador
+        numero        : txt_numC,                   // numero da camisa do jogador
+        posicao       : posicao,                    // posição do jogador
+      }
+
+      let jgdr = new User_LigaV(us);
+      route.params.time.list_users.push(jgdr);
+      let jgdrG = new User_GameV(us);
+      route.params.time.list_usersG.push(jgdrG);
+      await SalveData(banco);
+      navigation.replace("MainL",{
+        time        : route.params.time,
+        dest        : await MontarArrayDest(route.params.time.list_users),
+        index_time  : route.params.index_time,
+      });
+    }else{
+      
+    }
+  }
+
   return(
     <View style={stylesF.telaFull}>
       <TouchableOpacity style = {stylesF.btt_img} 

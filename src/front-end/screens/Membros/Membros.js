@@ -6,16 +6,13 @@ import {
 import stylesMem        from './stylesMem';
 import {useNavigation}  from '@react-navigation/native';
 import {Topo}           from '../../components/index_comps';
-import AsyncStorage     from '@react-native-async-storage/async-storage';
 import banco            from '../../../back-and2/banco_local';
-import confgBD          from '../../../../config/config.json';
 import assets           from '../../../../assets/index_assets';
 import SalveDate        from '../../../back-and2/SalveData';
 import { RetornaImg,  MontarArrayDest}   from '../../functions/index';
 
 export default function Membros({route}){
     const navigation = useNavigation();
-    const [rend, setRender]     = useState(false);
     const [modal, setModal]     = useState(false);
     const [itemOP, setItemOP]   = useState(route.params.time.list_users[0]);
     
@@ -81,10 +78,21 @@ export default function Membros({route}){
                             >
                                 <Text style = {stylesMem.text_btt}> Perfil </Text>
                             </TouchableOpacity>
-                             
-                               
                             
-                            
+                            <TouchableOpacity style = {stylesMem.btt_Modal}
+                                onPress = {() => {
+                                    navigation.replace("Form_User", {
+                                        index_time      : route.params.index_time,
+                                        veio_de         : "editit",
+                                        player          : itemOP,
+                                        time            : route.params.time,
+                                        dest            : route.params.dest,
+                                    })
+                                }}
+                            >
+                                <Text style = {stylesMem.text_btt}> Editar </Text>
+                            </TouchableOpacity>
+
                             <TouchableOpacity style = {stylesMem.btt_Modal}
                                 onPress = {() => {
                                     removerMembro(itemOP);

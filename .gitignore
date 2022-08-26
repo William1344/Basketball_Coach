@@ -1,4 +1,5 @@
 /node_modules
+/Screens_Fotos
 npm-debug.*
 *.jks
 *.p8

@@ -50,7 +50,7 @@ export default function LigaCreate({route}){
         local   : textLocal,
       });
       banco.times.push(tm);
-      console.log(banco.times);
+      //console.log(banco.times);
       await SalveData(banco);
       navigation.replace("MainP");
     }else{
