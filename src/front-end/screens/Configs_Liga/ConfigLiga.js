@@ -234,7 +234,7 @@ export default function ConfigLiga({route}){
               ]);
             }}
           >
-            <Text style = {stylesCFL.btt_text}> Deletar Liga </Text>
+            <Text style = {stylesCFL.btt_text}> Deletar Time </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -261,7 +261,7 @@ export default function ConfigLiga({route}){
         dest        : route.params.dest,  
         index_time  : route.params.index_time
       });
-    }
+    } else backAction(); 
   }
 
   async function deletarLiga(){
@@ -298,7 +298,7 @@ export default function ConfigLiga({route}){
           </Text>
         </View>          
       </View>
-      <Text style={stylesCFL.text_title}>Configurações do App</Text>
+      <Text style={stylesCFL.text_title}>- Configurações -</Text>
       <ScrollView style = {stylesCFL.scrooll}>
         {render_configs()}
       </ScrollView>

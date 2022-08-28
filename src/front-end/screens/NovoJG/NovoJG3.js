@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, TouchableOpacity, FlatList, Alert, TextInput, Image, StatusBar, BackHandler
 } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon  from 'react-native-vector-icons/AntDesign';
 import stylesNJ from './styleNJ3';
+import {Cor, icons} from '../../styles/index_S';
 import { useNavigation } from '@react-navigation/native';
-import { Cor, icons } from '../../styles/index_S';
 import banco from '../../../back-and2/banco_local';
 import { Picker }         from '@react-native-picker/picker';
 import { RetornaImgL } from '../../functions/index';
@@ -29,13 +29,10 @@ export default function Novo_Jg({route}){
     const navigation                = useNavigation();
     const [state    , setState]     = useState(false);
     const [modo     , setPicker]    = useState("");
-    const [modo3x3  , setModo3x3]   = useState(false);
-    const [modo5x5  , setModo5x5]   = useState(false);
     const [timesOK  , setTimesOK]   = useState(false);
     const [textIA   , setTextIA]    = useState("Time A");
     const [textIB   , setTextIB]    = useState("Time B");
     const [t_times  , setTimes]     = useState("Jogadores");
-    const [subs     , setSubs]      = useState(false);
     const [jgdr_time, setJT]        = useState(true);
     
     useEffect(() => { 
@@ -43,7 +40,7 @@ export default function Novo_Jg({route}){
         timesL3     = route.params.time.list_times3.slice();
         timesL5     = route.params.time.list_times5.slice();
         setJT(true);
-        //_zeraTimes();//
+        _zeraTimes();//
         setTimeout(()=>{
             setState(!state);
         }, 100);
@@ -56,8 +53,9 @@ export default function Novo_Jg({route}){
             if(timesOK) setTimes("Substitutos");
             else setTimes("Times");
         }
-    },[jgdr_time]);
+    },[jgdr_time, timesOK]);
 // funções de controle::
+    // testes
     // zera os times
     function _zeraTimes(){
         timeA       = new Array();
@@ -67,10 +65,7 @@ export default function Novo_Jg({route}){
         timesL5     = route.params.time.list_times5.slice();
         jogadores   = route.params.time.list_usersG.slice();
         
-        setTimesOK(false);
-        setSubs(false);
-        setModo3x3(false);
-        setModo5x5(false);       
+        setTimesOK(false);    
     }
     function preencheJgdrs(){
         if(list_subs.length > 0){
@@ -81,20 +76,17 @@ export default function Novo_Jg({route}){
         }
     }
     
-    
     function verifyEstado(){
         if(timesOK){
-            if(modo3x3)
+            if(modo == "3x3")
                 if(timeA.length != 3 || timeB.length != 3){
                     setTimesOK(false);
                     //preencheJgdrs();
-                    setaComp();
                 }
-            else
+            else if(modo == "5x5")
                 if(timeA.length != 5 || timeB.length != 5){
                     setTimesOK(false);
                     //preencheJgdrs();
-                    setaComp();
                 }   
         }
         
@@ -109,7 +101,6 @@ export default function Novo_Jg({route}){
         }
     }
 
-    
     // adiciona e remove jogadores ao time, sempre cuidando modo de jogo
     // caso mude os times são zerados.
     function addTime(item){
@@ -183,10 +174,10 @@ export default function Novo_Jg({route}){
     // se o time B estiver vazio, precisa verificar se 
     function _preencheTime(time){
         function removeTime(){
-            if(modo3x3) {
+            if(modo == "3x3"){
                 let p = timesL3.indexOf(time)
                 timesL3.splice(p,1);
-            } else if(modo5x5){
+            } else if(modo == "5x5"){
                 let p = timesL5.indexOf(time)
                 timesL5.splice(p,1);
             }
@@ -195,7 +186,7 @@ export default function Novo_Jg({route}){
         if(timeA.length == 0){ 
             for(let jgd of time) addTime(jgd);
             removeTime();
-        } else if(timeB.length == 0 && ((modo3x3 && timeA.length == 3) ||(modo5x5 && timeA.length == 5))){
+        } else if(timeB.length == 0 && ((modo == "3x3" && timeA.length == 3) ||(modo == "5x5" && timeA.length == 5))){
             for(let jgd of time){
                 for(let jgdA of timeA){
                     if(jgd.Users_idUsers == jgdA.Users_idUsers) break;
@@ -358,7 +349,7 @@ export default function Novo_Jg({route}){
     } 
     // FL times
     function rend_times(){
-        if(modo3x3){
+        if(modo == "3x3"){
           if(route.params.time.list_times3.length > 0)
             return(             
                 <FlatList style = {stylesNJ.flatLJgdrs}
@@ -368,14 +359,14 @@ export default function Novo_Jg({route}){
                     //extraData={select_ID}
                 />
             );
-          else
-          //console.log(timesL3)
-            return(                
-                <Text style = {{...stylesNJ.textModo, width: '90%'}}> 
-                    Times Vazio
-                </Text>
-            );
-        } else if(modo5x5){
+            else {          
+                return(                
+                    <Text style = {{...stylesNJ.textModo, width: '90%'}}> 
+                        Times Vazio
+                    </Text>
+                );
+            }
+        } else if(modo == "5x5"){
           if(route.params.time.list_times5.length > 0)
             return(
                 <FlatList style = {stylesNJ.flatLJgdrs}
@@ -421,7 +412,7 @@ export default function Novo_Jg({route}){
             >
                 <Text style = {stylesNJ.textTime}> Time </Text>
                 <Text style = {stylesNJ.textTime}> {item[0].apelido} | {item[1].apelido} | {item[2].apelido}</Text>
-                {modo5x5 &&
+                {modo == "5x5" &&
                     <Text style = {stylesNJ.textTime}> {item[3].apelido} | {item[4].apelido}</Text>
                 }
             </TouchableOpacity>
@@ -441,17 +432,17 @@ export default function Novo_Jg({route}){
     function compTimeA({item}) {
         return(
             <TouchableOpacity style = {stylesNJ.viewBttFL}
-                onPress = {() => {remTimeA(item);if(timesOK) setTimesOK(false);}}
+                onPress = {() => {remTimeA(item)}}
             >
                 <Text style = {stylesNJ.textName}> {item.apelido} </Text>
             </TouchableOpacity>
             )        
-    };
+    }
         // time B
     function compTimeB({item}) {
         return(
             <TouchableOpacity style = {stylesNJ.viewBttFL}
-                onPress = {() => {remTimeB(item);if(timesOK) setTimesOK(false);}}
+                onPress = {() => {remTimeB(item)}}
             >
                 <Text style = {stylesNJ.textName}>{item.apelido}</Text>
             </TouchableOpacity>
@@ -482,13 +473,13 @@ export default function Novo_Jg({route}){
                     source = {RetornaImgL(route.params.time.image_log)}
                     resizeMode="cover"
                 />
-                {/*<TouchableOpacity style = {stylesNJ.bbtConf}>
+                <TouchableOpacity style = {stylesNJ.bbtConf}>
                     <Icon
                         name = {icons.confgs}
                         size = {35}
                         color = {Cor.icons_cor}
                     />
-                </TouchableOpacity>*/}
+                </TouchableOpacity>
                 <View style = {stylesNJ.viewInfos}>
                     <Text style = {stylesNJ.textInfos}>
                         Treinador: {banco.userMaster.nome} 

@@ -1,33 +1,50 @@
 import React, {useEffect, useState} from 'react';
 import { 
   Text, View, Image, TouchableOpacity, ScrollView, StatusBar, BackHandler,
-  Alert
+  Alert, PermissionsAndroid
 } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import configBD from '../../../../config/config.json';
 import {Topo} from '../../components/index_comps';
 import { useNavigation } from '@react-navigation/native';
-import banco from '../../../back-and2/banco_local';
-import style_SI from './styleSI';
-import {RetornaImg} from '../../functions/index';
+import Icon from 'react-native-vector-icons/AntDesign';
+import * as ImagePicker from 'expo-image-picker';
 import {Cor, icons} from '../../styles/index_S';
-import SalveData from '../../../back-and2/SalveData';
+import style_SI from './styleSI';
 import assets from '../../../../assets/index_assets';
+import SalveData from '../../../back-and2/SalveData';
+import banco from '../../../back-and2/banco_local';
 
 export default function Subst_Img(){
   const navigation = useNavigation();
-  const [state, setState] = useState(false);
 
   function backAction(){
     navigation.replace("MainP");
     return true;
   }
 
-  useEffect(() => {
+  useEffect(async () => {
+    // Verificar se tem acesso a camera e galeria, caso não, pedir permissão...
+    if(!PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA) && !PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)){
+      const grantedCam = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,{
+        title: "Permissão para usar a câmera",
+        message: "Nós precisamos da sua permissão para usar a câmera",
+        buttonNeutral: "Me lembre mais tarde",
+        buttonNegative: "Não, não quero",
+        buttonPositive: "Sim, quero"
+      });
+      const grantedGal = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,{
+        title: "Permissão para usar a galeria",
+        message: "Nós precisamos da sua permissão para usar a galeria",
+        buttonNeutral: "Me lembre mais tarde",
+        buttonNegative: "Não, não quero",
+        buttonPositive: "Sim, quero"
+      });
+    }
     BackHandler.addEventListener('hardwareBackPress', backAction);
     return () => {BackHandler.removeEventListener('hardwareBackPress', backAction);};
   }, []);
 
+
+  
   async function setar_Img(value){ // value é o valor referente ao icon
     
     if(banco.userMaster.image != value){
@@ -46,9 +63,22 @@ export default function Subst_Img(){
         <ScrollView style = {style_SI.scrool}>
           <View style = {style_SI.linha}>
             <TouchableOpacity style = {{...style_SI.btt_img, justifyContent: 'center', alignItems: 'center'}}
-              onPress = {() => {
-                //adicionar camera ou galeria?
-                
+              onPress = {async () => {
+                // Adicionar imagem da galeria pelo ImagePicker
+                let result = await ImagePicker.launchImageLibraryAsync({
+                  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                  allowsEditing: true,
+                  aspect: [1, 1],
+                  quality: 1,
+                  base64: true
+                });
+                if(!result.cancelled){
+                  banco.userMaster.image = result;
+                  SalveData(banco);
+                  navigation.replace("MainP");
+                } else {
+                  Alert.alert("Aviso", "Você não selecionou nenhuma imagem!");
+                }
               }}
             >
               <Icon

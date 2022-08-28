@@ -6,10 +6,8 @@ import {Text, FlatList, View, StatusBar, Image,
 import { styleM, stylesJ, stylesCJ, stylesModal } from './styleshet/index_styles';
 import { Cor, icons, styles} from '../../styles/index_S';
 import { useNavigation } from "@react-navigation/native"
-import { User_GameV, User_LigaV } from "../../../back-and2/banco_dados/index";
-import Icon             from 'react-native-vector-icons/AntDesign';
-import AsyncStorage     from "@react-native-async-storage/async-storage";
-import * as ImagePicker from 'expo-image-picker';
+import { User_GameV } from "../../../back-and2/banco_dados/index";
+import Icon from 'react-native-vector-icons/AntDesign';
 import { RetornaImg, RetornaImgL } from '../../functions/index';
 
 export default function Main_Liga({route}){
@@ -45,13 +43,13 @@ export default function Main_Liga({route}){
         })
     }
      
-    async function criaTimes(){
+    function criaTimes(){
         route.params.time.list_times3.splice(0, route.params.time.list_times3.length);
         route.params.time.list_times5.splice(0, route.params.time.list_times5.length);
         //monta os times 3x3
         for(let jg of route.params.time.listJgs3x3){
             
-            let tmA = [], tmB = [], jj = {};
+            let tmA = [], tmB = [];
             for(let jgd of jg.timeA){
                 let uGV = new User_GameV({
                     id      : jgd.Users_idUsers,
@@ -73,8 +71,8 @@ export default function Main_Liga({route}){
             //console.log("Times criados",route.params.time.list_times3);
         }
         //monta os times 5x5
-        for(let jg of route.params.time.listJgs5x5){
-            let tmA = [], tmB = [], jj = {};
+        for(let jg of route.params.time.listJgs5x5T){
+            let tmA = [], tmB = [];
             for(let jgd of jg.timeA){
                 let uGV = new User_GameV({
                     id      : jgd.Users_idUsers,
@@ -188,16 +186,16 @@ export default function Main_Liga({route}){
                             pelo aplicativo.
 
                         */
-                        /*navigation.replace("Subst_ImgLg",{
+                        navigation.replace("Subst_ImgLg",{
                             time        : route.params.time,
                             dest        : route.params.dest,
                             index_time  : route.params.index_time
-                        });*/
+                        });
 
                     }}
                 >
                     <Image style = {{height:'100%', width:'100%',borderRadius: 90}}
-                        source = {RetornaImgL(route.params.time.img_logo)}
+                        source = {RetornaImgL(route.params.time.image_log)}
                         resizeMode = "cover"
                     />
                 </TouchableOpacity>
@@ -230,7 +228,7 @@ export default function Main_Liga({route}){
                         style = {styleM.btt_opacit}
                         onPress = {async () => {
                             console.log("Entrou aqui! btt");
-                            //await criaTimes();
+                            criaTimes();
                             navigation.replace("NovoJg",{
                                 time        : route.params.time,
                                 dest        : route.params.dest,

@@ -2,10 +2,10 @@ import React, {useState, useEffect} from "react";
 import stylesV3 from "./stylesVJ";
 import { View, Text, StatusBar, BackHandler, TouchableOpacity, Alert} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {conf_Liga} from '../../styles/configsApp';
 import {Cor} from "../../styles/index_S";
+import { MontarArrayDest } from "../../functions/";
 import banco from "../../../back-and2/banco_local";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export default function ViewGame_3x3({route}){
     const navigation = useNavigation();
@@ -13,7 +13,7 @@ export default function ViewGame_3x3({route}){
     const [time, setTime] = useState(true);
     const [corA, setCorA] = useState(Cor.btt_sel);
     const [corB, setCorB] = useState(Cor.btt);
-    
+    const conf_Liga = route.params.time.confLiga;
     var timeA   = route.params.game.timeA;
     var timeB   = route.params.game.timeB;
     var nomeTA  = route.params.game.nomeTA;
@@ -24,12 +24,12 @@ export default function ViewGame_3x3({route}){
     async function backAction(){
         if(route.params.de_onde){
             navigation.replace("MainL",{
-                liga    :   route.params.liga,
-                dest    :   await montarArrayDest(),
+                time    :   route.params.time,
+                dest    :   await MontarArrayDest(route.params.time.list_users),
             });
         } else {
             navigation.replace("List_Jgs",{
-                liga    :   route.params.liga,
+                time    :   route.params.time,
                 dest    :   route.params.dest,
             });
         }
@@ -41,30 +41,7 @@ export default function ViewGame_3x3({route}){
         return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
     },[]);
     
-    async function montarArrayDest(){
-        let array = [];
-        array.push(route.params.liga.destaques.jgd_Cluth);
-        array.push(route.params.liga.destaques.jgd_Fominha);
-        array.push(route.params.liga.destaques.jgd_Vencedor);
-        array.push(route.params.liga.destaques.jgd_Pontuador);
-        array.push(route.params.liga.destaques.jgd_2Pts);
-        array.push(route.params.liga.destaques.jgd_3Pts);
-        array.push(route.params.liga.destaques.jgd_Reboteiro);
-        array.push(route.params.liga.destaques.jgd_Assist);
-        array.push(route.params.liga.destaques.jgd_Ladrao);
-        array.push(route.params.liga.destaques.jgd_Bloker);
-        array.push(route.params.liga.destaques.jgd_AirBall);
-        array.push(route.params.liga.destaques.jgd_FG);
-        array.push(route.params.liga.destaques.jgd_PPG);
-        array.push(route.params.liga.destaques.jgd_2PPG);
-        array.push(route.params.liga.destaques.jgd_3PPG);
-        array.push(route.params.liga.destaques.jgd_APG);
-        array.push(route.params.liga.destaques.jgd_RPG);    
-        array.push(route.params.liga.destaques.jgd_BPG);
-        array.push(route.params.liga.destaques.jgd_AirBPG);
-        array.push(route.params.liga.destaques.jgd_RouPG);
-        return array;
-    }
+    
 
     // seleciona o time a ser renderizado A || B
     function renderTime(){
@@ -85,15 +62,15 @@ export default function ViewGame_3x3({route}){
                             <Text style = {stylesV3.textScor}> {timeA[0].a_3pts} </Text>
                         </TouchableOpacity>
 
-                        {conf_Liga.rebts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.rebote && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[0].reb} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.assts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.assist && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[0].asst} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.blks && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.block && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[0].blk} </Text>
                         </TouchableOpacity>}
 
@@ -116,15 +93,15 @@ export default function ViewGame_3x3({route}){
                             <Text style = {stylesV3.textScor}> {timeA[1].a_3pts} </Text>
                         </TouchableOpacity>
 
-                        {conf_Liga.rebts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.rebote && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[1].reb} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.assts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.assist && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[1].asst} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.blks && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.block && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[1].blk} </Text>
                         </TouchableOpacity>}
 
@@ -147,15 +124,15 @@ export default function ViewGame_3x3({route}){
                             <Text style = {stylesV3.textScor}> {timeA[2].a_3pts} </Text>
                         </TouchableOpacity>
 
-                        {conf_Liga.rebts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.rebote && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[2].reb} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.assts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.assist && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[2].asst} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.blks && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.block && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeA[2].blk} </Text>
                         </TouchableOpacity>}
 
@@ -183,15 +160,15 @@ export default function ViewGame_3x3({route}){
                             <Text style = {stylesV3.textScor}> {timeB[0].a_3pts} </Text>
                         </TouchableOpacity>
 
-                        {conf_Liga.rebts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.rebote && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[0].reb} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.assts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.assist && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[0].asst} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.blks && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.block && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[0].blk} </Text>
                         </TouchableOpacity>}
 
@@ -214,15 +191,15 @@ export default function ViewGame_3x3({route}){
                             <Text style = {stylesV3.textScor}> {timeB[1].a_3pts} </Text>
                         </TouchableOpacity>
 
-                        {conf_Liga.rebts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.rebote && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[1].reb} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.assts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.assist && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[1].asst} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.blks && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.block && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[1].blk} </Text>
                         </TouchableOpacity>}
 
@@ -245,15 +222,15 @@ export default function ViewGame_3x3({route}){
                             <Text style = {stylesV3.textScor}> {timeB[2].a_3pts} </Text>
                         </TouchableOpacity>
 
-                        {conf_Liga.rebts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.rebote && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[2].reb} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.assts && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.assist && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[2].asst} </Text>
                         </TouchableOpacity>}
 
-                        {conf_Liga.blks && <TouchableOpacity style = {stylesV3.bttScor}>
+                        {conf_Liga.block && <TouchableOpacity style = {stylesV3.bttScor}>
                             <Text style = {stylesV3.textScor}> {timeB[2].blk} </Text>
                         </TouchableOpacity>}
 
@@ -316,9 +293,9 @@ export default function ViewGame_3x3({route}){
                         <Text style = {stylesV3.bttNome}> Jogador </Text>
                         <Text style = {stylesV3.bttScor}> 2Pts </Text>
                         <Text style = {stylesV3.bttScor}> 3Pts </Text>
-                        { conf_Liga.rebts && <Text style = {stylesV3.bttScor}> Reb </Text>}
-                        { conf_Liga.assts && <Text style = {stylesV3.bttScor}> Asst </Text>}
-                        { conf_Liga.blks && <Text style = {stylesV3.bttScor}> Blk </Text>}
+                        { conf_Liga.rebote && <Text style = {stylesV3.bttScor}> Reb </Text>}
+                        { conf_Liga.assist && <Text style = {stylesV3.bttScor}> Asst </Text>}
+                        { conf_Liga.block && <Text style = {stylesV3.bttScor}> Blk </Text>}
                         { conf_Liga.airB && <Text style = {stylesV3.bttScor}> AirB </Text>}
                     </View>
                     <View style = {stylesV3.viewJog}>

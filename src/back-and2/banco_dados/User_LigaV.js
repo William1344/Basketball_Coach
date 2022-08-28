@@ -14,7 +14,7 @@ class User_LigaV{
         this.peso        = users.peso           // peso do jogador
         this.scr3x3      = new User_ScoresV("tipo_3");  // objeto dos scores3x3
         this.scr5x5      = new User_ScoresV("tipo_5");  // objeto dos scores5x5
-        this.scr5x5Tr    = new User_ScoresV("tipo_5_Traine");// objeto dos scores5x5Of
+        this.scr5x5Of    = new User_ScoresV("tipo_5Of");// objeto dos scores5x5Of
         this.scrT        = new User_ScoresV("tipo_T");  // objeto com total de scores  
     }
 }; export default User_LigaV;

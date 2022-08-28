@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {View, Image, Text, TouchableOpacity, ScrollView, BackHandler} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import stylesVP from './stylesVP';
-import assets from '../../../../assets/index_assets';
 import {Cor, icons, styles} from '../../styles/index_S';
 import * as ImagePicker from 'expo-image-picker';
 import {useNavigation} from '@react-navigation/native';
@@ -15,7 +14,7 @@ export default function ViewP({route}){
   const player                = route.params.player;
   const [esc, setEsc]         = useState("Escores 3x3");
   const [est, setEst]         = useState(0);
-  const [img, setImg_perfil]  = useState(true);
+  const [state, setState]     = useState(true);
   
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", backAction);
@@ -227,36 +226,28 @@ export default function ViewP({route}){
     return (<View></View>);
   }
     
-/*async function SalvarImgUser(result){ // salvar imagem do usuário
-    const data = new FormData();
-    data.append('userId', banco.userMaster.id);
-    data.append('photo', result);
-    console.log("Data -> \n", data);
-    let reqs = await fetch(configBD.urlRootNode + 'salvar_image_user',{
-      method: 'POST',
-      headers :{
-        'Accept': 'application/json',
-        'Content-Type': 'multipart/form-data'
-      },
-      body : data
-    });
-    let res = await reqs.json();
-    console.log("Res -> \n", res);
-    if(res.status){
-      console.log('Imagem Salva');
-      
-    }
-  }
-*/
 
   return(
     <View style = {stylesVP.telaFull}>
     <View style = {stylesVP.viewS}>
       <TouchableOpacity style = {stylesVP.viewIMG}
-        onPress = {() => {
-          navigation.replace("Subst_Img", {
-            veio_de : "MainP"
+        onPress = {async () => {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+            base64: true
           });
+          if(!result.cancelled){
+            player.image = result;
+            await SalveData(banco);
+            setState(!state);
+            //backAction();
+          } else {
+            Alert.alert("Aviso", "Você não selecionou nenhuma imagem!");
+          }
+
         }}
       >
         <Image style = {stylesVP.img}

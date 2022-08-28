@@ -3,7 +3,7 @@ import {
     View, Text, StatusBar, Image, TouchableOpacity, FlatList, 
     BackHandler 
 } from 'react-native';
-import { Cor, styles, icons } from "../../styles/index_S";
+import { Cor } from "../../styles/index_S";
 import {
     Cab1, Cab2, Cab3, // cabeçalho
     CompFL1A, CompFL2A, CompFL3A, // componentes para jogos 3x3
@@ -12,7 +12,6 @@ import {
 } from './indexComps';
 import { useNavigation } from '@react-navigation/native';
 import stylesR from './stylesR';
-import assets from "../../../../assets/index_assets";
 import { RetornaImgL } from '../../functions/index';
 
 export default function Ranking({route}){
@@ -29,7 +28,6 @@ export default function Ranking({route}){
 
     useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", backAction);
-
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}    
     }, []);
 
@@ -67,18 +65,16 @@ export default function Ranking({route}){
 
     function backAction(){
         navigation.replace("MainL",{
-            liga    : route.params.liga,
+            time    : route.params.time,
             dest    : route.params.dest
         });
         return true;
     }
-
     function select_cab(){
         if(modo == 0) return(<Cab1/>); 
         else if(modo == 1) return( <Cab2/> );
         else return( <Cab3/> );
     }
-    
     function select_compFL(){
         if(tipo == 0){
             if(modo == 0) return( CompFL1A ); 
@@ -95,7 +91,6 @@ export default function Ranking({route}){
         }        
     }
 
-    
     return(
         <View style = {stylesR.telaFull}>
             <StatusBar
@@ -105,13 +100,13 @@ export default function Ranking({route}){
             <View style = {stylesR.viewTopo}>
                 <View style = {stylesR.viewTopoL}>
                     <Image style = {stylesR.imgLiga}
-                        source = {RetornaImgL(route.params.liga.img_log)}
+                        source = {RetornaImgL(route.params.time.img_log)}
                         resizeMode="cover"
                     />
                     <View style = {stylesR.viewIN}>
-                        <Text style = {stylesR.textInf}> Liga: {route.params.liga.nome} </Text>
-                        <Text style = {stylesR.textInf}> Membros: {route.params.liga.list_users.length} </Text>
-                        <Text style = {stylesR.textInf}> Jogos: {(route.params.liga.listJgs3x3.length) + (route.params.liga.listJgs5x5.length) } </Text>
+                        <Text style = {stylesR.textInf}> Time: {route.params.time.nome} </Text>
+                        <Text style = {stylesR.textInf}> Membros: {route.params.time.list_users.length} </Text>
+                        <Text style = {stylesR.textInf}> Jogos Of: {route.params.time.listJgs5x5O.length } </Text>
                     </View>
                 </View>
                 <View style = {stylesR.view_bttRankSelc}>
@@ -155,7 +150,7 @@ export default function Ranking({route}){
                 </View>
                 <View style = {stylesR.viewFlat}>
                     <FlatList style = {stylesR.flatL}
-                        data = {route.params.liga.list_users}
+                        data = {route.params.time.list_users}
                         renderItem = {select_compFL()}
                         keyExtractor = {item => item.idUser}
                     />

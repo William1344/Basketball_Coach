@@ -13,5 +13,6 @@ export default function RetornaImgL(value){
   else if(value == 9)  return assets.liga_lg9;
   else if(value == 10) return assets.liga_lg10;
   else if(value == 11) return assets.liga_lg11;
-  else                 return assets.liga_lg12;
+  else if(value == 12) return assets.liga_lg12;
+  else return value;
 };

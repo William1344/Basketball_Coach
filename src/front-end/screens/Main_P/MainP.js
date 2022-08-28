@@ -4,6 +4,7 @@ import {
     TouchableOpacity, Alert, FlatList, BackHandler
 } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
+import ImagePicker from "react-native-image-picker";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import banco from '../../../back-and2/banco_local';
@@ -98,7 +99,7 @@ export default function Main_Players(){
                     }
                 >
                     <Image style = {stylesC.img_logo}
-                        source = {RetornaImgL(item.img_logo)}
+                        source = {RetornaImgL(item.image_log)}
                     /> 
                     <View style = {stylesC.viewInf}>
                         <Text style = {stylesC.textTitle}> {item.nome}</Text>

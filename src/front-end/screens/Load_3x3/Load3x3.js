@@ -6,15 +6,11 @@ import {
   Modal, FlatList, BackHandler, 
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {conf_Liga} from '../../styles/configsApp';
-import {Cor, styles, icons} from "../../styles/index_S";
-import configDB from "../../../../config/config.json";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Cor, icons} from "../../styles/index_S";
 import banco from    '../../../back-and2/banco_local';
 import SalveData from '../../../back-and2/SalveData';
 import { IncremJg } from '../../functions/index';
 
-var tA = new Array(), tB = new Array();
 var timeA, timeB, timeS, nomeTA, nomeTB;
 
 export default function Load3x3({route}){
@@ -27,7 +23,7 @@ export default function Load3x3({route}){
         style: "cancel"
       },
       { text: "Sim", onPress: () =>  navigation.replace("NovoJg",{
-        liga    : route.params.liga,
+        time    : route.params.time,
         dest    : route.params.dest,
       })}
     ]);
@@ -100,7 +96,7 @@ export default function Load3x3({route}){
     setB2_AirB(0);
     setB3_AirB(0);        
   }
-  const conf = route.params.liga.confLiga;
+  const conf = route.params.time.confLiga;
   const navigation = useNavigation();
   // useStates da tela
   const [time, setTime]       = useState(true); // true -> time A
@@ -341,7 +337,7 @@ export default function Load3x3({route}){
   const [sec24, setSec24]     = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [cust_Interval , setCust_Interval] = useState()
-      // funções de controle.
+  // funções de controle timer.
   function startTime(){
     setCust_Interval(
       setInterval(() => {
@@ -865,10 +861,10 @@ export default function Load3x3({route}){
     let dt = new Date();
     let dd = ("" + dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear().toString()[2] + dt.getFullYear().toString()[3]);
     let hr = ("" + dt.getHours() + ":" + dt.getMinutes())
-    const rotul = "Jogo " + (route.params.liga.listJgs3x3.length + 1) + " | " + dd + " | "  + hr; 
+    const rotul = "Jogo " + (route.params.time.listJgs3x3.length + 1) + " | " + dd + " | "  + hr; 
     // criar objeto jogo para enviar ao banco de dados
     let jg = {
-      id              : route.params.liga.listJgs3x3.length,
+      id              : route.params.time.listJgs3x3.length,
       rotulo          : rotul,
       tipo_Jogo       : "3x3",
       timeA           : timeA,
@@ -882,14 +878,14 @@ export default function Load3x3({route}){
 
     //incrementa o jogo no perfil de cada jogador
     
-    let jgV = await IncremJg(route.params.liga, jg);
-    route.params.liga.listJgs3x3.push(jgV);
+    let jgV = await IncremJg(route.params.time, jg);
+    route.params.time.listJgs3x3.push(jgV);
     SalveData(banco);
     console.log("Jogo Var -> \n",jgV);
     navigation.replace("ViewJG3", {
       game    : jgV,
       de_onde : true,
-      liga    : route.params.liga,
+      time    : route.params.time,
     }); 
   }
 

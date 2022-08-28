@@ -1,10 +1,9 @@
 import { JogoV } from '../../back-and2/banco_dados/index.js';
 import banco_local from '../../back-and2/banco_local';
-import SalveData from '../../back-and2/SalveData';
 
 export default async function IncremJg(liga, game) {
   
-  async function AddGameUser(jgd, user, tipoJG){
+  function AddGameUser(jgd, user, tipoJG){
 
     if(tipoJG == "3x3"){   
       user.scr3x3.jogos = user.scr3x3.jogos + 1;        
@@ -18,7 +17,16 @@ export default async function IncremJg(liga, game) {
       user.scr3x3.block = user.scr3x3.block + jgd.blk;
       user.scr3x3.roubo = user.scr3x3.roubo + jgd.roubo;
       user.scr3x3.airB = user.scr3x3.airB + jgd.airB;
-      
+      // calcula as médias 3x3 do jogador 
+      user.scr3x3.a_FG       = (user.scr3x3.vit * 100)  / user.scr3x3.jogos; // fg
+      user.scr3x3.total_PPG  = user.scr3x3.total_pts    / user.scr3x3.jogos; // total ppg
+      user.scr3x3.a_2PG      = user.scr3x3.a_2pts       / user.scr3x3.jogos; // 2pts por game
+      user.scr3x3.a_3PG      = user.scr3x3.a_3pts       / user.scr3x3.jogos; // 3pts por game
+      user.scr3x3.a_AirPG    = user.scr3x3.airB         / user.scr3x3.jogos; // airB por game
+      user.scr3x3.a_RPG      = user.scr3x3.reb          / user.scr3x3.jogos; // reb por game
+      user.scr3x3.a_APG      = user.scr3x3.asst         / user.scr3x3.jogos; // asst por game
+      user.scr3x3.a_BPG      = user.scr3x3.block        / user.scr3x3.jogos; // block por game
+      user.scr3x3.a_RouPG    = user.scr3x3.roubo        / user.scr3x3.jogos; // roubo por game
     } else if(tipoJG == "5x5"){
       user.scr5x5.jogos = user.scr5x5.jogos + 1;
       if(jgd.bool_dec)    user.scr5x5.vit = user.scr5x5.vit + 1;
@@ -31,6 +39,17 @@ export default async function IncremJg(liga, game) {
       user.scr5x5.block = user.scr5x5.block + jgd.blk;
       user.scr5x5.roubo = user.scr5x5.roubo + jgd.roubo;
       user.scr5x5.airB = user.scr5x5.airB + jgd.airB;
+      // médias
+      // calcula as médias 5x5 do jogador
+      user.scr5x5.a_FG       = (user.scr5x5.vit * 100)  / user.scr5x5.jogos; // fg
+      user.scr5x5.total_PPG  = user.scr5x5.total_pts    / user.scr5x5.jogos; // total ppg
+      user.scr5x5.a_2PG      = user.scr5x5.a_2pts       / user.scr5x5.jogos; // 2pts por game
+      user.scr5x5.a_3PG      = user.scr5x5.a_3pts       / user.scr5x5.jogos; // 3pts por game
+      user.scr5x5.a_AirPG    = user.scr5x5.airB         / user.scr5x5.jogos; // airB por game
+      user.scr5x5.a_RPG      = user.scr5x5.reb          / user.scr5x5.jogos; // reb por game
+      user.scr5x5.a_APG      = user.scr5x5.asst         / user.scr5x5.jogos; // asst por game
+      user.scr5x5.a_BPG      = user.scr5x5.block        / user.scr5x5.jogos; // block por game
+      user.scr5x5.a_RouPG    = user.scr5x5.roubo        / user.scr5x5.jogos; // roubo por game
   
     }
     
@@ -46,28 +65,6 @@ export default async function IncremJg(liga, game) {
     user.scrT.block      = user.scr3x3.block        + user.scr5x5.block;
     user.scrT.roubo      = user.scr3x3.roubo        + user.scr5x5.roubo;
     user.scrT.airB       = user.scr3x3.airB         + user.scr5x5.airB;
-  
-    // calcula as médias 3x3 do jogador 
-    user.scr3x3.a_FG       = (user.scr3x3.vit * 100)  / user.scr3x3.jogos; // fg
-    user.scr3x3.total_PPG  = user.scr3x3.total_pts    / user.scr3x3.jogos; // total ppg
-    user.scr3x3.a_2PG      = user.scr3x3.a_2pts       / user.scr3x3.jogos; // 2pts por game
-    user.scr3x3.a_3PG      = user.scr3x3.a_3pts       / user.scr3x3.jogos; // 3pts por game
-    user.scr3x3.a_AirPG    = user.scr3x3.airB         / user.scr3x3.jogos; // airB por game
-    user.scr3x3.a_RPG      = user.scr3x3.reb          / user.scr3x3.jogos; // reb por game
-    user.scr3x3.a_APG      = user.scr3x3.asst         / user.scr3x3.jogos; // asst por game
-    user.scr3x3.a_BPG      = user.scr3x3.block        / user.scr3x3.jogos; // block por game
-    user.scr3x3.a_RouPG    = user.scr3x3.roubo        / user.scr3x3.jogos; // roubo por game
-  
-    // calcula as médias 5x5 do jogador
-    user.scr5x5.a_FG       = (user.scr5x5.vit * 100)  / user.scr5x5.jogos; // fg
-    user.scr5x5.total_PPG  = user.scr5x5.total_pts    / user.scr5x5.jogos; // total ppg
-    user.scr5x5.a_2PG      = user.scr5x5.a_2pts       / user.scr5x5.jogos; // 2pts por game
-    user.scr5x5.a_3PG      = user.scr5x5.a_3pts       / user.scr5x5.jogos; // 3pts por game
-    user.scr5x5.a_AirPG    = user.scr5x5.airB         / user.scr5x5.jogos; // airB por game
-    user.scr5x5.a_RPG      = user.scr5x5.reb          / user.scr5x5.jogos; // reb por game
-    user.scr5x5.a_APG      = user.scr5x5.asst         / user.scr5x5.jogos; // asst por game
-    user.scr5x5.a_BPG      = user.scr5x5.block        / user.scr5x5.jogos; // block por game
-    user.scr5x5.a_RouPG    = user.scr5x5.roubo        / user.scr5x5.jogos; // roubo por game
   
     // calcula as médias totais do jogador
     user.scrT.a_FG       = (user.scrT.vit * 100)  / user.scrT.jogos; // fg
