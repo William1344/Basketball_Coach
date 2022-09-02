@@ -3,9 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import {
-    Cadastro, ConfigLiga, Form_User, LigaCreate, Load, Load3x3, Load5x5, Login, 
-    MainP, MainL, Teste, NovoJg, Ranking, List_Jgs, View_Jg3, View_Jg5, 
-    Membros, ViewP, Subst_Img, Subst_ImgLg
+    Cadastro, ConfigLiga, Form_User, LigaCreate, Load, Load3x3, Load5x5, Load5x5Of, 
+    Login, MainP, MainL, Teste, NovoJg, Ranking, List_Jgs, View_Jg3, View_Jg5, 
+    Membros, ViewP, Subst_Img, Subst_ImgLg, View_Jg5O
 } from "./src/front-end/screens/index_screens";
 
 
@@ -68,6 +68,11 @@ export default function App(){
                         options     = {{orientation : 'landscape'}}
                     />
                     <Stack.Screen
+                        name        = "Load5x5Of"
+                        component   = {Load5x5Of}
+                        options     = {{orientation : 'landscape'}}
+                    />
+                    <Stack.Screen
                         name        = "Login"
                         component   = {Login}
                         options     = {{orientation : 'portrait'}}
@@ -85,6 +90,11 @@ export default function App(){
                     <Stack.Screen
                         name        = "ViewJG5"
                         component   = {View_Jg5}
+                        options     = {{orientation : 'landscape'}}
+                    />
+                    <Stack.Screen
+                        name        = "ViewJG5O"
+                        component   = {View_Jg5O}
                         options     = {{orientation : 'landscape'}}
                     />
                     <Stack.Screen

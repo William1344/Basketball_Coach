@@ -223,10 +223,13 @@ export default function ViewP({route}){
   }
   
   function ren_Dest(){
-    return (<View></View>);
+    return (
+      <View>
+        
+      </View>
+    );
   }
     
-
   return(
     <View style = {stylesVP.telaFull}>
     <View style = {stylesVP.viewS}>
@@ -264,6 +267,7 @@ export default function ViewP({route}){
           }
         }}
       >
+
         <Text style = {stylesVP.texts}> {player.apelido != undefined ? player.apelido : player.nome} | nº regata: {player.numero} </Text>
         <Text style = {stylesVP.texts}> {player.posicao} </Text>
         <Text style = {stylesVP.texts}> Altura: {player.altura}m </Text>

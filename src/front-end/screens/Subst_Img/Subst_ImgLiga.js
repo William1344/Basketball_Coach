@@ -72,7 +72,7 @@ export default function Subst_ImgLg({route}){
                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
                   allowsEditing: true,
                   aspect: [1, 1],
-                  quality: 1,
+                  quality: 0.2,
                   base64: true
                 });
                 if(!result.cancelled){

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { View, Text, StatusBar, TouchableOpacity, Modal, FlatList, ScrollView, 
     Alert, BackHandler 
 } from "react-native";
-import configDB from "../../../../config/config.json";
+import SalveData from "../../../back-and2/SalveData";
 import { useNavigation } from "@react-navigation/native";
 import {Cor, icons, styles} from "../../styles/index_S";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,7 +17,7 @@ import banco from '../../../back-and2/banco_local';
 
 export default function Load5x5({route}){
     const navigation = useNavigation();
-    const conf = route.params.liga.confLiga;
+    const conf = route.params.time.confLiga;
     // useStates da tela
     const [time, setTime]       = useState(true); // true -> time A
     const [inc, setInc]         = useState(true); // true -> incrementa scores
@@ -35,8 +35,9 @@ export default function Load5x5({route}){
                 style: "cancel"
             },
             { text: "Sim", onPress: () =>  navigation.replace("NovoJg",{
-                liga    : route.params.liga,
-                dest    : route.params.dest,
+                time            : route.params.time,
+                dest            : route.params.dest,
+                index_time      : route.params.index_time,
             })}
         ]);
         return true;
@@ -211,8 +212,7 @@ export default function Load5x5({route}){
         timeS   = route.params.tmS;
         nomeTA  = route.params.nomeA;
         nomeTB  = route.params.nomeB; 
-
-        listT = route.params.liga.list_times5;
+        listT = route.params.time.list_times5;
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {
             BackHandler.removeEventListener("hardwareBackPress", backAction);
@@ -1261,75 +1261,39 @@ export default function Load5x5({route}){
         let dt = new Date();
         let dd = ("" + dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear().toString()[2] + dt.getFullYear().toString()[3]);
         let hr = ("" + dt.getHours() + ":" + dt.getMinutes())
-        const rotul = "Jogo " + (route.params.liga.listJgs5x5.length + 1) + " | " + dd + " | "  + hr; 
+        const rotul = "Jogo " + (route.params.time.listJgs5x5T.length + 1) + " | " + dd + " | "  + hr; 
         // criar objeto jogo para enviar ao banco de dados
         let jg = {
-           
-            Ligas_idLigas   : route.params.liga.id,
+            id              : route.params.time.listJgs5x5T.length,
             rotulo          : rotul,
-            tipo_Jogo       : "5x5",
+            tipo_Jogo       : "3x3",
+            timeA           : timeA,
+            timeB           : timeB,
+            timeS           : timeS,
             nomeTA          : route.params.nomeA,
             nomeTB          : route.params.nomeB,
             plcA            : plcA,
             plcB            : plcB,
-        };
-
+          };
+      
+          //incrementa o jogo no perfil de cada jogador
+          
+          let jgV = await IncremJg(route.params.time, jg);
+          route.params.time.listJgs5x5T.push(jgV);
+          SalveData(banco);
+          console.log("Jogo Var -> \n",jgV);
+          route.params.time.total_pts += plcA + plcB;
+          navigation.replace("ViewJG5", {
+            game            : jgV,
+            de_onde         : true,
+            time            : route.params.time,
+            index_time      : route.params.index_time,
+          });
         // salvar jogo no banco de dados
         // requisição para salvar linha jogo e receber o id do jogo!
-        let reqs = await fetch(configDB.urlRootNode+"adiciona_jogo",{
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userM   : banco.userMaster,
-                jogo    : jg,
-                timeA   : route.params.tmA,
-                timeB   : route.params.tmB,
-                timeS   : route.params.tmS,
-            })
-            //Ligas_idLigas, rotulo, tipo, nomeTA, nomeTB, plcA, plcB, dataCreate
-        });
-        let resp = await reqs.json();
-        //console.log("Resposta do servidor -> \n -> ",resp);
-        if(resp.status){
-            // o banco deve retorna o objeto liga já com o jogo computado!
-            //return res.send({status : true , userM : userMM, liga: liga, msg : "Jogo armazenado com sucesso!"});
-            banco.userMaster = resp.userM;
-            
-            let pos=null;
-            for(let lg of banco.ligas){
-                if(lg.id == resp.liga.id){
-                    //console.log("Encontrou liga!\n");
-                    pos = banco.ligas.indexOf(lg);           
-                    break;
-                }
-            }
-            if(pos != null){
-                banco.ligas[pos] = resp.liga; 
-            }
-            _saveData(banco);
-            setLoad(false);
-            navigation.replace("ViewJG5", {
-                game    : resp.game,
-                de_onde : true,
-                liga    : resp.liga
-            });
-        }
+        
         
     }
-
-    async function _saveData(_bd){
-        try{
-            const jsonB = JSON.stringify(_bd);
-            await AsyncStorage.setItem("Banco", jsonB);
-            
-        }catch(e){
-            console.log("Erro ao salvar dados");
-        }
-    }
-
 
     function Comp_FL({item}){
         return(

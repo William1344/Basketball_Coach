@@ -69,24 +69,14 @@ const styles_MP = StyleSheet.create({
     viewFullModal: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-    viewModal_newLiga: {
-        justifyContent  : 'flex-start',
-        alignItems      : 'center',
-        width           : '100%',
-        height          : '90%',
-        marginTop       : 10,
-        backgroundColor : Cor.pri,
-        borderRadius    : 30,
-        ...styles.border3
+        justifyContent: 'flex-end',
     },
     viewModal_confLiga: {
         justifyContent  : 'flex-start',
         alignItems      : 'center',
         width           : '100%',
-        height          : '50%',
-        marginTop       : 25,
+        height          : '77%',
+        marginBottom    : 5,
         backgroundColor : Cor.pri,
         borderRadius    : 30,
         borderColor     : Cor.bord,

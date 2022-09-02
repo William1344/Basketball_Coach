@@ -24,13 +24,15 @@ export default function ViewGame_3x3({route}){
     async function backAction(){
         if(route.params.de_onde){
             navigation.replace("MainL",{
-                time    :   route.params.time,
-                dest    :   await MontarArrayDest(route.params.time.list_users),
+                time        :   route.params.time,
+                dest        :   await MontarArrayDest(route.params.time.list_users),
+                index_time  :   route.params.index_time,
             });
         } else {
             navigation.replace("List_Jgs",{
-                time    :   route.params.time,
-                dest    :   route.params.dest,
+                time        :   route.params.time,
+                dest        :   route.params.dest,
+                index_time  :   route.params.index_time,
             });
         }
         return true;

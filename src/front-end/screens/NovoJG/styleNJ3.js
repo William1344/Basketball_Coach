@@ -22,8 +22,7 @@ const stylesNJ = StyleSheet.create({
             top: 5,
             left:  6,
             borderRadius: 45,
-            ...styles.border1,
-            
+            ...styles.border1, 
         },
         viewInfos:{
             justifyContent: 'center',
@@ -45,7 +44,7 @@ const stylesNJ = StyleSheet.create({
             right       : 15,            
         },
     viewMT:{
-        height: '39%',
+        height: '42%',
         width: '100%',
     }, 
         viewModo: {
@@ -72,7 +71,6 @@ const stylesNJ = StyleSheet.create({
                     color: Cor.sec,
                     backgroundColor: Cor.pri,
                 },
-            
             bttModo: {
                 justifyContent: 'center',
                 marginHorizontal: 15,
@@ -95,14 +93,12 @@ const stylesNJ = StyleSheet.create({
                 ...styles.texts,
                 fontSize: 24,
             },
-        
         viewTimes:{
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: "row",
             height: '80%',
-            width: '100%',
-            
+            width: '100%',  
         },
             viewTA:{
                 justifyContent: 'flex-start',
@@ -110,16 +106,6 @@ const stylesNJ = StyleSheet.create({
                 height: '100%',
                 width: '49%',
                 borderBottomRightRadius: 30,
-                borderTopRightRadius: 30,
-                ...styles.border1,
-                marginRight: 3
-            },
-            viewTAOf:{
-                alignSelf: 'center',
-                alignItems: 'center',
-                height: '100%',
-                width: '98%',
-                borderTopLeftRadius: 30,
                 borderTopRightRadius: 30,
                 ...styles.border1,
                 marginRight: 3
@@ -173,7 +159,7 @@ const stylesNJ = StyleSheet.create({
     viewJgdrs: {
         justifyContent: 'flex-start',
         alignItems: 'center',
-        height: '42%',
+        height: '39%',
         width: '99%',
         ...styles.border1,
         borderBottomLeftRadius: 30,
@@ -197,7 +183,6 @@ const stylesNJ = StyleSheet.create({
             fontSize: 20,
             ...styles.border1,
         },
-
     bttEnd:{
         justifyContent: 'center',
         alignItems: 'center',
@@ -205,6 +190,7 @@ const stylesNJ = StyleSheet.create({
         width: '30%',
         alignSelf: 'center',
         ...styles.btts,
+        marginVertical: 2,
         borderRadius: 30,
     },
     
@@ -224,7 +210,7 @@ const stylesNJ = StyleSheet.create({
         fontSize: 14,
     },
     btt_jgdr:{
-        height: '12%',
+        height: '14%',
         width: '100%',
     }
 }); 

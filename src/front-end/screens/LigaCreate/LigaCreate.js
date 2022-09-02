@@ -1,30 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import { 
-  Alert, BackHandler, FlatList, Image, KeyboardAvoidingView, Text, 
-  TextInput, TouchableOpacity, View, Modal
+  Alert, BackHandler, KeyboardAvoidingView, Text, 
+  TextInput, TouchableOpacity, View
 } from 'react-native';
-import Icon             from 'react-native-vector-icons/Entypo';
+import { StorageAccessFramework } from 'expo-file-system';
 import {useNavigation}  from '@react-navigation/native';
 import stylesLC         from './stylesLC';
-import stylesCP         from './stylesCompLPesq';
-import { stylesModal }  from '../Main_L/styleshet/index_styles';
-import { Cor, icons }   from '../../styles/index_S';
-import { User_LigaV, User_GameV, LigaV } from '../../../back-and2/banco_dados/index';
+import { LigaV } from '../../../back-and2/banco_dados/index';
 import Topo             from '../../components/Topo/Topo';
-import confgBD          from '../../../../config/config.json';
-import assets           from '../../../../assets/index_assets';
 import banco            from '../../../back-and2/banco_local';
 import SalveData        from '../../../back-and2/SalveData';
 
 export default function LigaCreate({route}){
 
   const navigation                = useNavigation();
-  const [new_liga, setNewLiga]    = useState(1);
-  const [modalAdd, setModalAdd]   = useState(false);
-  const [itemLiga, setItemLiga]   = useState([]);
-  const [idLiga, setIdLiga]       = useState(null);
   const [textName, setTN]         = useState("BBC");
-  const [textApel, setTA]         = useState("");
   const [textLocal, setLocal]     = useState("Bagé"); // posso buscar o local no cel com API
     
   useEffect(() => {
@@ -40,9 +30,7 @@ export default function LigaCreate({route}){
     return true;
   }
 
-
- 
-  async function new_Liga(){
+  async function newLiga(){
     if(textName.length > 0 ){
       let tm = new LigaV({
         id      : banco.times.length,
@@ -57,6 +45,32 @@ export default function LigaCreate({route}){
       Alert.alert("Preencha todos os campos");
       console.log("Preencha todos os campos");
     }
+  }
+
+  async function ImportJSON(){
+    // Requests permissions for external directory
+    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+
+    if (permissions.granted) {
+      // Gets SAF URI from response
+      let fileUri = "";
+      const path = permissions.directoryUri;
+      const pathMat = await StorageAccessFramework.readDirectoryAsync(path);
+      for(let i = 0; i < pathMat.length; i++){
+        if(pathMat[i].includes("time.json")){
+          fileUri = pathMat[i];
+          break;
+        }
+      }
+      console.log("fileUri", fileUri);
+      
+      let arquivo = await StorageAccessFramework.readAsStringAsync(fileUri);
+      let objeto = JSON.parse(arquivo);
+      //console.log("Arquivo: ", objeto);
+      banco.times.push(objeto);
+      await SalveData(banco);
+    }   
+    return true; 
   }
 
   return(
@@ -84,10 +98,18 @@ export default function LigaCreate({route}){
             />
             <TouchableOpacity style = {{...stylesLC.btt_bar, width: '50%'}}
               onPress = {() => {
-                new_Liga();
+                newLiga();
               }}
             >
               <Text style = {stylesLC.text_btt}> Criar Time </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style = {{...stylesLC.btt_bar, width: '50%'}}
+              onPress = {() => {
+                ImportJSON();
+              }}
+            >
+              <Text style = {stylesLC.text_btt}> Importar  Time </Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>

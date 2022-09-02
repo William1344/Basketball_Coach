@@ -69,7 +69,7 @@ export default function Subst_Img(){
                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
                   allowsEditing: true,
                   aspect: [1, 1],
-                  quality: 1,
+                  quality: 0.1,
                   base64: true
                 });
                 if(!result.cancelled){

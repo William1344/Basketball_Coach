@@ -60,9 +60,9 @@ export default function Form_User({route}){
       let jgdrG = new User_GameV(us);
       route.params.time.list_usersG.push(jgdrG);     
     }
-    let player = {
-      nome          : "Rubens",
-      apelido       : "Rubens",
+   let player = {
+      nome          : "Jeovane",
+      apelido       : "Jeovane",
       idade         : "18",
       peso          : "80",
       altura        : "1.95",
@@ -72,8 +72,8 @@ export default function Form_User({route}){
     }
     await cadastrarUser(player);
     player = {
-      nome          : "Godofredo",
-      apelido       : "Godofredo",
+      nome          : "Arnaldo",
+      apelido       : "Arnaldo",
       idade         : "18",
       peso          : "80",
       altura        : "1.95",
@@ -137,6 +137,64 @@ export default function Form_User({route}){
       posicao       : "pivô"
     }
     await cadastrarUser(player);
+    player = {
+      nome          : "Arnaldo",
+      apelido       : "Arnaldo",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "24",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "Louize",
+      apelido       : "Louize",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "24",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "Ricardo",
+      apelido       : "Ricardo",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "24",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    player = {
+      nome          : "Adão",
+      apelido       : "Adão",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "24",
+      posicao       : "ala-armador"
+    }
+    await cadastrarUser(player);
+    
+    player = {
+      nome          : "Viuvo",
+      apelido       : "Viuvo",
+      idade         : "18",
+      peso          : "80",
+      altura        : "1.95",
+      env           : "1.95",
+      numC          : "24",
+      posicao       : "ala-armador"
+    }
+
+    await cadastrarUser(player);
+    
     await SalveData(banco);
     navigation.replace("MainL",{
       time        : route.params.time,

@@ -1,6 +1,10 @@
 import assets from '../../../assets/index_assets';
 
 export default function RetornaImgL(value){
+  function base64() {
+    return {uri : 'data:image/png;base64,' + value.base64};
+  }
+
        if(value == 0)  return assets.liga_lg;
   else if(value == 1)  return assets.liga_lg1;
   else if(value == 2)  return assets.liga_lg2;
@@ -14,5 +18,5 @@ export default function RetornaImgL(value){
   else if(value == 10) return assets.liga_lg10;
   else if(value == 11) return assets.liga_lg11;
   else if(value == 12) return assets.liga_lg12;
-  else return value;
+  else return base64();
 };

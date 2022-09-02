@@ -1,5 +1,8 @@
 import assets from '../../../assets/index_assets';
 export default function RetornaImg(value){
+  function base64() {
+    return {uri : 'data:image/png;base64,' + value.base64};
+  }
        if(value == 0)   return assets.play_lg;
   else if(value == 1)   return assets.play_lg1;
   else if(value == 2)   return assets.play_lg2;
@@ -13,5 +16,5 @@ export default function RetornaImg(value){
   else if(value == 10)  return assets.play_lg10;
   else if(value == 11)  return assets.play_lg11;
   else if(value == 12)  return assets.play_lg12;
-  else return value;
+  else return base64();
 }

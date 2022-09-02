@@ -13,7 +13,9 @@ import { RetornaImgL } from '../../functions/index';
     var timeB       = new Array();
     var list_subs   = new Array();
     var jogadores, timesL3, timesL5;
+/* 
 
+*/
 export default function Novo_Jg({route}){
     // variaveis de controle States
     
@@ -27,13 +29,14 @@ export default function Novo_Jg({route}){
     }
 
     const navigation                = useNavigation();
+    const [modo     , setPicker]    = useState("3x3");
+    const [jgdr_time, setJT]        = useState(true);
+    const [jg_of    , setJgOf]      = useState(false);
     const [state    , setState]     = useState(false);
-    const [modo     , setPicker]    = useState("");
     const [timesOK  , setTimesOK]   = useState(false);
     const [textIA   , setTextIA]    = useState("Time A");
     const [textIB   , setTextIB]    = useState("Time B");
     const [t_times  , setTimes]     = useState("Jogadores");
-    const [jgdr_time, setJT]        = useState(true);
     
     useEffect(() => { 
         jogadores   = route.params.time.list_usersG.slice();
@@ -47,13 +50,30 @@ export default function Novo_Jg({route}){
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
     }, []);
+
     useEffect(() => {
         if(jgdr_time ) setTimes("Jogadores")
-        else{
-            if(timesOK) setTimes("Substitutos");
+        else if(!jg_of){
+            if(timesOK && !jg_of) setTimes("Substitutos");
             else setTimes("Times");
+        } else {
+            if(!timesOK){
+                setTimes("Times");
+            } else {setTimes("Jogadores")}
         }
-    },[jgdr_time, timesOK]);
+    },[ jgdr_time, timesOK]);
+
+    useEffect(() => {
+        jogadores   = route.params.time.list_usersG.slice();
+        timesL3     = route.params.time.list_times3.slice();
+        timesL5     = route.params.time.list_times5.slice();
+        setJT(true);
+        _zeraTimes();//
+        setTimeout(()=>{
+            setState(!state);
+        }, 100);
+    }, [modo]);
+    
 // funções de controle::
     // testes
     // zera os times
@@ -154,20 +174,30 @@ export default function Novo_Jg({route}){
             } 
             else if((timeA.length < 5 || timeB.length < 5) && timesOK) setTimesOK(false);
         } else if(modo == "5x5Of"){
+            if(!jg_of) setJgOf(true);
             if(timeA.length < 5){
                 timeA.push(item);
                 let pos = ret_Jgdr(item);
                 jogadores.splice(pos, 1);
                 setState(!state);
+                if(timeA.length == 5) setListSubs();
             } else {
                 list_subs.push(item);
                 let pos = ret_Jgdr(item);
                 jogadores.splice(pos, 1);
                 setState(!state);
+                if((timeA.length == 5) && (list_subs.length > 2) && !timesOK){
+                    setJT(true);
+                    setTimesOK(true);
+                    console.log("TimesOK -> true")
+                } 
+                else if((timeA.length < 5 || list_subs.length < 3) && timesOK) setTimesOK(false);
+
             }
         } else{
             Alert.alert("Modo de jogo não selecionado");
         }
+        return true;
     }
     
     // selecionando os times, só preenche se um dos times estiver vazio
@@ -242,29 +272,47 @@ export default function Novo_Jg({route}){
                 ("" + dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear());  
                
                 navigation.replace("Load3x3",{
-                    nomeA   : textIA,
-                    nomeB   : textIB,
-                    tmA     : timeA.slice(),
-                    tmB     : timeB.slice(),
-                    tmS     : list_subs.slice(),
-                    rotulo  : rotulo_jogo,
-                    time    : route.params.time,
-                    dest    : route.params.dest,               
+                    nomeA           :   textIA,
+                    nomeB           :   textIB,
+                    tmA             :   timeA.slice(),
+                    tmB             :   timeB.slice(),
+                    tmS             :   list_subs.slice(),
+                    rotulo          :   rotulo_jogo,
+                    time            :   route.params.time,
+                    dest            :   route.params.dest,     
+                    index_time      :   route.params.index_time,          
                 });
             } else if(modo == "5x5"){
                 let dt = new Date();
-                let rotulo_jogo = "Modo 5x5 | Jogo: " + (route.params.time.listJgs3x3.length + 1) + " | Data: " +
+                let rotulo_jogo = "Modo 5x5 | Jogo: " + (route.params.time.listJgs5x5T.length + 1) + " | Data: " +
                 ("" + dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear());
             
                 navigation.replace("Load5x5",{
-                    nomeA   : textIA,
-                    nomeB   : textIB,
-                    tmA     : timeA.slice(),
-                    tmB     : timeB.slice(),
-                    tmS     : list_subs.slice(),
-                    rotulo  : rotulo_jogo,
-                    time    : route.params.time,
-                    dest    : route.params.dest,
+                    nomeA           :   textIA,
+                    nomeB           :   textIB,
+                    rotulo          :   rotulo_jogo,
+                    tmA             :   timeA.slice(),
+                    tmB             :   timeB.slice(),
+                    tmS             :   list_subs.slice(),
+                    time            :   route.params.time,
+                    dest            :   route.params.dest,
+                    index_time      :   route.params.index_time,
+                });
+            } else if(modo == "5x5Of"){
+                let dt = new Date();
+                let rotulo_jogo = "Modo 5x5Of | Jogo: " + (route.params.time.listJgs5x5O.length + 1) + " | Data: " +
+                ("" + dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear());
+            
+                navigation.replace("Load5x5Of",{
+                    nomeA           :   textIA,
+                    nomeB           :   textIB,
+                    rotulo          :   rotulo_jogo,
+                    tmA             :   timeA.slice(),
+                    tmB             :   timeB.slice(),
+                    tmS             :   list_subs.slice(),
+                    time            :   route.params.time,
+                    dest            :   route.params.dest,
+                    index_time      :   route.params.index_time,
                 });
             }
         } else{
@@ -283,12 +331,14 @@ export default function Novo_Jg({route}){
             } else{ // false = times
                 return rend_times();
             }
-        } else{
+        } else if(!jg_of){
             if(jgdr_time){ // true = jogadores
                 return rend_jogadores();
             } else{ // false = times
                 return rend_subs();
             }
+        } else{
+            return rend_jogadores();
         }
     }
     // renderiza os times da partida
@@ -321,19 +371,26 @@ export default function Novo_Jg({route}){
                 </>
             );
         } else if(modo == "5x5Of"){
-            return(
-                <View style = {stylesNJ.viewTAOf} >
-                    <TextInput style = {stylesNJ.textVT}
-                            value={textIA}
-                            onChangeText={()=>{setTextIA()}}
-                    />
+          return(
+            <>
+              <View style = {stylesNJ.viewTA} >
+                    <Text style = {stylesNJ.bttText}> Time A </Text>
                     <FlatList style = {stylesNJ.flatLT}
                         data = {timeA}
                         renderItem = {compTimeA}
                         keyExtractor = {(item) => {item.id}}
                     />
                 </View>
-            );
+                <View style = {stylesNJ.viewTB} > 
+                <Text style = {stylesNJ.bttText}> Substitutos </Text>
+                <FlatList style = {stylesNJ.flatLT}
+                    data = {list_subs}
+                    renderItem = {compSubs}
+                    keyExtractor = {(item) => {item.id}}
+                />
+              </View>
+            </>
+          );
         }
     }
     //FL jogadores 
@@ -468,7 +525,7 @@ export default function Novo_Jg({route}){
                 hidden = {true}
                 barStyle= 'light-content'
             />
-            <View style = {stylesNJ.viewTopo}>
+            <View style = {stylesNJ.viewTopo}>  
                 <Image style = {stylesNJ.imgPf}
                     source = {RetornaImgL(route.params.time.image_log)}
                     resizeMode="cover"
@@ -497,9 +554,8 @@ export default function Novo_Jg({route}){
                         style         = {stylesNJ.picker}
                         mode          = "diálogo"
                         selectedValue = {modo}
-                        onValueChange = {(itemValue, itemIndex) => setPicker(itemValue)}
-                    >
-                        <Picker.Item label="Definir" value="Definir" />
+                        onValueChange = {(itemValue) => setPicker(itemValue)}
+                    > 
                         <Picker.Item label="3x3" value="3x3" />
                         <Picker.Item label="5x5" value="5x5" />
                         <Picker.Item label="5x5Of" value="5x5Of" />
@@ -511,8 +567,7 @@ export default function Novo_Jg({route}){
                 <View style = {stylesNJ.viewTimes}>
                     {render_times()}
                 </View>
-            </View>
-                
+            </View>        
             <View style = {stylesNJ.viewJgdrs}>
                 <TouchableOpacity style = {{...stylesNJ.btt_jgdr, marginTop: 5}}
                     onPress = {() => {

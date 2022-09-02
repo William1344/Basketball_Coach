@@ -11,7 +11,7 @@ import banco from    '../../../back-and2/banco_local';
 import SalveData from '../../../back-and2/SalveData';
 import { IncremJg } from '../../functions/index';
 
-var timeA, timeB, timeS, nomeTA, nomeTB;
+var timeA, timeB, timeS;
 
 export default function Load3x3({route}){
   // tratando botão voltar
@@ -23,8 +23,9 @@ export default function Load3x3({route}){
         style: "cancel"
       },
       { text: "Sim", onPress: () =>  navigation.replace("NovoJg",{
-        time    : route.params.time,
-        dest    : route.params.dest,
+        time            : route.params.time,
+        dest            : route.params.dest,
+        index_time      : route.params.index_time,
       })}
     ]);
     return true;
@@ -39,7 +40,7 @@ export default function Load3x3({route}){
     timeS = route.params.tmS;
     nomeTA = route.params.nomeA;
     nomeTB = route.params.nomeB;   
-
+    
     BackHandler.addEventListener("hardwareBackPress", backAction);
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", backAction);
@@ -321,8 +322,6 @@ export default function Load3x3({route}){
     }
     set_modal(false);
   }
-
-  const [seSubs, set_seSubs] = useState(false);
 
   // variaveis da tela 
   // como será verificado o jogador clutch???
@@ -877,15 +876,17 @@ export default function Load3x3({route}){
     };
 
     //incrementa o jogo no perfil de cada jogador
-    
+    console.log("Jogo para incremet", jg);
     let jgV = await IncremJg(route.params.time, jg);
     route.params.time.listJgs3x3.push(jgV);
     SalveData(banco);
     console.log("Jogo Var -> \n",jgV);
+    route.params.time.total_pts += plcA + plcB;
     navigation.replace("ViewJG3", {
-      game    : jgV,
-      de_onde : true,
-      time    : route.params.time,
+      game            : jgV,
+      de_onde         : true,
+      time            : route.params.time,
+      index_time      : route.params.index_time,
     }); 
   }
 

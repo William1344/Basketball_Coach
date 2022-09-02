@@ -3,7 +3,7 @@ import {Text, FlatList, View, StatusBar, Image,
         TouchableOpacity, Modal, KeyboardAvoidingView, 
         TextInput, Alert, Keyboard, BackHandler, ActivityIndicator
     } from 'react-native';
-import { styleM, stylesJ, stylesCJ, stylesModal } from './styleshet/index_styles';
+import { styleM, stylesCJ } from './styleshet/index_styles';
 import { Cor, icons, styles} from '../../styles/index_S';
 import { useNavigation } from "@react-navigation/native"
 import { User_GameV } from "../../../back-and2/banco_dados/index";
@@ -17,13 +17,7 @@ export default function Main_Liga({route}){
     const [load, setLoad]                   =  useState(false); // true -> carregando
 
     useEffect(()=>{
-        //console.log("Scores 5x5", route.params.time.list_users[0].scr5x5);
-        //console.log(route.params.time.pedidos);
-        //console.log("Image -> ", route.params.time.img_logo);
-        //console.log("User da liga -> ", banco.ligas[0].list_users[0]);
-        //console.log("Liga -> ", route.params.time.list_users[1]);
-        //console.log("Liga -> ", route.params.time.list_usersG[1]);
-
+        console.log(route.params.time.image_log);
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
     }, []);
@@ -191,7 +185,6 @@ export default function Main_Liga({route}){
                             dest        : route.params.dest,
                             index_time  : route.params.index_time
                         });
-
                     }}
                 >
                     <Image style = {{height:'100%', width:'100%',borderRadius: 90}}
