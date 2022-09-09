@@ -49,7 +49,7 @@ export default function Subst_Img(){
     
     if(banco.userMaster.image != value){
       banco.userMaster.image = value;
-      SalveData(banco);
+      await SalveData(banco);
       navigation.replace("MainP");
     } 
     else Alert.alert("Aviso", "Essa é sua atual imagem!");
@@ -74,7 +74,7 @@ export default function Subst_Img(){
                 });
                 if(!result.cancelled){
                   banco.userMaster.image = result;
-                  SalveData(banco);
+                  await SalveData(banco);
                   navigation.replace("MainP");
                 } else {
                   Alert.alert("Aviso", "Você não selecionou nenhuma imagem!");

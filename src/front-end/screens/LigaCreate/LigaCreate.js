@@ -6,7 +6,7 @@ import {
 import { StorageAccessFramework } from 'expo-file-system';
 import {useNavigation}  from '@react-navigation/native';
 import stylesLC         from './stylesLC';
-import { LigaV } from '../../../back-and2/banco_dados/index';
+import { LigaV }        from '../../../back-and2/banco_dados/index';
 import Topo             from '../../components/Topo/Topo';
 import banco            from '../../../back-and2/banco_local';
 import SalveData        from '../../../back-and2/SalveData';
@@ -14,7 +14,7 @@ import SalveData        from '../../../back-and2/SalveData';
 export default function LigaCreate({route}){
 
   const navigation                = useNavigation();
-  const [textName, setTN]         = useState("BBC");
+  const [textName, setTN]         = useState("");
   const [textLocal, setLocal]     = useState("Bagé"); // posso buscar o local no cel com API
     
   useEffect(() => {

@@ -7,19 +7,16 @@ import stylesMem        from './stylesMem';
 import {useNavigation}  from '@react-navigation/native';
 import {Topo}           from '../../components/index_comps';
 import banco            from '../../../back-and2/banco_local';
-import assets           from '../../../../assets/index_assets';
 import SalveDate        from '../../../back-and2/SalveData';
 import { RetornaImg,  MontarArrayDest}   from '../../functions/index';
 
 export default function Membros({route}){
     const navigation = useNavigation();
     const [modal, setModal]     = useState(false);
-    const [itemOP, setItemOP]   = useState(route.params.time.list_users[0]);
+    const [itemOP, setItemOP]   = useState(route.params.time.list_users.length ? route.params.time.list_users[0] : {apelido: ""});
     
     useEffect(() => {
-        console.log("Depois fica assim!");
-        for(let x = 0 ; x < route.params.time.list_users.length ; x++)
-            console.log(x ," - index vetor", route.params.time.list_users[x].id);
+        
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
     },[]);

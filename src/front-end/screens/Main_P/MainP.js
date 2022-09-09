@@ -20,19 +20,9 @@ export default function Main_Players(){
     const [item, setItemLiga]   = useState({}); // true mostra ligas, só troca para pedidos se peds > 0
     const [modal, setModal]     = useState(false);
     
-    function backAction(){
-        Alert.alert("Sair", "Você deseja sair da sua conta?", [{
-              text: "Cancel",
-              onPress: () => null,
-              style: "cancel"
-            },
-            { text: "Sim", onPress: () =>  navigation.replace("Login")
-        }]);
-        return true;
-    }
+    
     useEffect(() => {
-        BackHandler.addEventListener("hardwareBackPress", backAction);
-        return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
+        
     },[]);
 
     
@@ -187,7 +177,7 @@ export default function Main_Players(){
                 barStyle="ligth-content"/>
             <Topo main = {true}/>
             <View style = {stylesMP.viewLiga}>
-                <Text style = {stylesMP.txt_TitleM}> Times </Text>  
+                <Text style = {stylesMP.txt_TitleM}> Ligas </Text>  
                 <View style = {stylesMP.viewL}> 
                     {render_Liga()} 
                 </View>

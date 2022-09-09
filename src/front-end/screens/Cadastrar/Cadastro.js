@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {
-    Text, View, TouchableOpacity, TextInput, Modal, Image, 
-    KeyboardAvoidingView, Alert, Keyboard
+    Text, View, TouchableOpacity, TextInput, Image, 
+    KeyboardAvoidingView
 } from 'react-native';
 import stylesC          from './styles_Cad';
 import {useNavigation}  from '@react-navigation/native';
-import AsyncStorage     from '@react-native-async-storage/async-storage';
 import banco            from '../../../back-and2/banco_local';
 import assets           from '../../../../assets/index_assets';
 import SalveData        from '../../../back-and2/SalveData';
@@ -13,7 +12,7 @@ import {CoachV}         from '../../../back-and2/banco_dados/index';
 
 export default function Cadastro(){
     const navigation = useNavigation();
-    const [textName, setName] = useState("Brunão");
+    const [textName, setName] = useState("");
     
     useEffect(() => {
         

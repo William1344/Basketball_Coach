@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {View, Image, Text, TouchableOpacity, ScrollView, BackHandler} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import stylesVP from './stylesVP';
+import {
+  View, Image, Text, TouchableOpacity, ScrollView, BackHandler, Alert
+    } from 'react-native';
+import Icon                 from 'react-native-vector-icons/AntDesign';
+import stylesVP             from './stylesVP';
 import {Cor, icons, styles} from '../../styles/index_S';
-import * as ImagePicker from 'expo-image-picker';
-import {useNavigation} from '@react-navigation/native';
-import banco from '../../../back-and2/banco_local';
-import SalveData from '../../../back-and2/SalveData';
-import {RetornaImg} from '../../functions/index';
+import * as ImagePicker     from 'expo-image-picker';
+import {useNavigation}      from '@react-navigation/native';
+import banco                from '../../../back-and2/banco_local';
+import SalveData            from '../../../back-and2/SalveData';
+import {RetornaImg}         from '../../functions/index';
 
 export default function ViewP({route}){
   const navigation            = useNavigation();
@@ -18,7 +20,7 @@ export default function ViewP({route}){
   
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", backAction);
-    return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
+    return () => { BackHandler.removeEventListener("hardwareBackPress", backAction); }
   },[]);
   function backAction(){
     if(route.params.veio_de == "MainL"){
@@ -50,8 +52,6 @@ export default function ViewP({route}){
     }
   }
   
-  
-
   function rend_Escores(){
     return(
       <View style = {stylesVP.viewR}>
@@ -232,14 +232,14 @@ export default function ViewP({route}){
     
   return(
     <View style = {stylesVP.telaFull}>
-    <View style = {stylesVP.viewS}>
+     <View style = {stylesVP.viewS}>
       <TouchableOpacity style = {stylesVP.viewIMG}
         onPress = {async () => {
           let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0.05,
             base64: true
           });
           if(!result.cancelled){
@@ -250,7 +250,6 @@ export default function ViewP({route}){
           } else {
             Alert.alert("Aviso", "Você não selecionou nenhuma imagem!");
           }
-
         }}
       >
         <Image style = {stylesVP.img}
@@ -267,15 +266,10 @@ export default function ViewP({route}){
           }
         }}
       >
-
-        <Text style = {stylesVP.texts}> {player.apelido != undefined ? player.apelido : player.nome} | nº regata: {player.numero} </Text>
-        <Text style = {stylesVP.texts}> {player.posicao} </Text>
-        <Text style = {stylesVP.texts}> Altura: {player.altura}m </Text>
-        <Text style = {stylesVP.texts}> Envergadura: {player.envergadura}m </Text>
-        <Text style = {stylesVP.texts}> Peso: {player.peso}kg </Text>
-        {player.isUser_Liga && <Text style = {stylesVP.texts}> Cod. Resgate: {player.idUsers}</Text>}
+        <Text style = {stylesVP.text_infos}> {banco.userMaster.nome} </Text>
+        <Text style = {{...stylesVP.text_infos, fontSize: 16 }}> Crie sua liga ou importe uma, cadastre os atletas e realize seus jogos </Text>
       </TouchableOpacity>
-    </View>
+     </View>
     <View style = {{width: '100%', ...styles.border1}}/>
     <View style = {stylesVP.viewL}>
       {rend_Escores()}

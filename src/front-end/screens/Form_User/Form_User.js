@@ -7,25 +7,27 @@ import { useNavigation }  from '@react-navigation/native';
 import SalveData          from '../../../back-and2/SalveData';
 import banco              from '../../../back-and2/banco_local';
 import { User_LigaV, User_GameV }          from '../../../back-and2/banco_dados/index';
-import assets             from '../../../../assets/index_assets';
 import { Picker }         from '@react-native-picker/picker';
-import { MontarArrayDest } from '../../functions/index';
+import { MontarArrayDest, RetornaImg } from '../../functions/index';
 
 export default function Form_User({route}){
   const navigation = useNavigation();
-  const [txt_altura, setAltura]   = useState("1.95");
+  const [image, setImage] = useState(0);
+  const [txt_altura, setAltura]   = useState("");
   const [posicao, setPosicao]     = useState("");
-  const [txt_idade, setIdade]     = useState("18");
-  const [txt_peso, setPeso]       = useState("80");
-  const [txt_numC, setNumC]       = useState("22");
-  const [txt_env, setEnv ]        = useState("1.95");
-  const [textApel, setTA]         = useState("Maria");
-  const [textNom, setTN]          = useState("Maria");
+  const [txt_idade, setIdade]     = useState("");
+  const [txt_peso, setPeso]       = useState("");
+  const [txt_numC, setNumC]       = useState("");
+  const [txt_env, setEnv ]        = useState("");
+  const [textApel, setTA]         = useState("");
+  const [textNom, setTN]          = useState("");
+  const [state, setState]         = useState(true);
 
   useEffect(() => {
     // verifica se veio de viewPlayer
     if(route.params.veio_de == "editit"){
       // pega os dados do player e coloca nos campos
+      setImage(route.params.player.image);
       setPosicao(route.params.player.posicao);
       setTA(route.params.player.apelido);
       setTN(route.params.player.nome);
@@ -38,7 +40,7 @@ export default function Form_User({route}){
     //AddPlayers();
     BackHandler.addEventListener("hardwareBackPress", backAction);
     return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
-  },[])
+  },[]);
   // função teste -- AddPlayers();
   async function AddPlayers(){
     async function cadastrarUser(player){
@@ -60,39 +62,39 @@ export default function Form_User({route}){
       let jgdrG = new User_GameV(us);
       route.params.time.list_usersG.push(jgdrG);     
     }
-   let player = {
-      nome          : "Jeovane",
-      apelido       : "Jeovane",
-      idade         : "18",
-      peso          : "80",
-      altura        : "1.95",
-      env           : "1.95",
-      numC          : "22",
-      posicao       : "armador"
-    }
-    await cadastrarUser(player);
-    player = {
-      nome          : "Arnaldo",
-      apelido       : "Arnaldo",
-      idade         : "18",
-      peso          : "80",
-      altura        : "1.95",
-      env           : "1.95",
-      numC          : "24",
-      posicao       : "ala-armador"
-    }
-    await cadastrarUser(player);
-    player = {
-      nome          : "José",
-      apelido       : "José",
-      idade         : "18",
-      peso          : "80",
-      altura        : "1.95",
-      env           : "1.95",
-      numC          : "26",
-      posicao       : "ala-armador"
-    }
-    await cadastrarUser(player);
+      let player = {
+        nome          : "Jeovane",
+        apelido       : "Jeovane",
+        idade         : "18",
+        peso          : "80",
+        altura        : "1.95",
+        env           : "1.95",
+        numC          : "22",
+        posicao       : "armador"
+      }
+      await cadastrarUser(player);
+      player = {
+        nome          : "Arnaldo",
+        apelido       : "Arnaldo",
+        idade         : "18",
+        peso          : "80",
+        altura        : "1.95",
+        env           : "1.95",
+        numC          : "24",
+        posicao       : "ala-armador"
+      }
+      await cadastrarUser(player);
+      player = {
+        nome          : "José",
+        apelido       : "José",
+        idade         : "18",
+        peso          : "80",
+        altura        : "1.95",
+        env           : "1.95",
+        numC          : "26",
+        posicao       : "ala-armador"
+      }
+      await cadastrarUser(player);
     player = {
       nome          : "Rubens",
       apelido       : "Rubens",
@@ -249,19 +251,32 @@ export default function Form_User({route}){
         dest        : await MontarArrayDest(route.params.time.list_users),
         index_time  : route.params.index_time,
       });
-    }else{
-      
     }
   }
 
   return(
     <View style={stylesF.telaFull}>
       <TouchableOpacity style = {stylesF.btt_img} 
-        onPress = {()=>{
+        onPress = {async ()=>{
           // setar a imagem do jogador
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.1,
+            base64: true
+          });
+          if(!result.cancelled){
+            player.image = result;
+            await SalveData(banco);
+            setState(!state);
+            //backAction();
+          } else {
+            Alert.alert("Aviso", "Você não selecionou nenhuma imagem!");
+          }
         }}
       >
-        <Image style={stylesF.img} source={assets.play_lg9}/>
+        <Image style={stylesF.img} source={RetornaImg(image)}/>
       </TouchableOpacity>
       <Text style={stylesF.title}>- Dados do jogador -</Text>
       <ScrollView style = {stylesF.scrollV}>
