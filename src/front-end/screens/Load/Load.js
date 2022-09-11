@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useEffect }     from    'react';
 import {useNavigation}          from    '@react-navigation/native';
 import AsyncStorage             from    '@react-native-async-storage/async-storage';
@@ -6,16 +6,6 @@ import * as Font                from    'expo-font';
 import banco_local              from    '../../../back-and2/banco_local';
 import GetData                  from    '../../../back-and2/GetData';
 import CompLoad                 from    './CompLoad';
-=======
-import React, { useEffect } from 'react';
-import {useNavigation}      from '@react-navigation/native';
-import AsyncStorage         from '@react-native-async-storage/async-storage';
-import * as Font            from 'expo-font';
-import banco_local          from '../../../back-and2/banco_local';
-import GetData              from '../../../back-and2/GetData';
-import CompLoad             from './CompLoad';
-import { CoachV }           from '../../../back-and2/banco_dados';
->>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
 
 export default function Load(){
     const navigation = useNavigation();
