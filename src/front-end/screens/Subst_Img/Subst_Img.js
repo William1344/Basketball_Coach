@@ -69,8 +69,8 @@ export default function Subst_Img(){
                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
                   allowsEditing: true,
                   aspect: [1, 1],
-                  quality: 0.1,
-                  base64: true
+                  quality: 0.5,
+                  base64: false
                 });
                 if(!result.cancelled){
                   banco.userMaster.image = result;

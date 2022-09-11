@@ -14,8 +14,8 @@ import SalveData        from '../../../back-and2/SalveData';
 export default function LigaCreate({route}){
 
   const navigation                = useNavigation();
-  const [textName, setTN]         = useState("BBC");
-  const [textLocal, setLocal]     = useState("Bagé"); // posso buscar o local no cel com API
+  const [textName, setTN]         = useState("");
+  const [textLocal, setLocal]     = useState(""); // posso buscar o local no cel com API
     
   useEffect(() => {
     // teste de reloads
@@ -43,7 +43,7 @@ export default function LigaCreate({route}){
       navigation.replace("MainP");
     }else{
       Alert.alert("Preencha todos os campos");
-      console.log("Preencha todos os campos");
+      //console.log("Preencha todos os campos");
     }
   }
 
@@ -62,7 +62,7 @@ export default function LigaCreate({route}){
           break;
         }
       }
-      console.log("fileUri", fileUri);
+      //console.log("fileUri", fileUri);
       
       let arquivo = await StorageAccessFramework.readAsStringAsync(fileUri);
       let objeto = JSON.parse(arquivo);

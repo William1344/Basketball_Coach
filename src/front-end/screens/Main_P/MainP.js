@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     Text, Image, View, StatusBar, Modal, PermissionsAndroid,
-    TouchableOpacity, Alert, FlatList, BackHandler, 
-    
+    TouchableOpacity, Alert, FlatList
 } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import banco from '../../../back-and2/banco_local';
-import { Topo} from '../../components/index_comps';
+import { Topo } from '../../components/index_comps';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconE from 'react-native-vector-icons/Entypo';
-import {stylesMP, stylesC} from './styles/indexStyles';
+import { stylesMP, stylesC } from './styles/indexStyles';
 import { Cor, icons } from '../../styles/index_S';
 import { CheckPermission, ExportJSON, MontarArrayDest, RetornaImgL, SetaDests } from '../../functions/index';
 
@@ -17,34 +16,14 @@ import { CheckPermission, ExportJSON, MontarArrayDest, RetornaImgL, SetaDests } 
 export default function Main_Players(){
     
     const navigation = useNavigation();
-    const [item, setItemLiga]   = useState({}); // true mostra ligas, só troca para pedidos se peds > 0
-    const [modal, setModal]     = useState(false);
+    const [ item, setItemLiga ]   = useState({}); // true mostra ligas, só troca para pedidos se peds > 0
+    const [ modal, setModal ]     = useState(false);
     
-    function backAction(){
-        Alert.alert("Sair", "Você deseja sair da sua conta?", [{
-              text: "Cancel",
-              onPress: () => null,
-              style: "cancel"
-            },
-            { text: "Sim", onPress: () =>  navigation.replace("Login")
-        }]);
-        return true;
-    }
-    useEffect(() => {
-        BackHandler.addEventListener("hardwareBackPress", backAction);
-        return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
-    },[]);
-
-    
-
     useEffect(async () => {
         await CheckPermission();
-        
         for(let tm of banco.times)
             tm.destaques = await SetaDests(tm.list_users);
-        //console.log("Image", banco.userMaster.image);
-        //console.log("Ligas ", banco.ligas.length)
-        //console.log("Liga -> \n", banco.ligas[0].confLiga);
+
     }, []);
     // Funções
         
@@ -146,7 +125,6 @@ export default function Main_Players(){
     function Comp_Liga({item, index}){
         const dt = new Date(item.createdAt);
         const data = "Criada: "+ dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear().toString()[2] + dt.getFullYear().toString()[3];
-
         // monta o array destaques
         return(
             <View style={stylesC.view_compFull}>
@@ -208,7 +186,7 @@ export default function Main_Players(){
                     <TouchableOpacity 
                         style = {stylesMP.btt_new_liga}
                         onPress = {async () => {
-                            await export_JSON();
+                            await ExportJSON();
                         }}
                     >
                         <Icon 

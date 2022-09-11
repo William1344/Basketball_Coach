@@ -7,6 +7,6 @@ let banco_local = {
   createdAt       : "",   // data de criação do app
   times           : [],   // times do trainador [ User_LigaV{} ]
   atletas         : [],   // jogadores do time
-  userMaster      : null, // Treinador e ou dono do cell!
+  userMaster      : {}, // Treinador e ou dono do cell!
   tema            : true, // true = dark, false = light
 };export default banco_local;

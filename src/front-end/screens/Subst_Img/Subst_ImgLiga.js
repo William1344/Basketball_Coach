@@ -48,8 +48,8 @@ export default function Subst_ImgLg({route}){
 
   async function setar_Img(value){ // value é o valor referente ao icon
    
-    if(route.params.time.img_log != value){
-      route.params.time.img_logo = value;
+    if(route.params.time.image_log != value){
+      route.params.time.image_log = value;
       await SalveDados(banco);
       navigation.replace("MainL",{
         time        : route.params.time,
@@ -72,8 +72,8 @@ export default function Subst_ImgLg({route}){
                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
                   allowsEditing: true,
                   aspect: [1, 1],
-                  quality: 0.2,
-                  base64: true
+                  quality: 0.5,
+                  base64: false
                 });
                 if(!result.cancelled){
                   route.params.time.image_log = result;

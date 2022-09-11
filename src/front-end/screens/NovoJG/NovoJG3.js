@@ -145,7 +145,7 @@ export default function Novo_Jg({route}){
                 setListSubs();
                 
                 setTimesOK(true); 
-                console.log("TimesOK -> true")
+                //console.log("TimesOK -> true")
             } 
             else if((timeA.length < 3 || timeB.length < 3) && timesOK) setTimesOK(false);
             else if(timesOK && (timeA.length == 3) && (timeB.length == 3)){
@@ -170,7 +170,7 @@ export default function Novo_Jg({route}){
                 setListSubs();
                 setJT(true);
                 setTimesOK(true);
-                console.log("TimesOK -> true")
+                //console.log("TimesOK -> true")
             } 
             else if((timeA.length < 5 || timeB.length < 5) && timesOK) setTimesOK(false);
         } else if(modo == "5x5Of"){
@@ -189,7 +189,7 @@ export default function Novo_Jg({route}){
                 if((timeA.length == 5) && (list_subs.length > 2) && !timesOK){
                     setJT(true);
                     setTimesOK(true);
-                    console.log("TimesOK -> true")
+                    //console.log("TimesOK -> true")
                 } 
                 else if((timeA.length < 5 || list_subs.length < 3) && timesOK) setTimesOK(false);
 
@@ -262,9 +262,9 @@ export default function Novo_Jg({route}){
     // starta para a proxima tela, se modo de jogo 3x3 || 5x5 = true 
     // && timeA e timeB com 3 ou 5 jogadores conforme o modo de jogo
     function start_Game(){
-        console.log("TimesOK?", timesOK)
+        //console.log("TimesOK?", timesOK)
         if(timesOK){
-            console.log("timesOK -> true");
+            //console.log("timesOK -> true");
             // monta timeA com 3 ou 5 jogadores conforme o (timeN.length)
             if(modo == "3x3"){
                 let dt = new Date();

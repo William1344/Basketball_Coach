@@ -1,14 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {View, ImageBackground, ActivityIndicator} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Font from 'expo-font';
-import configBD from '../../../../config/config.json';
-import banco_local from '../../../back-and2/banco_local';
-import SalveDate from '../../../back-and2/SalveData';
-import GetData from '../../../back-and2/GetData';
-import CompLoad from './CompLoad';
-//import styles from '../comp/Styles'
+import React, { useEffect }     from    'react';
+import {useNavigation}          from    '@react-navigation/native';
+import AsyncStorage             from    '@react-native-async-storage/async-storage';
+import * as Font                from    'expo-font';
+import banco_local              from    '../../../back-and2/banco_local';
+import GetData                  from    '../../../back-and2/GetData';
+import CompLoad                 from    './CompLoad';
 
 export default function Load(){
     const navigation = useNavigation();
@@ -41,15 +37,13 @@ export default function Load(){
         let object = await GetData();
         if (object.status){
             banco_local.userMaster    = object.banco.userMaster;
-            banco_local.ligas         = object.banco.ligas;
             banco_local.usersLocal    = object.banco.usersLocal;
             banco_local.tema          = object.banco.tema;
             banco_local.times         = object.banco.times;
             banco_local.atletas       = object.banco.atletas;
             
-            navigation.navigate('MainP');
-        } else navigation.navigate('Cadastro');
-
+            return navigation.replace('MainP');
+        } else return navigation.replace('Cadastro');
     };
 
     useEffect(()=>{
@@ -63,7 +57,7 @@ export default function Load(){
         
     async function _removeTokens() {
         const jsBanco = await AsyncStorage.removeItem("Basketball_Coach");
-        console.log(jsBanco);    
+        //console.log(jsBanco);    
     }
 
     return(

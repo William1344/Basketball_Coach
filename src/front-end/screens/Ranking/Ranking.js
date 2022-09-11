@@ -100,7 +100,7 @@ export default function Ranking({route}){
             <View style = {stylesR.viewTopo}>
                 <View style = {stylesR.viewTopoL}>
                     <Image style = {stylesR.imgLiga}
-                        source = {RetornaImgL(route.params.time.img_log)}
+                        source = {RetornaImgL(route.params.time.image_log)}
                         resizeMode="cover"
                     />
                     <View style = {stylesR.viewIN}>

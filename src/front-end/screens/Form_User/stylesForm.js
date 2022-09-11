@@ -58,7 +58,7 @@ const stylesForm = StyleSheet.create({
           alignItems: 'center',
           marginTop: 10,
           width: '100%',
-          height: '10%',
+          height: '12%',
       },
       title:{
         marginTop : 10,

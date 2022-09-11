@@ -46,6 +46,7 @@ export default function Load3x3({route}){
       BackHandler.removeEventListener("hardwareBackPress", backAction);
     }
   },[]);
+   // como será verificado o jogador clutch???
 
   function _zeraStates(){
     setA1_2pts(0);
@@ -105,7 +106,7 @@ export default function Load3x3({route}){
   const [icon_inc, setIcon_i] = useState(icons.incrementa);
   const [load, setLoad]       = useState(false); // true -> carregando
   // states para jogador
-
+  const [cluth, setCluth]     = useState(0); // id do jogador cluth
   // 2pts Time A
   const [A1_2pts, setA1_2pts] = useState(0);
   const [A2_2pts, setA2_2pts] = useState(0);
@@ -324,8 +325,7 @@ export default function Load3x3({route}){
   }
 
   // variaveis da tela 
-  // como será verificado o jogador clutch???
-  var jgd_cluth = new Array();
+ 
   // inicia a tela sempre que renderizar
   
   // controle do cronometro
@@ -417,8 +417,10 @@ export default function Load3x3({route}){
 
                   <TouchableOpacity style = {styles3x3.bttScor}
                     onPress = {() => {
-                      if(inc) setA1_2pts(A1_2pts + 1)
-                      else setA1_2pts(A1_2pts - 1)
+                      if(inc) {
+                        setA1_2pts(A1_2pts + 1);
+                        setCluth(route.params.tmA[0].Users_idUsers);
+                      } else setA1_2pts(A1_2pts - 1)
                       renderPlacar(true, true);
                     }}
                   >
@@ -427,7 +429,10 @@ export default function Load3x3({route}){
 
                   <TouchableOpacity style = {styles3x3.bttScor}
                     onPress = {() => { 
-                      if(inc) setA1_3pts(A1_3pts + 1)
+                      if(inc){ 
+                        setA1_3pts(A1_3pts + 1);
+                        setCluth(route.params.tmA[0].Users_idUsers);
+                      }
                       else setA1_3pts(A1_3pts - 1)
                       renderPlacar(false, true);
                     }}
@@ -486,8 +491,10 @@ export default function Load3x3({route}){
 
                   <TouchableOpacity style = {styles3x3.bttScor}
                     onPress = {() => {
-                      if(inc) setA2_2pts(A2_2pts + 1)
-                      else setA2_2pts(A2_2pts - 1)
+                      if(inc) {
+                        setA2_2pts(A2_2pts + 1);
+                        setCluth(route.params.tmA[1].Users_idUsers);
+                      } else setA2_2pts(A2_2pts - 1);
                       renderPlacar(true, true);
                     }}
                   >
@@ -496,8 +503,10 @@ export default function Load3x3({route}){
 
                   <TouchableOpacity style = {styles3x3.bttScor}
                     onPress = {() => { 
-                      if(inc) setA2_3pts(A2_3pts + 1)
-                      else setA2_3pts(A2_3pts - 1)
+                      if(inc) {
+                        setA2_3pts(A2_3pts + 1);
+                        setCluth(route.params.tmA[1].Users_idUsers);
+                      } else setA2_3pts(A2_3pts - 1);
                       renderPlacar(false, true);
                     }}
                   >
@@ -557,8 +566,10 @@ export default function Load3x3({route}){
 
                   <TouchableOpacity style = {styles3x3.bttScor}
                     onPress = {() => {
-                      if(inc) setA3_2pts(A3_2pts + 1)
-                      else setA3_2pts(A3_2pts - 1)
+                      if(inc) {
+                        setA3_2pts(A3_2pts + 1);
+                        setCluth(route.params.tmA[2].Users_idUsers);
+                      } else setA3_2pts(A3_2pts - 1);
                       renderPlacar(true, true);
                     }}
                   >
@@ -567,8 +578,10 @@ export default function Load3x3({route}){
 
                   <TouchableOpacity style = {styles3x3.bttScor}
                     onPress = {() => { 
-                      if(inc) setA3_3pts(A3_3pts + 1)
-                      else setA3_3pts(A3_3pts - 1)
+                      if(inc) {
+                        setA3_3pts(A3_3pts + 1);
+                        setCluth(route.params.tmA[2].Users_idUsers);
+                      } else setA3_3pts(A3_3pts - 1);
                       renderPlacar(false, true);
                     }}
                   >
@@ -619,31 +632,35 @@ export default function Load3x3({route}){
                   {/* timeB[0] */}
                   <View style = {styles3x3.viewComp}> 
                     <TouchableOpacity style = {styles3x3.bttNome}
-                        onPress = {() => {
-                            seta_B1();
-                            set_tSub(timeB[0].apelido);
-                            set_modal(true);
-                        }}
+                      onPress = {() => {
+                        seta_B1();
+                        set_tSub(timeB[0].apelido);
+                        set_modal(true);
+                      }}
                     >
                         <Text style = {styles3x3.textNome}> {route.params.tmB[0].apelido} </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style = {styles3x3.bttScor}
-                        onPress = {() => {
-                            if(inc) setB1_2pts(B1_2pts + 1)
-                            else setB1_2pts(B1_2pts - 1)
-                            renderPlacar(true, false);
-                        }}
+                      onPress = {() => {
+                        if(inc){ 
+                          setB1_2pts(B1_2pts + 1);
+                          setCluth(route.params.tmB[0].Users_idUsers);
+                        } else setB1_2pts(B1_2pts - 1);
+                        renderPlacar(true, false);
+                      }}
                     >
                         <Text style = {styles3x3.textScor}> {B1_2pts}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style = {styles3x3.bttScor}
-                        onPress = {() => { 
-                            if(inc) setB1_3pts(B1_3pts + 1)
-                            else setB1_3pts(B1_3pts - 1)
-                            renderPlacar(false, false);
-                        }}
+                      onPress = {() => { 
+                        if(inc) {
+                          setB1_3pts(B1_3pts + 1);
+                          setCluth(route.params.tmB[0].Users_idUsers);
+                        } else setB1_3pts(B1_3pts - 1);
+                        renderPlacar(false, false);
+                      }}
                     >
                         <Text style = {styles3x3.textScor}> {B1_3pts} </Text>
                     </TouchableOpacity>
@@ -688,42 +705,46 @@ export default function Load3x3({route}){
                   {/* timeB[1] */}
                   <View style = {styles3x3.viewComp}> 
                     <TouchableOpacity style = {styles3x3.bttNome}
-                        onPress = {() => {
-                            seta_B2();
-                            set_tSub(timeB[1].apelido);
-                            set_modal(true);
-                        }}
+                      onPress = {() => {
+                        seta_B2();
+                        set_tSub(timeB[1].apelido);
+                        set_modal(true);
+                      }}
                     >
-                        <Text style = {styles3x3.textNome}> {route.params.tmB[1].apelido} </Text>
+                      <Text style = {styles3x3.textNome}> {route.params.tmB[1].apelido} </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style = {styles3x3.bttScor}
-                        onPress = {() => {
-                            if(inc) setB2_2pts(B2_2pts + 1)
-                            else setB2_2pts(B2_2pts - 1)
-                            renderPlacar(true, false);
-                        }}
+                      onPress = {() => {
+                        if(inc) {
+                          setB2_2pts(B2_2pts + 1);
+                          setCluth(route.params.tmB[1].Users_idUsers);
+                        } else setB2_2pts(B2_2pts - 1);
+                        renderPlacar(true, false);
+                      }}
                     >
                         <Text style = {styles3x3.textScor}> {B2_2pts}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style = {styles3x3.bttScor}
-                        onPress = {() => { 
-                            if(inc) setB2_3pts(B2_3pts + 1)
-                            else setB2_3pts(B2_3pts - 1)
-                            renderPlacar(false, false);
-                        }}
+                      onPress = {() => { 
+                        if(inc) {
+                          setB2_3pts(B2_3pts + 1);
+                          setCluth(route.params.tmB[1].Users_idUsers);
+                        } else setB2_3pts(B2_3pts - 1);
+                        renderPlacar(false, false);
+                      }}
                     >
                         <Text style = {styles3x3.textScor}> {B2_3pts} </Text>
                     </TouchableOpacity>
 
                     {conf.rebote && <TouchableOpacity style = {styles3x3.bttScor}
-                        onPress = {() => {
-                            if(inc) setB2_Reb(B2_Reb + 1);
-                            else setB2_Reb(B2_Reb - 1);
-                        }}
+                      onPress = {() => {
+                        if(inc) setB2_Reb(B2_Reb + 1);
+                        else setB2_Reb(B2_Reb - 1);
+                      }}
                     >
-                        <Text style = {styles3x3.textScor}> {B2_Reb} </Text>
+                      <Text style = {styles3x3.textScor}> {B2_Reb} </Text>
                     </TouchableOpacity>}
 
                     {conf.assist && <TouchableOpacity style = {styles3x3.bttScor}
@@ -757,31 +778,35 @@ export default function Load3x3({route}){
                   {/* timeB[2] */}    
                   <View style = {styles3x3.viewComp}> 
                     <TouchableOpacity style = {{...styles3x3.bttNome, borderBottomLeftRadius: 30}}
-                        onPress = {() => {
-                            seta_B3();
-                            set_tSub(timeB[2].apelido);
-                            set_modal(true);
-                        }}
+                      onPress = {() => {
+                        seta_B3();
+                        set_tSub(timeB[2].apelido);
+                        set_modal(true);
+                      }}
                     >
-                        <Text style = {styles3x3.textNome}> {route.params.tmB[2].apelido} </Text>
+                      <Text style = {styles3x3.textNome}> {route.params.tmB[2].apelido} </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style = {styles3x3.bttScor}
-                        onPress = {() => {
-                            if(inc) setB3_2pts(B3_2pts + 1)
-                            else setB3_2pts(B3_2pts - 1)
-                            renderPlacar(true, false);
-                        }}
+                      onPress = {() => {
+                        if(inc) {
+                          setB3_2pts(B3_2pts + 1);
+                          setCluth(route.params.tmB[2].Users_idUsers);
+                        } else setB3_2pts(B3_2pts - 1);
+                        renderPlacar(true, false);
+                      }}
                     >
                         <Text style = {styles3x3.textScor}> {B3_2pts}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style = {styles3x3.bttScor}
-                        onPress = {() => { 
-                            if(inc) setB3_3pts(B3_3pts + 1)
-                            else setB3_3pts(B3_3pts - 1)
-                            renderPlacar(false, false);
-                        }}
+                      onPress = {() => { 
+                        if(inc) {
+                          setB3_3pts(B3_3pts + 1);
+                          setCluth(route.params.tmB[2].Users_idUsers);
+                        } else setB3_3pts(B3_3pts - 1);
+                        renderPlacar(false, false);
+                      }}
                     >
                         <Text style = {styles3x3.textScor}> {B3_3pts} </Text>
                     </TouchableOpacity>
@@ -849,8 +874,17 @@ export default function Load3x3({route}){
   }   
   // se sim, finaliza o jogo e vai para visualização do jogo!
   async function end_game(){  
-    if(plcA > plcB)      for(let jgd of timeA) jgd.bool_dec = true;    
-    else                 for(let jgd of timeB) jgd.bool_dec = true;
+    if(plcA > plcB){ 
+      for(let jgd of timeA) {
+        if(cluth == jgd.Users_idUsers) jgd.bool_cluth = true;
+        jgd.bool_dec = true;
+      } 
+    } else {
+      for(let jgd of timeB){ 
+        if(cluth == jgd.Users_idUsers) jgd.bool_cluth = true;
+        jgd.bool_dec = true;
+      }
+    }
     seta_A1();  seta_B1();
     seta_A2();  seta_B2();
     seta_A3();  seta_B3();
@@ -876,11 +910,11 @@ export default function Load3x3({route}){
     };
 
     //incrementa o jogo no perfil de cada jogador
-    console.log("Jogo para incremet", jg);
+    //console.log("Jogo para incremet", jg);
     let jgV = await IncremJg(route.params.time, jg);
     route.params.time.listJgs3x3.push(jgV);
     SalveData(banco);
-    console.log("Jogo Var -> \n",jgV);
+    //console.log("Jogo Var -> \n",jgV);
     route.params.time.total_pts += plcA + plcB;
     navigation.replace("ViewJG3", {
       game            : jgV,

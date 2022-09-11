@@ -1,5 +1,5 @@
 import SetaDest from './SetaDests';
-export default async function MontarArrayDest(users){
+export default async function MontarArrayDesjgd_Vencedort(users){
   let item = await SetaDest(users);
   let array = [];
     array.push(item.jgd_Cluth);

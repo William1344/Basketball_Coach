@@ -1,31 +1,33 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, TouchableOpacity, TextInput, Image, 
-  KeyboardAvoidingView, Alert, BackHandler, ScrollView
+  Alert, BackHandler, ScrollView
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import stylesF            from './stylesForm';
 import { useNavigation }  from '@react-navigation/native';
 import SalveData          from '../../../back-and2/SalveData';
 import banco              from '../../../back-and2/banco_local';
 import { User_LigaV, User_GameV }          from '../../../back-and2/banco_dados/index';
-import assets             from '../../../../assets/index_assets';
 import { Picker }         from '@react-native-picker/picker';
-import { MontarArrayDest } from '../../functions/index';
+import { MontarArrayDest, RetornaImg } from '../../functions/index';
 
 export default function Form_User({route}){
   const navigation = useNavigation();
-  const [txt_altura, setAltura]   = useState("1.95");
+  const [image, setImage]         = useState(0);
+  const [txt_altura, setAltura]   = useState("");
   const [posicao, setPosicao]     = useState("");
-  const [txt_idade, setIdade]     = useState("18");
-  const [txt_peso, setPeso]       = useState("80");
-  const [txt_numC, setNumC]       = useState("22");
-  const [txt_env, setEnv ]        = useState("1.95");
-  const [textApel, setTA]         = useState("Maria");
-  const [textNom, setTN]          = useState("Maria");
+  const [txt_idade, setIdade]     = useState("0");
+  const [txt_peso, setPeso]       = useState("");
+  const [txt_numC, setNumC]       = useState("");
+  const [txt_env, setEnv ]        = useState("");
+  const [textApel, setTA]         = useState("");
+  const [textNom, setTN]          = useState("");
 
   useEffect(() => {
     // verifica se veio de viewPlayer
-    if(route.params.veio_de == "editit"){
+    if(route.params.veio_de == "ViewP"){
       // pega os dados do player e coloca nos campos
+      setImage(route.params.player.image);
       setPosicao(route.params.player.posicao);
       setTA(route.params.player.apelido);
       setTN(route.params.player.nome);
@@ -214,10 +216,11 @@ export default function Form_User({route}){
     }else{
       // pode ter vindo do viewPlayer, 
       // ou seja precisa carregar as configs do jogador e ser capaz de salvar
-      navigation.replace("Membros",{
+      navigation.replace("ViewP",{
         time        : route.params.time,
         dest        : route.params.dest,
         index_time  : route.params.index_time,
+        player      : route.params.player,
       });
     }
     return true;
@@ -225,49 +228,56 @@ export default function Form_User({route}){
 
   async function cadastrarUser(){
     // verifica se veio de viewPlayer ou se é um novo cadastro
-    if(route.params.veio_de == "menu_time"){
-      let us = {
-        id : route.params.time.list_users.length,   // id vai ser o index do vetor de usersLocal
-        image         : 0,                          // image do usuário
-        nome          : textNom,                    // nome do usuário
-        apelido       : textApel,                   // apelido do jogador
-        idade         : txt_idade,                  // idade do jogador
-        peso          : txt_peso,                   // peso do jogador
-        altura        : txt_altura,                 // altura do jogador
-        envergadura   : txt_env,                    // envergadura do jogador
-        numero        : txt_numC,                   // numero da camisa do jogador
-        posicao       : posicao,                    // posição do jogador
-      }
-
-      let jgdr = new User_LigaV(us);
-      route.params.time.list_users.push(jgdr);
-      let jgdrG = new User_GameV(us);
-      route.params.time.list_usersG.push(jgdrG);
-      await SalveData(banco);
-      navigation.replace("MainL",{
-        time        : route.params.time,
-        dest        : await MontarArrayDest(route.params.time.list_users),
-        index_time  : route.params.index_time,
-      });
-    }else{
-      
+    let us = {
+      id : route.params.time.list_users.length,   // id vai ser o index do vetor de usersLocal
+      image         : image,                      // image do usuário
+      nome          : textNom,                    // nome do usuário
+      apelido       : textApel,                   // apelido do jogador
+      idade         : txt_idade,                  // idade do jogador
+      peso          : txt_peso,                   // peso do jogador
+      altura        : txt_altura,                 // altura do jogador
+      envergadura   : txt_env,                    // envergadura do jogador
+      numero        : txt_numC,                   // numero da camisa do jogador
+      posicao       : posicao,                    // posição do jogador
     }
+
+    let jgdr = new User_LigaV(us);
+    route.params.time.list_users.push(jgdr);
+    let jgdrG = new User_GameV(us);
+    route.params.time.list_usersG.push(jgdrG);
+    await SalveData(banco);
+    navigation.replace("MainL",{
+      time        : route.params.time,
+      dest        : await MontarArrayDest(route.params.time.list_users),
+      index_time  : route.params.index_time,
+    });
   }
 
   return(
     <View style={stylesF.telaFull}>
       <TouchableOpacity style = {stylesF.btt_img} 
-        onPress = {()=>{
-          // setar a imagem do jogador
+        onPress = {async ()=>{
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.1,
+            base64: true
+          });
+          if(!result.cancelled){
+            setImage(result);
+          } else {
+            Alert.alert("Aviso", "Você não selecionou nenhuma imagem!");
+          }
         }}
       >
-        <Image style={stylesF.img} source={assets.play_lg9}/>
+        <Image style={stylesF.img} source={RetornaImg(image)}/>
       </TouchableOpacity>
       <Text style={stylesF.title}>- Dados do jogador -</Text>
       <ScrollView style = {stylesF.scrollV}>
         <View style = {stylesF.viewForm}>
         {/*Picker*/}
-        <View style = {{...stylesF.viewLinha, height: '15%'}}> 
+        <View style = {{...stylesF.viewLinha, height: '15%', marginBottom: 5}}> 
           <Text style={stylesF.texts}>Posição</Text>
           <View style = {stylesF.viewPicker}>
           <Picker 
@@ -286,7 +296,7 @@ export default function Form_User({route}){
           </View>
         </View>
         {/*Nome*/}
-        <View style = {{...stylesF.viewLinha, justifyContent: 'flex-start', height: '10%'}}> 
+        <View style = {{...stylesF.viewLinha, justifyContent: 'flex-start', height: '13%'}}> 
           <View style = {stylesF.viewImput}>
           <TextInput style = {{...stylesF.txt_input, width: '100%', marginLeft: 10, textAlign: 'justify', borderWidth: 0}}
             value           = {textNom}
@@ -296,7 +306,7 @@ export default function Form_User({route}){
           </View>
         </View>
         {/*Apelido*/}
-        <View style = {{...stylesF.viewLinha, justifyContent: 'flex-start', height: '10%'}}> 
+        <View style = {{...stylesF.viewLinha, justifyContent: 'flex-start', height: '13%'}}> 
           <View style = {stylesF.viewImput}>
           <TextInput style = {{...stylesF.txt_input, width: '100%', marginLeft: 10, textAlign: 'justify', borderWidth:0}}
             value           = {textApel}
@@ -306,22 +316,20 @@ export default function Form_User({route}){
           </View>
         </View>
         {/*Idade*/}
-        <View style = {stylesF.viewLinha}>
+        {/*<View style = {stylesF.viewLinha}>
           <Text style={stylesF.texts}>Idade</Text>
           <TextInput style = {stylesF.txt_input}
             value           = {txt_idade}
             onChangeText    = {(tt)=>{setIdade(tt)}}
             placeholder     = "Idade"
-            keyboardType    = "numeric"
           />
-        </View>
+        </View>*/}
         {/*Altura*/}
         <View style = {stylesF.viewLinha}> 
           <Text style={stylesF.texts}>Altura</Text>
           <TextInput style = {stylesF.txt_input}
             value           = {txt_altura}
             onChangeText    = {(tt)=>{setAltura(tt)}}
-            keyboardType    = "numeric"
             placeholder     = {"Altura (m)"} 
           /> 
         </View>
@@ -331,7 +339,6 @@ export default function Form_User({route}){
           <TextInput style = {stylesF.txt_input}
             value           = {txt_peso}
             onChangeText    = {(tt)=>{setPeso(tt)}}
-            keyboardType    = "numeric"
             placeholder     = {"Peso (kg)"}
           />
         </View>
@@ -341,7 +348,6 @@ export default function Form_User({route}){
           <TextInput style = {stylesF.txt_input}
             value           = {txt_env}
             onChangeText    = {(tt)=>{setEnv(tt)}}
-            keyboardType    = "numeric"
             placeholder     = {"Envergadura (m)"}
           />
         </View>
@@ -351,7 +357,6 @@ export default function Form_User({route}){
           <TextInput style = {stylesF.txt_input}
             value           = {txt_numC}
             onChangeText    = {(tt)=>{setNumC(tt)}}
-            keyboardType    = "numeric"
             placeholder     = {"Nº Regata"}
           />
         </View>

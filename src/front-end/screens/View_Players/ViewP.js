@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {View, Image, Text, TouchableOpacity, ScrollView, BackHandler} from 'react-native';
+import {View, Image, Text, TouchableOpacity, ScrollView, BackHandler, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import stylesVP from './stylesVP';
 import {Cor, icons, styles} from '../../styles/index_S';
@@ -21,19 +21,19 @@ export default function ViewP({route}){
     return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
   },[]);
   function backAction(){
-    if(route.params.veio_de == "MainL"){
-      navigation.replace("MainL", {
-        index_time  : route.params.index_time,
-        time        : route.params.time,
-        dest        : route.params.dest,
-      });
-    } else if(route.params.veio_de == "Membros"){
+    if(route.params.veio_de == "Membros"){
       navigation.replace("Membros", {
         index_time  : route.params.index_time,
         time        : route.params.time,
         dest        : route.params.dest,
       });
-    }
+    } else {
+      navigation.replace("MainL", {
+        index_time  : route.params.index_time,
+        time        : route.params.time,
+        dest        : route.params.dest,
+      });
+    } 
     return true;
   }
   
@@ -239,8 +239,8 @@ export default function ViewP({route}){
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [1, 1],
-            quality: 1,
-            base64: true
+            quality: 0.5,
+            base64: false,
           });
           if(!result.cancelled){
             player.image = result;
@@ -259,21 +259,22 @@ export default function ViewP({route}){
       </TouchableOpacity>
       <TouchableOpacity style = {stylesVP.viewInfosP}
         onPress = {() => {
-          if(route.params.veio_de == "MainP"){
-            navigation.replace("Form_User",{
-              player  : banco.userMaster,
-              veio_de : "MainP",
-            });
-          }
+          navigation.replace("Form_User",{
+            player      :   route.params.player,
+            veio_de     :   "ViewP",
+            time        :   route.params.time,
+            dest        :   route.params.dest,
+            index_time  :   route.params.index_time,
+          });
+          
         }}
       >
 
-        <Text style = {stylesVP.texts}> {player.apelido != undefined ? player.apelido : player.nome} | nº regata: {player.numero} </Text>
+        <Text style = {stylesVP.texts}> {player.apelido != undefined ? player.apelido : player.nome} | nº: {player.numero} </Text>
         <Text style = {stylesVP.texts}> {player.posicao} </Text>
         <Text style = {stylesVP.texts}> Altura: {player.altura}m </Text>
         <Text style = {stylesVP.texts}> Envergadura: {player.envergadura}m </Text>
         <Text style = {stylesVP.texts}> Peso: {player.peso}kg </Text>
-        {player.isUser_Liga && <Text style = {stylesVP.texts}> Cod. Resgate: {player.idUsers}</Text>}
       </TouchableOpacity>
     </View>
     <View style = {{width: '100%', ...styles.border1}}/>

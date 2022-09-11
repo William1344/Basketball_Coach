@@ -17,7 +17,6 @@ export default function Main_Liga({route}){
     const [load, setLoad]                   =  useState(false); // true -> carregando
 
     useEffect(()=>{
-        console.log(route.params.time.image_log);
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
     }, []);
@@ -97,10 +96,11 @@ export default function Main_Liga({route}){
             <TouchableOpacity style = {stylesCJ.btt_fl}
                 onPress = {()=>{
                     navigation.replace("ViewP",{
-                        player  :   item,
-                        time    :   route.params.time,
-                        dest    :   route.params.dest,
-                        veio_de :   "MainL",
+                        player      :   item,
+                        time        :   route.params.time,
+                        dest        :   route.params.dest,
+                        index_time  :   route.params.index_time,
+                        veio_de     :   "MainL",
                     });
                 }}
             >
@@ -220,7 +220,7 @@ export default function Main_Liga({route}){
                     <TouchableOpacity
                         style = {styleM.btt_opacit}
                         onPress = {async () => {
-                            console.log("Entrou aqui! btt");
+                            //console.log("Entrou aqui! btt");
                             criaTimes();
                             navigation.replace("NovoJg",{
                                 time        : route.params.time,

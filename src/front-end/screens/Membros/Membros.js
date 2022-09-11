@@ -17,9 +17,6 @@ export default function Membros({route}){
     const [itemOP, setItemOP]   = useState(route.params.time.list_users[0]);
     
     useEffect(() => {
-        console.log("Depois fica assim!");
-        for(let x = 0 ; x < route.params.time.list_users.length ; x++)
-            console.log(x ," - index vetor", route.params.time.list_users[x].id);
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
     },[]);
@@ -36,11 +33,7 @@ export default function Membros({route}){
     async function removerMembro(item){
         route.params.time.list_users.splice(item.id, 1);
         route.params.time.list_usersG.splice(item.id, 1); 
-        //*
-            console.log("Depois fica assim!");
-            for(let x = 0 ; x < route.params.time.list_users.length ; x++)
-                console.log(x ," - index vetor", route.params.time.list_users[x].id);
-        //*/
+        
         let refLS  = route.params.time.list_users;
         let refLSG = route.params.time.list_usersG;
         for(let x = 0  ; x < refLS.length ; x++)  refLS[x].id  = x;

@@ -130,6 +130,6 @@ export default async function SetaDests(users){
       }
     }
   }
-  console.log("Enviou dests")
+  //console.log("Enviou dests")
   return dest;
 }; //Fim da função

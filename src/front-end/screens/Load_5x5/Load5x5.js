@@ -4,10 +4,10 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { View, Text, StatusBar, TouchableOpacity, Modal, FlatList, ScrollView, 
     Alert, BackHandler 
 } from "react-native";
+import { IncremJg } from "../../functions";
 import SalveData from "../../../back-and2/SalveData";
 import { useNavigation } from "@react-navigation/native";
-import {Cor, icons, styles} from "../../styles/index_S";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Cor, icons } from "../../styles/index_S";
 import banco from '../../../back-and2/banco_local';
 
     var tA = new Array();
