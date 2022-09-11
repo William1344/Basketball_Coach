@@ -42,20 +42,9 @@ export default function Load(){
             banco_local.usersLocal    = object.banco.usersLocal;
             banco_local.tema          = object.banco.tema;
             banco_local.times         = object.banco.times;
-            banco_local.atletas       = object.banco.atletas;
-<<<<<<< HEAD
-            
+            banco_local.atletas       = object.banco.atletas;            
             return navigation.replace('MainP');
         } else return navigation.replace('Cadastro');
-=======
-            navigation.replace('MainP');
-        } else {
-            let user = new CoachV({nome: 'One player'});
-            banco_local.userMaster = user;
-            navigation.replace('MainP');
-        }
-
->>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
     };
 
     useEffect(()=>{
