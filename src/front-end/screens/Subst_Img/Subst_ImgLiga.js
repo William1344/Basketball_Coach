@@ -3,15 +3,15 @@ import {
   Text, View, Image, TouchableOpacity, ScrollView, StatusBar, BackHandler,
   Alert, PermissionsAndroid
 } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import * as ImagePicker from 'expo-image-picker';
-import {Topo} from '../../components/index_comps';
-import { useNavigation } from '@react-navigation/native';
-import banco from '../../../back-and2/banco_local';
-import style_SI from './styleSI';
-import {Cor, icons} from '../../styles/index_S';
-import assets from '../../../../assets/index_assets';
-import SalveDados from '../../../back-and2/SalveData';
+import Icon               from 'react-native-vector-icons/AntDesign';
+import * as ImagePicker   from 'expo-image-picker';
+import {Topo}             from '../../components/index_comps';
+import { useNavigation }  from '@react-navigation/native';
+import banco              from '../../../back-and2/banco_local';
+import style_SI           from './styleSI';
+import {Cor, icons}       from '../../styles/index_S';
+import assets             from '../../../../assets/index_assets';
+import SalveDados         from '../../../back-and2/SalveData';
 
 export default function Subst_ImgLg({route}){
   const navigation = useNavigation();
@@ -72,8 +72,13 @@ export default function Subst_ImgLg({route}){
                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
                   allowsEditing: true,
                   aspect: [1, 1],
+<<<<<<< HEAD
                   quality: 0.5,
                   base64: false
+=======
+                  quality: 0.05,
+                  base64: true
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
                 });
                 if(!result.cancelled){
                   route.params.time.image_log = result;

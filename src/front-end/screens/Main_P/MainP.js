@@ -19,6 +19,16 @@ export default function Main_Players(){
     const [ item, setItemLiga ]   = useState({}); // true mostra ligas, só troca para pedidos se peds > 0
     const [ modal, setModal ]     = useState(false);
     
+<<<<<<< HEAD
+=======
+    
+    useEffect(() => {
+        
+    },[]);
+
+    
+
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
     useEffect(async () => {
         await CheckPermission();
         for(let tm of banco.times)
@@ -165,7 +175,7 @@ export default function Main_Players(){
                 barStyle="ligth-content"/>
             <Topo main = {true}/>
             <View style = {stylesMP.viewLiga}>
-                <Text style = {stylesMP.txt_TitleM}> Times </Text>  
+                <Text style = {stylesMP.txt_TitleM}> Ligas </Text>  
                 <View style = {stylesMP.viewL}> 
                     {render_Liga()} 
                 </View>

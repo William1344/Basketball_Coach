@@ -106,5 +106,11 @@ const stylesVP = StyleSheet.create({
                     ...styles.border1,
                     fontSize            : 18, 
                 },
+        text_infos:{
+            textAlign: 'justify',
+            fontSize: 20,
+            fontFamily: fonts.infos,
+            color: Cor.font,
+        },
 });
 export default stylesVP;

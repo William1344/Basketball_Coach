@@ -13,15 +13,26 @@ import { MontarArrayDest, RetornaImg } from '../../functions/index';
 
 export default function Form_User({route}){
   const navigation = useNavigation();
+<<<<<<< HEAD
   const [image, setImage]         = useState(0);
   const [txt_altura, setAltura]   = useState("");
   const [posicao, setPosicao]     = useState("");
   const [txt_idade, setIdade]     = useState("0");
+=======
+  const [image, setImage] = useState(0);
+  const [txt_altura, setAltura]   = useState("");
+  const [posicao, setPosicao]     = useState("");
+  const [txt_idade, setIdade]     = useState("");
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
   const [txt_peso, setPeso]       = useState("");
   const [txt_numC, setNumC]       = useState("");
   const [txt_env, setEnv ]        = useState("");
   const [textApel, setTA]         = useState("");
   const [textNom, setTN]          = useState("");
+<<<<<<< HEAD
+=======
+  const [state, setState]         = useState(true);
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
 
   useEffect(() => {
     // verifica se veio de viewPlayer
@@ -40,7 +51,7 @@ export default function Form_User({route}){
     //AddPlayers();
     BackHandler.addEventListener("hardwareBackPress", backAction);
     return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
-  },[])
+  },[]);
   // função teste -- AddPlayers();
   async function AddPlayers(){
     async function cadastrarUser(player){
@@ -62,39 +73,39 @@ export default function Form_User({route}){
       let jgdrG = new User_GameV(us);
       route.params.time.list_usersG.push(jgdrG);     
     }
-   let player = {
-      nome          : "Jeovane",
-      apelido       : "Jeovane",
-      idade         : "18",
-      peso          : "80",
-      altura        : "1.95",
-      env           : "1.95",
-      numC          : "22",
-      posicao       : "armador"
-    }
-    await cadastrarUser(player);
-    player = {
-      nome          : "Arnaldo",
-      apelido       : "Arnaldo",
-      idade         : "18",
-      peso          : "80",
-      altura        : "1.95",
-      env           : "1.95",
-      numC          : "24",
-      posicao       : "ala-armador"
-    }
-    await cadastrarUser(player);
-    player = {
-      nome          : "José",
-      apelido       : "José",
-      idade         : "18",
-      peso          : "80",
-      altura        : "1.95",
-      env           : "1.95",
-      numC          : "26",
-      posicao       : "ala-armador"
-    }
-    await cadastrarUser(player);
+      let player = {
+        nome          : "Jeovane",
+        apelido       : "Jeovane",
+        idade         : "18",
+        peso          : "80",
+        altura        : "1.95",
+        env           : "1.95",
+        numC          : "22",
+        posicao       : "armador"
+      }
+      await cadastrarUser(player);
+      player = {
+        nome          : "Arnaldo",
+        apelido       : "Arnaldo",
+        idade         : "18",
+        peso          : "80",
+        altura        : "1.95",
+        env           : "1.95",
+        numC          : "24",
+        posicao       : "ala-armador"
+      }
+      await cadastrarUser(player);
+      player = {
+        nome          : "José",
+        apelido       : "José",
+        idade         : "18",
+        peso          : "80",
+        altura        : "1.95",
+        env           : "1.95",
+        numC          : "26",
+        posicao       : "ala-armador"
+      }
+      await cadastrarUser(player);
     player = {
       nome          : "Rubens",
       apelido       : "Rubens",
@@ -228,6 +239,7 @@ export default function Form_User({route}){
 
   async function cadastrarUser(){
     // verifica se veio de viewPlayer ou se é um novo cadastro
+<<<<<<< HEAD
     let us = {
       id : route.params.time.list_users.length,   // id vai ser o index do vetor de usersLocal
       image         : image,                      // image do usuário
@@ -239,6 +251,32 @@ export default function Form_User({route}){
       envergadura   : txt_env,                    // envergadura do jogador
       numero        : txt_numC,                   // numero da camisa do jogador
       posicao       : posicao,                    // posição do jogador
+=======
+    if(route.params.veio_de == "menu_time"){
+      let us = {
+        id : route.params.time.list_users.length,   // id vai ser o index do vetor de usersLocal
+        image         : 0,                          // image do usuário
+        nome          : textNom,                    // nome do usuário
+        apelido       : textApel,                   // apelido do jogador
+        idade         : txt_idade,                  // idade do jogador
+        peso          : txt_peso,                   // peso do jogador
+        altura        : txt_altura,                 // altura do jogador
+        envergadura   : txt_env,                    // envergadura do jogador
+        numero        : txt_numC,                   // numero da camisa do jogador
+        posicao       : posicao,                    // posição do jogador
+      }
+
+      let jgdr = new User_LigaV(us);
+      route.params.time.list_users.push(jgdr);
+      let jgdrG = new User_GameV(us);
+      route.params.time.list_usersG.push(jgdrG);
+      await SalveData(banco);
+      navigation.replace("MainL",{
+        time        : route.params.time,
+        dest        : await MontarArrayDest(route.params.time.list_users),
+        index_time  : route.params.index_time,
+      });
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
     }
 
     let jgdr = new User_LigaV(us);
@@ -257,6 +295,10 @@ export default function Form_User({route}){
     <View style={stylesF.telaFull}>
       <TouchableOpacity style = {stylesF.btt_img} 
         onPress = {async ()=>{
+<<<<<<< HEAD
+=======
+          // setar a imagem do jogador
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
           let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
@@ -265,7 +307,14 @@ export default function Form_User({route}){
             base64: true
           });
           if(!result.cancelled){
+<<<<<<< HEAD
             setImage(result);
+=======
+            player.image = result;
+            await SalveData(banco);
+            setState(!state);
+            //backAction();
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
           } else {
             Alert.alert("Aviso", "Você não selecionou nenhuma imagem!");
           }

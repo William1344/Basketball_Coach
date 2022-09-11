@@ -16,5 +16,10 @@ export default function RetornaImg(value){
   else if(value == 10)  return assets.play_lg10;
   else if(value == 11)  return assets.play_lg11;
   else if(value == 12)  return assets.play_lg12;
+<<<<<<< HEAD
   else return value;
+=======
+  else if(value == 13)  return assets.logo1;
+  else return base64();
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
 }

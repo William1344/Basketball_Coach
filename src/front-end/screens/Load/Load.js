@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect }     from    'react';
 import {useNavigation}          from    '@react-navigation/native';
 import AsyncStorage             from    '@react-native-async-storage/async-storage';
@@ -5,6 +6,16 @@ import * as Font                from    'expo-font';
 import banco_local              from    '../../../back-and2/banco_local';
 import GetData                  from    '../../../back-and2/GetData';
 import CompLoad                 from    './CompLoad';
+=======
+import React, { useEffect } from 'react';
+import {useNavigation}      from '@react-navigation/native';
+import AsyncStorage         from '@react-native-async-storage/async-storage';
+import * as Font            from 'expo-font';
+import banco_local          from '../../../back-and2/banco_local';
+import GetData              from '../../../back-and2/GetData';
+import CompLoad             from './CompLoad';
+import { CoachV }           from '../../../back-and2/banco_dados';
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
 
 export default function Load(){
     const navigation = useNavigation();
@@ -35,15 +46,26 @@ export default function Load(){
 
     async function checkToken(){
         let object = await GetData();
+        //console.log("Objeto retornado GetData",object);
         if (object.status){
             banco_local.userMaster    = object.banco.userMaster;
             banco_local.usersLocal    = object.banco.usersLocal;
             banco_local.tema          = object.banco.tema;
             banco_local.times         = object.banco.times;
             banco_local.atletas       = object.banco.atletas;
+<<<<<<< HEAD
             
             return navigation.replace('MainP');
         } else return navigation.replace('Cadastro');
+=======
+            navigation.replace('MainP');
+        } else {
+            let user = new CoachV({nome: 'One player'});
+            banco_local.userMaster = user;
+            navigation.replace('MainP');
+        }
+
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
     };
 
     useEffect(()=>{

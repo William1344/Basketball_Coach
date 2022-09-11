@@ -19,17 +19,21 @@ export default function Topo(){
             />
             <TouchableOpacity style = {styles.btt_img}
                 onPress = {() => {
-                    navigation.replace("Subst_Img");
+                    //navigation.replace("Subst_Img");
                 }}
             >
                 <Image style = {styles.img_logo}
-                    source = {RetornaImg(banco.userMaster.image)}
+                    source = {RetornaImg(13)}
                 />
             </TouchableOpacity>
             <View style = {styles.view1_infos}>
                 <Text style = {styles.text_infos}> {banco.userMaster.nome} </Text>
+<<<<<<< HEAD
                 <Text style = {styles.text_infos}> Times: {banco.times.length} </Text>
                 <Text style = {styles.text_infos}> Atletas: {banco.atletas.length} </Text>    
+=======
+                <Text style = {{...styles.text_infos, fontSize: 16 }}> Crie sua liga ou importe uma, cadastre os atletas e realize seus jogos </Text>  
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
             </View>
           </View>
           <View style = {styles.barra}/>

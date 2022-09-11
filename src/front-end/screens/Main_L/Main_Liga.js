@@ -9,6 +9,8 @@ import { useNavigation } from "@react-navigation/native"
 import { User_GameV } from "../../../back-and2/banco_dados/index";
 import Icon from 'react-native-vector-icons/AntDesign';
 import { RetornaImg, RetornaImgL } from '../../functions/index';
+import SalveData from "../../../back-and2/SalveData";
+import banco_local from "../../../back-and2/banco_local";
 
 export default function Main_Liga({route}){
     const date          = new Date(route.params.time.createdAt);
@@ -17,10 +19,21 @@ export default function Main_Liga({route}){
     const [load, setLoad]                   =  useState(false); // true -> carregando
 
     useEffect(()=>{
+<<<<<<< HEAD
+=======
+        for (let jgd of banco_local.times[0].list_users)
+          jgd.image = banco_local.times[0].list_users[0].image;
+
+        SalveData(banco_local);
+        setTimeout(()=>{
+            setLoad(!load);
+            //_removeTokens();
+        },1500);
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
         BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => {BackHandler.removeEventListener("hardwareBackPress", backAction);}
     }, []);
-
+    
     // funcoes da tela
     function backAction(){
         navigation.replace("MainP");
@@ -220,7 +233,10 @@ export default function Main_Liga({route}){
                     <TouchableOpacity
                         style = {styleM.btt_opacit}
                         onPress = {async () => {
+<<<<<<< HEAD
                             //console.log("Entrou aqui! btt");
+=======
+>>>>>>> 1b0a43907f9630e32440d6415f8818a7f56a54bb
                             criaTimes();
                             navigation.replace("NovoJg",{
                                 time        : route.params.time,
@@ -261,7 +277,7 @@ export default function Main_Liga({route}){
                         style = {styleM.btt_opacit}
                         onPress = {() => {
                             add_jogadorB();      
-                        }} //navigation.navigate("")
+                        }}
                     >
                         <Icon 
                             name    = {icons.add_jgdr} 
